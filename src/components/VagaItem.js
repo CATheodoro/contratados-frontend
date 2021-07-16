@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 
-import Stars from '../components/Stars';
 
 const Area = styled.TouchableOpacity`
     background-color: #63C2D1;
@@ -36,8 +36,18 @@ const UserName = styled.Text`
     color: #FFF;
 `;
 
-const SeeProfileButton = styled.View`
-    width: 85px;
+const CargoArea = styled.View`
+    width: 225px;
+    border: 1px solid #FFF;
+    background-color: #FFF;
+    border-radius: 10px;
+
+    margin-bottom: 15px;
+    margin-top: 15px;
+`;
+
+const SeeButton = styled.View`
+    width: 225px;
     height: 26px;
     border: 1px solid #FFF;
     background-color: #FFF;
@@ -47,7 +57,7 @@ const SeeProfileButton = styled.View`
 `;
 
 
-const SeeProfileButtonText = styled.Text`
+const Text = styled.Text`
     font-size: 14px;
     color: #268596;
 `;
@@ -55,27 +65,43 @@ const SeeProfileButtonText = styled.Text`
 const DataPost = styled.Text`
     font-size: 10px;
     color: #FFF;
+    text-align: right;
 `;
 
 
-export default ({data}) => {
-    return(
-        <Area>
 
-                {data.avatar == '' ?
-                    <Avatar source = {{uri: data.avatar}} />
-                    :
-                    <AvatarDefaut />
-                }
+export default ({data}) => {
+
+    const navigation = useNavigation();
+
+    const handleClick = () =>{
+        navigation.navigate('AnuncioVaga', {
+            id: data.id,
+            image: data.image,
+            requisitos: data.requisitos,
+        });
+    }
+
+    return(
+        <Area onPress={handleClick}>
+            {data.image ?
+                <Avatar source = {{uri: data.image}} />
+                :
+                <AvatarDefaut />
+            }
             
             <InfoArea>
                 <UserName>{data.requisitos}</UserName>
-
-                <Stars stars={data.stars} showNumber={true} />
-
-                <SeeProfileButton>
-                    <SeeProfileButtonText>Ver Vaga</SeeProfileButtonText>
-                </SeeProfileButton>
+                
+                    <CargoArea>
+                        {data.setorCargoResponses.map((item, key)=>(
+                            <Text key={key}>Cargo: {data.setorCargoResponses[key].cargo}</Text>
+                        ))}
+                    </CargoArea>
+            
+                <SeeButton>
+                    <Text>Ver Vaga</Text>
+                </SeeButton>
 
                 <DataPost>{data.dataPostagem}</DataPost>
             </InfoArea>

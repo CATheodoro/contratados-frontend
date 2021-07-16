@@ -2,18 +2,35 @@ import AsyncStorage from '@react-native-community/async-storage';
 const BASE_API = 'http://192.168.1.38:8080';
 
 export default {
-    checkToken: async (token)=>{
-        const req = await fetch(`${BASE_API}/auth/refresh`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify({token})
-        });
-        const json = await req.json();
-        return json;
-    },
+    // checkToken: async (token)=>{
+    //     const req = await fetch(`${BASE_API}/auth/refresh`, {
+    //         method: 'POST',
+    //         headers: {
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json; charset=UTF-8'
+    //         },
+    //         body: JSON.stringify({token})
+    //     });
+    //     const json = await req.json();
+    //     return json;
+    // },
+
+    // logout: async () =>{
+    //     const token = await AsyncStorage.getItem('token');
+
+    //     const req = await fetch(`${BASE_API}/auth/logout`, {
+    //         method: 'POST',
+    //         headers: {
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json; charset=UTF-8'
+    //         },
+    //         body: JSON.stringify({token})
+    //     });
+    //     const json = await req.json();
+    //     return json;
+    // },
+
+
     signIn: async (email, password) => {
         const req = await fetch(`${BASE_API}/auth`, {
             
@@ -27,6 +44,7 @@ export default {
         const json = await req.json();        
         return json;
     },
+
     signUp: async (nome, email, senha) =>{
         const req = await fetch(`${BASE_API}/usuario`, {
             method: 'POST',
@@ -53,6 +71,39 @@ export default {
         });
         const json = await req.json();
         return json;
-    }
+    },
+
+    getVaga: async (id) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/anunciovaga/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    sendSoliciacao: async (id) =>{
+        const token = await AsyncStorage.getItem('token');
+
+        const req = await fetch(`${BASE_API}/solicitacao`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({anuncioVagaId: id})
+        });
+        const json = await req.json();
+        console.log(json);
+        return json;
+    },
+
 }
 

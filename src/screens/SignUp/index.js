@@ -30,27 +30,29 @@ export default ()=>{
     const [nameField, setNameField] = useState('');
     const [emailField, setEmailField] = useState('');
     const [passwordField, setPasswordField] = useState('');
+    const [confirmPasswordField, setConfirmPasswordField] = useState('');
 
     const handleSignClick = async () => {
 
         if(nameField != '' && emailField != '' && passwordField != ''){
 
-            let res = await Api.signUp(nameField, emailField, passwordField);
-            if(res.token) {
-                await AsyncStorage.setItem('token', res.token);
+            if(passwordField === confirmPasswordField){
+                let res = await Api.signUp(nameField, emailField, passwordField);
 
-                // userDispatch({
-                //     type: 'setAvatar',
-                //     payload:{
-                //         avatar: res.data.avatar
-                //     }
-                // });
-                navigation.reset({
-                    routes: [{name: 'MainTab'}]
-                });
+                if(res.message === '' || res.message === null) {
+    
+                    alert("Cadastro realizado com sucesso !!!");
+                    navigation.reset({
+                        routes: [{name: 'SignIn'}]
+                    });
+    
+                } else {
+                    alert("Erro: " + res.message);
+                }
             } else {
-                alert("Erro: " + res.error);
+                alert ("Senhas diferentes, confirme sua senha novamente");
             }
+
         } else {
             alert ("Preencha os campos");
         }
@@ -92,6 +94,14 @@ export default ()=>{
                     placeholder="Digite sua senha"
                     value={passwordField}
                     onChangeText={t=>setPasswordField(t)}
+                    password = {true}
+                />
+                
+                <SignInput 
+                    IconSvg={LockIcon}
+                    placeholder="Digite sua senha"
+                    value={confirmPasswordField}
+                    onChangeText={t=>setConfirmPasswordField(t)}
                     password = {true}
                 />
 

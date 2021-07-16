@@ -68,7 +68,6 @@ export default () => {
         let res = await Api.getVagas(locationText);
 
         if(res.content) {
-
              setList(res.content);
 
          } else {
