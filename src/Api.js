@@ -2,34 +2,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 const BASE_API = 'http://192.168.1.38:8080';
 
 export default {
-    // checkToken: async (token)=>{
-    //     const req = await fetch(`${BASE_API}/auth/refresh`, {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json; charset=UTF-8'
-    //         },
-    //         body: JSON.stringify({token})
-    //     });
-    //     const json = await req.json();
-    //     return json;
-    // },
-
-    // logout: async () =>{
-    //     const token = await AsyncStorage.getItem('token');
-
-    //     const req = await fetch(`${BASE_API}/auth/logout`, {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json; charset=UTF-8'
-    //         },
-    //         body: JSON.stringify({token})
-    //     });
-    //     const json = await req.json();
-    //     return json;
-    // },
-
 
     signIn: async (email, password) => {
         const req = await fetch(`${BASE_API}/auth`, {
@@ -58,10 +30,10 @@ export default {
         return json;
     },
 
-    getVagas: async (location=null) => {
+    getVagas: async (page='' , location='', cargo='') => {
         const token = await AsyncStorage.getItem('token');
         
-        const req = await fetch(`${BASE_API}/anunciovaga/usuariovagas?localidade=${location}`, {
+        const req = await fetch(`${BASE_API}/anunciovaga/usuariovagas?page=${page}&localidade=${location}&cargo=${cargo}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -102,6 +74,36 @@ export default {
         });
         const json = await req.json();
         console.log(json);
+        return json;
+    },
+
+    getPerfilEmpresa: async (id='0') => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/empresa/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    getPerfilUsuario: async (id='0') => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/usuario/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const json = await req.json();
         return json;
     },
 

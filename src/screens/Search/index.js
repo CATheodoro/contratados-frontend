@@ -1,11 +1,138 @@
-import React from 'react';
-import { Text } from 'react-native';
-import { Container } from './styles';
+import React, { useState, useEffect } from 'react';
+import { Platform, RefreshControl } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { request, PERMISSIONS } from 'react-native-permissions';
+import Geolocation from '@react-native-community/geolocation';
+
+import Api from '../../Api'
+
+import { 
+    Container,
+    Scroller,
+
+    HeaderArea,
+    HeaderTitle,
+    Title,
+    SearchButtom,
+
+    BuscarArea,
+    LocationArea,
+    LocationInput,
+    LocationFinder,
+
+    Button,
+    ButtonText,
+
+    LoadingIcon,
+    ListArea
+
+} from './styles';
+
+import VagaItem from '../../components/VagaItem';
+
+import SearchIcon from '../../assets/search.svg';
+import MyLocationIcon from '../../assets/my_location.svg';
+import { Linha } from '../styles/View';
 
 export default () => {
+
+    const [locationText, setLocationText] = useState('');
+    const [cargoText, setCargoText] = useState('');
+    const [coords, setCoords] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [list, setList] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const handleLocationFinder = async () =>{
+        getAnuncioVagas();
+    }
+
+    const getAnuncioVagas = async () => {
+        setLoading(true);
+        setList([]);
+        let res = await Api.getVagas('', locationText, cargoText);
+
+        if(res.content) {
+             setList(res.content);
+
+         } else {
+             alert("Erro"+res.error)
+         }
+        setLoading(false);
+    }
+
+
+    const refresh = () =>{
+        setRefreshing(false);
+        setLocationText('');
+        getAnuncioVagas();
+    }
+
+    const handleLocationSearch = () => {
+        setCoords({});
+        getAnuncioVagas();
+    }
+
+
     return (
         <Container>
-            <Text>Search</Text>
+            <Scroller refreshControl ={
+                <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+            }>
+                
+                <HeaderArea>
+                    <HeaderTitle >Buscar</HeaderTitle>
+                    <SearchButtom>
+                        <SearchIcon width="26" height="26" fill="#63C2D1"/>
+                    </SearchButtom>
+                </HeaderArea>
+
+                <BuscarArea>
+                    <Title>Buscar Local</Title>
+                    <LocationArea>
+                        <LocationInput 
+                            placeholder="Onde você está ?"
+                            placeholderTextColor="#FFFFFF"
+                            value={locationText}
+                            onChangeText={t=>setLocationText(t)}
+                        />
+                        <LocationFinder onPress={handleLocationFinder}>
+                            <MyLocationIcon width="24" height="24" fill="#FFF" />
+                        </LocationFinder>
+                    </LocationArea>
+
+                    <Title>Buscar Cargo</Title>
+                    <LocationArea>
+                        <LocationInput 
+                            placeholder="Qual cargo você deseja ?"
+                            placeholderTextColor="#FFFFFF"
+                            value={cargoText}
+                            onChangeText={t=>setCargoText(t)}
+                            onEndEditing={handleLocationSearch}
+                        />
+                        <LocationFinder onPress={handleLocationFinder}>
+                            <MyLocationIcon width="24" height="24" fill="#FFF" />
+                        </LocationFinder>
+                    </LocationArea>
+
+                </BuscarArea>
+
+                <Button onPress={()=>handleLocationFinder()}>
+                        <ButtonText>Buscar</ButtonText>
+                </Button>
+                <Linha/>
+                {loading &&
+                    <LoadingIcon size="large" color="#63C2D1" />
+                }
+
+                <ListArea>
+                    {/*problema de duplicação de chave CARGO */
+                    list.map((item, key)=>(
+                        <VagaItem key={key} data={item} />
+                    ))}
+                </ListArea>
+
+            </Scroller>
         </Container>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 
@@ -73,25 +73,31 @@ const FinishButtonText = styled.Text`
   font-weight: bold;
 `;
 
+export const LoadingIcon = styled.ActivityIndicator`
+    margin-top: 10px;
+    margin-bottom: 10px;
+`;
+
 
 export default ({show, setShow, user}) => {
   const navigation = useNavigation();
-
+  const [loading, setLoading] = useState(false);
  
   const handleCloseButton = () => {
     setShow(false);
   };
 
   const handleSendClick = async () => {
-
+    setLoading(true);
      let res = await Api.sendSoliciacao(user.id);
      if(res.anuncioVagaId === user.id) {
         alert("Solicitação Enviada Com Sucesso !!!");
         navigation.navigate('Home');
        }  else {
-         alert("Erro: " + res.message);
+         alert("Erro: " + res.error);
          navigation.navigate('Home');
     }
+    setLoading(false);
   };
 
   const handleFinishClick = () => {
@@ -116,16 +122,21 @@ export default ({show, setShow, user}) => {
             </UserInfo>
           </ModalItem>
 
+          {loading ?
+            <LoadingIcon size="large" color="#FFF" />
+            :
+            <ButtonArea>
+              <FinishButton onPress={handleSendClick}>
+                <FinishButtonText>SIM</FinishButtonText>
+              </FinishButton>
 
-          <ButtonArea>
-            <FinishButton onPress={handleSendClick}>
-              <FinishButtonText>SIM</FinishButtonText>
-            </FinishButton>
+              <FinishButton onPress={handleFinishClick}>
+                <FinishButtonText>NÃO</FinishButtonText>
+              </FinishButton>
+            </ButtonArea>
+          }
 
-            <FinishButton onPress={handleFinishClick}>
-              <FinishButtonText>NÃO</FinishButtonText>
-            </FinishButton>
-          </ButtonArea>
+
 
         </ModalBody>
       </ModalArea>

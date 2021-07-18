@@ -11,7 +11,8 @@ import {
     CustomButtonText,
     SignMessageButton,
     SignMessageButtonText,
-    SignMessageButtonTextBold
+    SignMessageButtonTextBold,
+    LoadingIcon
 
 } from './styles';
 
@@ -30,23 +31,19 @@ export default ()=>{
     const [emailField, setEmailField] = useState('');
     const [passwordField, setPasswordField] = useState('');
 
-    const handleSignClick = async () => {
+    const [loading, setLoading] = useState(false);
 
-        if(emailField != '' && passwordField != ''){
+    const handleSignClick = async () => {
+        setLoading(true);
+        if(emailField != '' && passwordField != ''){   
+
             let json = await Api.signIn(emailField, passwordField);
 
             if(json.token){
                 await AsyncStorage.setItem('token', json.token);
 
                 if(json.perfil === 'USUARIO'){
-                    alert('É um usuário kk')
-
-                // userDispatch({
-                //     type: 'setAvatar',
-                //     payload:{
-                //         avatar: json.data.avatar
-                //     }
-                // });
+                    alert('É um usuário')
 
                     navigation.reset({
                         routes: [{name: 'MainTab'}]
@@ -54,15 +51,16 @@ export default ()=>{
                 }
 
                 if(json.perfil === 'EMPRESA'){
-                    alert('É uma empresa kk')
+                    alert('É uma empresa')
                 }
 
             } else{
-                alert('E-mail e/ou senha incorreto! : '+json.error);
+                alert('E-mail e/ou senha incorreto! ');
             }
         }else{
             alert("Preencha os campos!");
         }
+        setLoading(false)
     }
 
     const handleMessageButtonClick = () => {
@@ -90,8 +88,13 @@ export default ()=>{
                     password = {true}
                 />
 
-                <CustomButton onPress={handleSignClick}>
-                    <CustomButtonText>ENTRAR</CustomButtonText>
+            <CustomButton onPress={handleSignClick}>
+                    {loading ?
+                        <LoadingIcon size="large" color="#FFF" />
+                        :
+                        <CustomButtonText>ENTRAR</CustomButtonText>
+                    }
+                    
                 </CustomButton>
             </InputArea>
 

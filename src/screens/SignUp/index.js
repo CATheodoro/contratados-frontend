@@ -10,7 +10,8 @@ import {
     CustomButtonText,
     SignMessageButton,
     SignMessageButtonText,
-    SignMessageButtonTextBold
+    SignMessageButtonTextBold,
+    LoadingIcon
 
 } from './styles';
 
@@ -31,15 +32,16 @@ export default ()=>{
     const [emailField, setEmailField] = useState('');
     const [passwordField, setPasswordField] = useState('');
     const [confirmPasswordField, setConfirmPasswordField] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSignClick = async () => {
-
+    setLoading(true);
         if(nameField != '' && emailField != '' && passwordField != ''){
 
             if(passwordField === confirmPasswordField){
                 let res = await Api.signUp(nameField, emailField, passwordField);
 
-                if(res.message === '' || res.message === null) {
+                if(res.id) {
     
                     alert("Cadastro realizado com sucesso !!!");
                     navigation.reset({
@@ -47,7 +49,11 @@ export default ()=>{
                     });
     
                 } else {
-                    alert("Erro: " + res.message);
+                    if(res.error){
+                        alert("Erro: " + res.error);
+                    } else
+                        alert("Erro: " + res[0].error);
+                    
                 }
             } else {
                 alert ("Senhas diferentes, confirme sua senha novamente");
@@ -56,7 +62,7 @@ export default ()=>{
         } else {
             alert ("Preencha os campos");
         }
-
+        setLoading(false);
     }
 
     const handleMessageButtonClick = () => {
@@ -99,14 +105,18 @@ export default ()=>{
                 
                 <SignInput 
                     IconSvg={LockIcon}
-                    placeholder="Digite sua senha"
+                    placeholder="Confirme sua senha"
                     value={confirmPasswordField}
                     onChangeText={t=>setConfirmPasswordField(t)}
                     password = {true}
                 />
 
                 <CustomButton onPress={handleSignClick}>
-                    <CustomButtonText>CADASTRAR</CustomButtonText>
+                    {loading ?
+                        <LoadingIcon size="large" color="#FFF" />
+                        :
+                        <CustomButtonText>CADASTRAR</CustomButtonText>
+                    }
                 </CustomButton>
             </InputArea>
 

@@ -29,7 +29,6 @@ const TabItemCenter = styled.TouchableOpacity`
     background-color: #FFF;
     border-radius: 30px;
     border: 3px solid #4EADBE;
-    margin-top: -10px;
 `;
 const AvatarIcon = styled.Image`
     width: 28px;
@@ -50,17 +49,21 @@ export default ({ state, navigation }) => {
                 <HomeIcon style={{opacity: state.index===0? 1 : 0.5}} width="28" height="28" fill="#FFFFFF" />
                 <Text style={{color:"#FFFFFF", opacity: state.index===0? 1 : 0.5}} >Início</Text>
             </TabItem>
+
             <TabItem onPress={()=>goTo('Search')}>
                 <SearchIcon style={{opacity: state.index===1? 1 : 0.5, color : "#FFF"}} width="28" height="28" fill="#FFFFFF" />
                 <Text style={{color:"#FFFFFF", opacity: state.index===1? 1 : 0.5}} >Buscar</Text>
             </TabItem>
+
             <TabItemCenter onPress={()=>goTo('Appointments')}>
                 <TodayIcon style={{opacity: state.index===2? 1 : 0.8}} width="32" height="32" fill="#4EADBE" />
             </TabItemCenter>
+
             <TabItem onPress={()=>goTo('Favorites')}>
                 <FavoriteIcon style={{opacity: state.index===3? 1 : 0.5}} width="28" height="28" fill="#FFFFFF" />
                 <Text style={{color:"#FFFFFF", opacity: state.index===3? 1 : 0.5}} >Aceitos</Text>
             </TabItem>
+            
             <TabItem onPress={()=>goTo('Profile')}>
                 {user.avatar != '' ?
                     <AvatarIcon source={{uri: user.avatar}} />

@@ -3,50 +3,27 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import VagaModal from '../../components/VagaModal';
 
-import FavoriteIcon from '../../assets/favorite.svg';
 import BackIcon from '../../assets/back.svg';
-import NavPrevIcon from '../../assets/nav_prev.svg';
-import NavNextIcon from '../../assets/nav_next.svg';
 import FavoriteFullIcon from '../../assets/favorite_full.svg'
 
-import { 
-    Container,
-    ScrollerAnuncio,
 
-    BackgroundImage,
+//Styles    ###########################################################
 
-    PageBody,
+import {  PageBody, UserInfoArea, UserInfoName, CargoItem, CargoInfo, CargoName, CargoSetor } from './styles';
 
-    UserInfoArea,
-    UserAvatar,
-    UserAvatarDefault,
-    UserInfoName,
-    UserFavButton,
+import { Container, Scroller, LoadingIcon } from '../styles/Basic';
 
-    DescriptionTitle,
-    DescriptionArea,
+import { BackgroundImageOpen, BackgroundImageClosed, EmpresaAnuncioAvatarDefault, EmpresaAnuncioAvatar } from '../styles/Image';
 
-    TextBold,
+import { ButtonWhiteText, SubTitle, Text, TextBold, Title } from '../styles/Text';
 
-    EnderecoTitle,
-    EncercoArea,
+import { DescriptionArea } from '../styles/View';
 
-    BackButtom,
-    Text,
+import { CirculateButton, BackButtom, SimpleButton } from '../styles/Button'; 
 
-    CargoArea,
-    CargoTitle,
-    CargoItem,
-    CargoInfo,
-    CargoName,
-    CargoSetor,
-    CargoChooseButton,
-    CargoChooseButtonText
-
-} from './styles';
+//Styles END ###########################################################
 
 import Api from '../../Api';
-import { LoadingIcon, LocationArea, Scroller } from '../Home/styles';
 
 export default () => {
 
@@ -55,12 +32,16 @@ export default () => {
 
     const [userInfo, setUserInfo] = useState({
         id: route.params.id,
+        statusAnuncio: route.params.statusAnuncio,
         image: route.params.image,
-        nomeEmpresa: route.params.requisitos,
-
+        nomeEmpresa: route.params.nomeEmpresa,
+        requisitos: route.params.requisitos,
+        localidade: route.params.localidade,
+        uf: route.params.uf,
     });
+
+
     const [loading, setLoading] = useState(false);
-    const [favorited, setFavorieted] = useState(false);
 
     
     const [showModal, setShowModal] = useState(false);
@@ -72,9 +53,8 @@ export default () => {
 
             if(json){
                 setUserInfo(json);
-                //setFavorieted(json.data.solicitacao)
             } else {
-                alert("Erro: "+json);
+                alert("Erro: "+json.error);
             }
             setLoading(false);
         };
@@ -85,9 +65,14 @@ export default () => {
         navigation.goBack();
     }
 
-    const handleFavClick = () =>{
-        setFavorieted( !favorited );
-        //Api.set();
+    const handleEmpresaClick = () =>{
+        navigation.navigate('PerfilEmpresa', {
+            empresaId: userInfo.empresaId,
+            nomeEmpresa: userInfo.nomeEmpresa,
+            email: userInfo.email,
+            celular: userInfo.celular,
+            telefone: userInfo.telefone,
+        });
     }
 
     const handleCargoChoose = () => {
@@ -96,47 +81,64 @@ export default () => {
 
     return (
         <Container>
-            <ScrollerAnuncio>
-
-                <BackgroundImage />
+            <Scroller>
+                {userInfo.statusAnuncio ?
+                    <BackgroundImageOpen />      
+                :
+                    <BackgroundImageClosed />    
+                }
 
                 <PageBody>
 
                     <UserInfoArea>
                         {userInfo.imagee ?
-                            <UserAvatar source={{uri: userInfo.image}} />
+                            <EmpresaAnuncioAvatar source={{uri: userInfo.image}} />
                             :
-                            <UserAvatarDefault/>
+                            <EmpresaAnuncioAvatarDefault/>
                         }
                         
                         <UserInfoName>{userInfo.nomeEmpresa}</UserInfoName>
                       
-                        <UserFavButton onPress={handleFavClick}>
+                        <CirculateButton onPress={handleEmpresaClick}>
                             <FavoriteFullIcon  width="24" height="24" fill="#63C2D1" />
-                        </UserFavButton>
+                        </CirculateButton>
                     </UserInfoArea>
 
                     {loading &&
-                        <LoadingIcon size="large" color="#000000" />
+                        <LoadingIcon size="large" color="#63C2D1" />
                     }
 
                     <DescriptionArea>
-                        <DescriptionTitle>Descrição da vaga</DescriptionTitle>
+                        <TextBold>Descrição da vaga</TextBold>
                         <Text>{userInfo.requisitos}</Text>
                     </DescriptionArea>
 
-                    <EnderecoTitle>Descrição da vaga</EnderecoTitle>
-                    <EncercoArea>
-                        <TextBold>Cidade: </TextBold> 
-                        <TextBold>Estado: </TextBold>
-                        <TextBold>Rua: </TextBold>
-                        <TextBold>Número: </TextBold>
-                    </EncercoArea>
+                    <SubTitle>Contatos</SubTitle>
+                    <DescriptionArea>
+                        <TextBold>Email: <Text>{userInfo.email}</Text></TextBold>
+                        {userInfo.celular &&
+                            <TextBold>Celular: <Text>{userInfo.celular}</Text></TextBold>
+                        }
+                        {userInfo.telefone &&
+                            <TextBold>Telefone: <Text>{userInfo.telefone}</Text></TextBold>
+                        }
+                    </DescriptionArea>
+
+                    <SubTitle>Localização</SubTitle>
+                    <DescriptionArea>
+                        <TextBold>Cidade: <Text>{userInfo.localidade}</Text></TextBold> 
+                        <TextBold>Estado: <Text>{userInfo.uf}</Text></TextBold>
+                        <TextBold>Rua: <Text>{userInfo.logradouro}</Text></TextBold>
+                        <TextBold>Número: <Text>{userInfo.numero}</Text></TextBold>
+                        {userInfo.complemento &&
+                            <TextBold>Complemento: <Text>{userInfo.complemento}</Text></TextBold>
+                        }
+                    </DescriptionArea>
 
 
                     {userInfo.setorCargoResponses &&
-                        <CargoArea>
-                            <CargoTitle>Lista de cargos</CargoTitle>
+                        <DescriptionArea>
+                            <Title>Lista de cargos</Title>
 
                             {userInfo.setorCargoResponses.map((item, key)=>(
                                 <CargoItem key={key}>
@@ -147,15 +149,17 @@ export default () => {
                                 </CargoItem>
                             ))}
 
-                            <CargoChooseButton onPress={()=>handleCargoChoose()}>
-                                <CargoChooseButtonText>Enviar Currículo</CargoChooseButtonText>
-                            </CargoChooseButton>
+                        </DescriptionArea>
+                    }
+                    {userInfo.statusAnuncio &&
+                        <SimpleButton onPress={()=>handleCargoChoose()}>
+                            <ButtonWhiteText>Enviar Currículo</ButtonWhiteText>
+                        </SimpleButton>
+                    }
 
-                        </CargoArea>
-                    }       
                 </PageBody>
 
-            </ScrollerAnuncio>
+            </Scroller>
             <BackButtom onPress={handleBackButton}>
                 <BackIcon width="44" height="44" fill="#FFFFFF" />
             </BackButtom>

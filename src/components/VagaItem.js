@@ -46,7 +46,7 @@ const CargoArea = styled.View`
     margin-top: 15px;
 `;
 
-const SeeButton = styled.View`
+const OpenButton = styled.View`
     width: 225px;
     height: 26px;
     border: 1px solid #FFF;
@@ -56,6 +56,20 @@ const SeeButton = styled.View`
     align-items: center;
 `;
 
+const ClosedButton = styled.View`
+    width: 225px;
+    height: 26px;
+    border: 1px solid #FFF;
+    background-color: #E27D60;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+`;
+
+const TextWhite = styled.Text`
+    font-size: 14px;
+    color: #FFF;
+`;
 
 const Text = styled.Text`
     font-size: 14px;
@@ -75,15 +89,20 @@ export default ({data}) => {
     const navigation = useNavigation();
 
     const handleClick = () =>{
-        navigation.navigate('AnuncioVaga', {
-            id: data.id,
-            image: data.image,
-            requisitos: data.requisitos,
-        });
+            navigation.navigate('AnuncioVaga', {
+                id: data.id,
+                statusAnuncio: data.statusAnuncio,
+                image: data.image,
+                nomeEmpresa: data.nomeEmpresa,
+                requisitos: data.requisitos,
+                localidade: data.localidade,
+                uf: data.uf
+            });
     }
 
     return(
         <Area onPress={handleClick}>
+
             {data.image ?
                 <Avatar source = {{uri: data.image}} />
                 :
@@ -91,17 +110,23 @@ export default ({data}) => {
             }
             
             <InfoArea>
-                <UserName>{data.requisitos}</UserName>
+                <UserName>{data.nomeEmpresa}</UserName>
                 
                     <CargoArea>
                         {data.setorCargoResponses.map((item, key)=>(
                             <Text key={key}>Cargo: {data.setorCargoResponses[key].cargo}</Text>
                         ))}
                     </CargoArea>
-            
-                <SeeButton>
+            {data.statusAnuncio ?
+                <OpenButton>
                     <Text>Ver Vaga</Text>
-                </SeeButton>
+                </OpenButton>
+                :
+                <ClosedButton>
+                    <TextWhite>Anúncio encerrado</TextWhite>
+                </ClosedButton>
+            }
+
 
                 <DataPost>{data.dataPostagem}</DataPost>
             </InfoArea>

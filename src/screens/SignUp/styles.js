@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components/native';
 
 export const Container = styled.SafeAreaView`
@@ -43,4 +42,7 @@ export const SignMessageButtonTextBold = styled.Text`
     color: #268596;
     font-weight: bold;
     margin-left: 5px;
+`;
+
+export const LoadingIcon = styled.ActivityIndicator`
 `;

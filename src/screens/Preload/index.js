@@ -18,8 +18,8 @@ export default ()=>{
             const token = await AsyncStorage.getItem('token');
             if(token) {
                 //validar o token
-            //    let res = await Api.checkToken(token);
-            //     if(res.token){
+                    //let res = await Api.checkToken(token);
+                //if(res.token){
 
                     // await AsyncStorage.setItem('token', json.token);
 
