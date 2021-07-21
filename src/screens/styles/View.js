@@ -41,11 +41,35 @@ export const DescriptionProfileArea = styled.View`
 
 export const DescriptionArea = styled.View`
     margin-top: 10px;
-
+    
     margin-left: 30px;
     margin-right: 30px;
     margin-bottom: 10px;
 
     border: 1px solid #63C2D1;
     border-radius: 10px;
+`;
+
+export const InvisibleDescriptionArea = styled.View`
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+`;
+
+
+export const InvisibleSmallDescriptionArea = styled.View`
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+`;
+
+export const EntreEspacos = styled.View`
+    margin-bottom: 10px;
+`;
+
+export const EntreEspacosGrande = styled.View`
+    margin-bottom: 10px;
 `;

@@ -12,17 +12,16 @@ import { Container, Scroller, LoadingIcon } from '../styles/Basic';
 
 import { BackgroundImageProfile } from '../styles/Image';
 
-import { PageBodyProfile, InfoProfileArea, Linha, DescriptionProfileArea, DescriptionArea } from '../styles/View';
+import { PageBodyProfile, Linha, DescriptionProfileArea, DescriptionArea } from '../styles/View';
 
-import { ProfileAvatar, ProfileAvatarDefault } from '../styles/Image';
-
-import { TitleNameProfile, Title, Text, TextBold } from '../styles/Text';
+import { Title, Text, TextBold } from '../styles/Text';
 
 import { BackButtom } from '../styles/Button';
 
 //Styles END ###########################################################
 
 import Api from '../../Api';
+import InfoTopProfile from '../../components/InfoTopProfile';
 
 export default () => {
 
@@ -31,7 +30,7 @@ export default () => {
 
     const [empresaInfo, setEmpresaInfo] = useState({
         id: route.params.empresaId,
-        nomeFantasia: route.params.nomeEmpresa,
+        nome: route.params.nomeEmpresa,
         email: route.params.email,
         celular: route.params.celular,
         telefone: route.params.telefone,
@@ -64,17 +63,7 @@ export default () => {
                 <BackgroundImageProfile />      
                 <PageBodyProfile>
 
-                    <InfoProfileArea>
-                        {empresaInfo.imagee ?
-                            <ProfileAvatar source={{uri: empresaInfo.image}} />
-                            :
-                            <ProfileAvatarDefault/>
-                        }
-                         <TitleNameProfile>{empresaInfo.nomeFantasia}</TitleNameProfile>
-                    
-                    </InfoProfileArea>
-
-                    <Linha />
+                <InfoTopProfile nome={empresaInfo.nome} email={empresaInfo.email} image={''} />
                    
 
                     {loading &&
@@ -82,9 +71,9 @@ export default () => {
                     }
 
                     <DescriptionProfileArea>
-                        <Title>Sobre nós</Title>
+                        <TextBold>Sobre nós</TextBold>
                         <Text>{empresaInfo.descricao}</Text>
-
+                        <Linha/>
                         <TextBold>Data de fundação: <Text>{empresaInfo.dataFundacao}</Text></TextBold>
                     </DescriptionProfileArea>
 

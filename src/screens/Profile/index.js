@@ -5,30 +5,35 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { } from './styles';
 
-import { BackgroundImageProfile, ProfileAvatar, ProfileAvatarDefault } from '../styles/Image';
+import { BackgroundImageProfile } from '../styles/Image';
 
-import { Container, Scroller, LoadingIcon } from '../styles/Basic';
+import { Container, Scroller, LoadingIconBasic } from '../styles/Basic';
     
-import { PageBodyProfile, InfoProfileArea, EmailProfileArea, Linha } from '../styles/View';
+import { PageBodyProfile, Linha } from '../styles/View';
 
-import { TextBold, TitleNameProfile, ExitButtonProfileText, ButtonWhiteText } from '../styles/Text';
+import { ExitButtonProfileText, ButtonWhiteText, Text } from '../styles/Text';
 
-import { ExitButtonProfile, SimpleButton, PdfButton, PerfilButton } from '../styles/Button'
+import { ExitButtonProfile, PdfButton, PerfilButton } from '../styles/Button';
 
 //Styles END ###########################################################
 
 
 import Api from '../../Api';
 
+import LockIcon from '../../assets/lock.svg';
+import PersonIcon from '../../assets/person.svg';
+import EmailIcon from '../../assets/email.svg';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import { RefreshControl } from 'react-native';
+import InfoTopProfile from '../../components/InfoTopProfile';
 
 export default () => {
 
     const navigation = useNavigation();
     const route = useRoute();
 
-    const [usuarioInfo, setUsuarioInfo] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
@@ -42,7 +47,7 @@ export default () => {
         setLoading(true)
         let json = await Api.getPerfilUsuario();
         if(json){
-            setUsuarioInfo(json);
+            setUserInfo(json);
         } else {
             alert("Erro: "+json.error);
         }
@@ -55,6 +60,45 @@ export default () => {
         getPerfilUsuario();
     }
 
+    const handlChangePassword = () =>{
+        navigation.navigate('ProfileUpdatePassword', {
+            nome: userInfo.nome,
+            email: userInfo.email,
+        })
+    }
+
+    const handlChangeEmail = () =>{
+        navigation.navigate('ProfileUpdateEmail', {
+            nome: userInfo.nome,
+            email: userInfo.email
+        })
+    }
+
+    const handleChangePerfil = () =>{
+        navigation.navigate('ProfileUpdate', {
+            nome: userInfo.nome,
+            email: userInfo.email,
+            
+            dataNascimento: userInfo.dataNascimento,
+    
+            celular: userInfo.celular,
+            telefone: userInfo.telefone,
+    
+            status: userInfo.status,
+            dataCriacaoPerfil: userInfo.dataCriacaoPerfil,
+    
+            formacao: userInfo.formacao,
+            experiencia: userInfo.experiencia,
+    
+            cep: userInfo.cep,
+            logradouro: userInfo.logradouro,
+            complemento: userInfo.complemento,
+            bairro: userInfo.bairro,
+            localidade: userInfo.localidade,
+            uf: userInfo.uf,
+            numero: userInfo.numero,
+        })
+    }
 
     const handleLogoutClick = async () =>{
         //await Api.logout();
@@ -73,41 +117,31 @@ export default () => {
 
                 <PageBodyProfile>
 
-                    <InfoProfileArea>
-                        {usuarioInfo.imagee ?
-                            <ProfileAvatar source={{uri: usuarioInfo.image}} />
-                            :
-                            <ProfileAvatarDefault/>
-                        }
-                         <TitleNameProfile>{usuarioInfo.nome}</TitleNameProfile>
-                    </InfoProfileArea>
-             
-                    <EmailProfileArea>
-                        <TextBold>{usuarioInfo.email}</TextBold>
-                    </EmailProfileArea>
-
-                    <Linha/>
+                <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
 
                     {loading &&
-                        <LoadingIcon size="large" color="#000000" />
+                        <LoadingIconBasic size="large" color="#000000" />
                     }
 
-                    <PerfilButton>
-                        <ButtonWhiteText>Atualizar perfil</ButtonWhiteText>
+                    <PerfilButton onPress={() => handleChangePerfil()}>
+                        <PersonIcon width="24" height="24" fill="#268596" />
+                        <Text>Atualizar perfil</Text>
                     </PerfilButton>
 
-                    <PerfilButton>
-                        <ButtonWhiteText>Alterar e-mail</ButtonWhiteText>
+                    <PerfilButton onPress={()=>handlChangeEmail()}>
+                        <EmailIcon width="24" height="24" fill="#268596" />
+                        <Text>Alterar e-mail</Text>
                     </PerfilButton>
 
-                    <PerfilButton>
-                        <ButtonWhiteText>Alterar senha</ButtonWhiteText>
+                    <PerfilButton onPress={()=>handlChangePassword()}>
+                        <LockIcon width="24" height="24" fill="#268596" />
+                        <Text>Alterar senha</Text>
                     </PerfilButton>
 
                     <Linha/>
 
                     <PdfButton>
-                        <ButtonWhiteText>Enviar um currículo em PDF</ButtonWhiteText>
+                        <ButtonWhiteText>Visualizar o currículo</ButtonWhiteText>
                     </PdfButton>
 
                     <Linha/>

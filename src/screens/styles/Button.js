@@ -48,7 +48,7 @@ export const SimpleButton = styled.TouchableOpacity`
 `;
 
 export const PerfilButton = styled.TouchableOpacity`
-    background-color: #4EADBE;
+    background-color: #FFF;
     border-radius: 10px;
 
     height: 50px;
@@ -56,8 +56,13 @@ export const PerfilButton = styled.TouchableOpacity`
     margin-right: 30px;
     margin-bottom: 10px;
     margin-top: 10px;
-    justify-content: center;
+
     align-items: center;
+
+    border: 1px solid #63C2D1;
+    
+    flex-direction: row;
+    padding-left: 15px;
 `;
 
 
@@ -70,6 +75,17 @@ export const PdfButton = styled.TouchableOpacity`
     margin-right: 30px;
     margin-bottom: 20px;
     margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const DangerButton = styled.TouchableOpacity`
+    background-color: #E27D60;
+    border-radius: 10px;
+    padding: 10px 15px;
+    height: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
     justify-content: center;
     align-items: center;
 `;

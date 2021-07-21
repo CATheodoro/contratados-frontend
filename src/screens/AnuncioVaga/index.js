@@ -17,7 +17,7 @@ import { BackgroundImageOpen, BackgroundImageClosed, EmpresaAnuncioAvatarDefault
 
 import { ButtonWhiteText, SubTitle, Text, TextBold, Title } from '../styles/Text';
 
-import { DescriptionArea } from '../styles/View';
+import { DescriptionArea, EntreEspacos, Linha } from '../styles/View';
 
 import { CirculateButton, BackButtom, SimpleButton } from '../styles/Button'; 
 
@@ -32,6 +32,7 @@ export default () => {
 
     const [userInfo, setUserInfo] = useState({
         id: route.params.id,
+        titulo: route.params.titulo,
         statusAnuncio: route.params.statusAnuncio,
         image: route.params.image,
         nomeEmpresa: route.params.nomeEmpresa,
@@ -81,6 +82,7 @@ export default () => {
 
     return (
         <Container>
+            
             <Scroller>
                 {userInfo.statusAnuncio ?
                     <BackgroundImageOpen />      
@@ -103,10 +105,10 @@ export default () => {
                             <FavoriteFullIcon  width="24" height="24" fill="#63C2D1" />
                         </CirculateButton>
                     </UserInfoArea>
-
-                    {loading &&
-                        <LoadingIcon size="large" color="#63C2D1" />
-                    }
+                    
+                    <SubTitle>{userInfo.titulo}</SubTitle>
+                    <Linha/>
+                    <EntreEspacos/>
 
                     <DescriptionArea>
                         <TextBold>Descrição da vaga</TextBold>
@@ -124,12 +126,18 @@ export default () => {
                         }
                     </DescriptionArea>
 
+                    {loading &&
+                        <LoadingIcon size="large" color="#63C2D1" />
+                    }
+
                     <SubTitle>Localização</SubTitle>
                     <DescriptionArea>
                         <TextBold>Cidade: <Text>{userInfo.localidade}</Text></TextBold> 
                         <TextBold>Estado: <Text>{userInfo.uf}</Text></TextBold>
                         <TextBold>Rua: <Text>{userInfo.logradouro}</Text></TextBold>
-                        <TextBold>Número: <Text>{userInfo.numero}</Text></TextBold>
+                        {userInfo.complemento &&
+                            <TextBold>Número: <Text>{userInfo.numero}</Text></TextBold>
+                        }
                         {userInfo.complemento &&
                             <TextBold>Complemento: <Text>{userInfo.complemento}</Text></TextBold>
                         }
@@ -144,7 +152,9 @@ export default () => {
                                 <CargoItem key={key}>
                                     <CargoInfo>
                                         <CargoName>{item.cargo}</CargoName>
-                                        <CargoSetor>Setor: {item.setor}</CargoSetor>
+                                        {item.cargo &&
+                                            <CargoSetor>Setor: {item.setor}</CargoSetor>
+                                        }
                                     </CargoInfo>
                                 </CargoItem>
                             ))}

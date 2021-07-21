@@ -92,7 +92,7 @@ export default ()=>{
                     placeholder="Digite seu E-mail"
                     value={emailField}
                     onChangeText={t=>setEmailField(t)}
-                
+                    keyboardType = 'email-address'
                 />
 
                 <SignInput 
