@@ -8,6 +8,14 @@ export const TextBold = styled.Text`
     margin-left: 20px;
 `;
 
+export const BigTextBold = styled.Text`
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-left: 20px;
+`;
+
+
 export const SubTitle = styled.Text`
     font-size: 18px;
     font-weight: bold;

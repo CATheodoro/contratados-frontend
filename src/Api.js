@@ -61,6 +61,37 @@ export default {
         return json;
     },
 
+    
+    getSolicitacoes: async (page, status) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/solicitacao?page=${page}&status=${status}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    getSolicitacao: async (id) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/solicitacao/${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+
     getVaga: async (id) => {
         const token = await AsyncStorage.getItem('token');
         
@@ -76,7 +107,7 @@ export default {
         return json;
     },
 
-    sendSoliciacao: async (id) =>{
+    sendSoliciacao: async (anuncioVagaId) =>{
         const token = await AsyncStorage.getItem('token');
 
         const req = await fetch(`${BASE_API}/solicitacao`, {
@@ -86,11 +117,28 @@ export default {
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({anuncioVagaId: id})
+            body: JSON.stringify({anuncioVagaId})
         });
         const json = await req.json();
         return json;
     },
+
+    usuarioSoliciacao: async (solicitacaoUsuarioStatus, id) =>{
+        const token = await AsyncStorage.getItem('token');
+
+        const req = await fetch(`${BASE_API}/solicitacao/usuario/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({solicitacaoUsuarioStatus})
+        });
+        const json = await req.json();
+        return json;
+    },
+
 
     getPerfilEmpresa: async (id='0') => {
         const token = await AsyncStorage.getItem('token');

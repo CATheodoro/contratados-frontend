@@ -47,6 +47,19 @@ export const SimpleButton = styled.TouchableOpacity`
     align-items: center;
 `;
 
+
+export const SimpleButtonRed = styled.TouchableOpacity`
+    background-color: #E27D60;
+    border-radius: 10px;
+    padding: 10px 15px;
+
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    align-items: center;
+`;
+
 export const PerfilButton = styled.TouchableOpacity`
     background-color: #FFF;
     border-radius: 10px;
