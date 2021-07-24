@@ -9,9 +9,9 @@ import { BackgroundImageProfile } from '../../styles/Image';
 
 import { Container, Scroller, LoadingIconBasic } from '../../styles/Basic';
     
-import { PageBodyProfile, Linha } from '../../styles/View';
+import { PageBodyProfile, Linha, EntreEspacosGrande } from '../../styles/View';
 
-import { ExitButtonProfileText, ButtonWhiteText, Text } from '../../styles/Text';
+import { ExitButtonProfileText, ButtonWhiteText, Text, TextOrange, TextGreen } from '../../styles/Text';
 
 import { ExitButtonProfile, PdfButton, PerfilButton } from '../../styles/Button';
 
@@ -29,6 +29,8 @@ import { RefreshControl } from 'react-native';
 import InfoTopProfile from '../../../components/InfoTopProfile';
 
 import * as OpenAnyThing from 'react-native-openanything';
+
+import StatusModal from '../../../components/StatusModal';
 
 export default () => {
 
@@ -64,15 +66,17 @@ export default () => {
     }
 
     const handlChange = typeString =>{
+        getPerfilUsuario();
         navigation.navigate('ProfileUpdateEmailPassword', {
             nome: userInfo.nome,
             email: userInfo.email,
             type: typeString
-        })
+        });
     }
     
     const handleChangePerfil = () =>{
-        navigation.navigate('ProfileUpdateEmailPassword', {
+        getPerfilUsuario();
+        navigation.navigate('ProfileUsuarioUpdate', {
             nome: userInfo.nome,
             email: userInfo.email,
             
@@ -94,15 +98,21 @@ export default () => {
             localidade: userInfo.localidade,
             uf: userInfo.uf,
             numero: userInfo.numero,
-        })
+        });
     }
 
+    const [showModal, setShowModal] = useState(false);
+
     const handleLogoutClick = async () =>{
-        //await Api.logout();
-        await AsyncStorage.clear(); //Retirar para testes
+        await AsyncStorage.clear();
         navigation.reset({
             routes:[{name: 'SignIn'}]
         });
+    }
+
+    const handleChangeStatus = () =>{
+        getPerfilUsuario();
+        setShowModal(true);
     }
 
     return (
@@ -110,15 +120,31 @@ export default () => {
             <Scroller refreshControl ={
                 <RefreshControl refreshing={refreshing} onRefresh={refresh} />
             }>
-                    <BackgroundImageProfile />      
+                <BackgroundImageProfile />      
 
                 <PageBodyProfile>
 
-                <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
+                    <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
 
                     {loading &&
                         <LoadingIconBasic size="large" color="#000000" />
                     }
+
+                    <EntreEspacosGrande/>
+
+                    <PerfilButton onPress={() => handleChangeStatus()}>
+                        <PersonIcon width="24" height="24" fill="#268596" />
+                        <Text>Definir status</Text>
+                        {userInfo.status =='DISPONIVEL' ?
+                            <TextGreen>Disponível</TextGreen>
+                            :
+                            <TextOrange>Indisponível</TextOrange>
+                        }
+                    </PerfilButton>
+
+                    <EntreEspacosGrande/>
+
+                    <Linha/>
 
                     <PerfilButton onPress={() => handleChangePerfil()}>
                         <PersonIcon width="24" height="24" fill="#268596" />
@@ -149,6 +175,11 @@ export default () => {
 
                 </PageBodyProfile>
 
+                <StatusModal 
+                    show={showModal}
+                    setShow={setShowModal}
+                    status={userInfo.status}
+                />
 
             </Scroller>
 

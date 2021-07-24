@@ -31,6 +31,20 @@ export const Text = styled.Text`
     margin-left: 20px;
 `;
 
+export const TextOrange = styled.Text`
+    font-size: 14px;
+    font-weight: bold;
+    color: #FF851B;
+    margin-left: 20px;
+`;
+
+export const TextGreen = styled.Text`
+    font-size: 14px;
+    font-weight: bold;
+    color: #2ECC40;
+    margin-left: 20px;
+`;
+
 export const TitleNameProfile = styled.Text`
     margin-top: 10px;
     color: #000000;

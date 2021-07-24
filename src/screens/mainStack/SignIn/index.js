@@ -41,9 +41,10 @@ export default ()=>{
 
             if(json.token){
                 await AsyncStorage.setItem('token', json.token);
+                await AsyncStorage.setItem('perfil', json.perfil);
+                await AsyncStorage.setItem('id', json.id);
 
                 if(json.perfil === 'USUARIO'){
-                    alert('É um usuário')
 
                     navigation.reset({
                         routes: [{name: 'MainTab'}]
@@ -51,7 +52,9 @@ export default ()=>{
                 }
 
                 if(json.perfil === 'EMPRESA'){
-                    alert('É uma empresa')
+                    navigation.reset({
+                        routes: [{name: 'MainTab'}]
+                    });
                 }
 
             } else{

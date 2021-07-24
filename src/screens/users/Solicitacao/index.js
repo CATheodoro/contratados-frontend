@@ -118,6 +118,8 @@ export default () => {
                     <PerfilButton onPress={() => handleClick()}>
                         <Text>Ver anúncio</Text>
                     </PerfilButton>
+                    <EntreEspacos />
+                    <Linha />
 
                     {loading &&
                         <LoadingIcon size="large" color="#63C2D1" />
@@ -128,6 +130,15 @@ export default () => {
                         <TextBold>Empresa: <Text>{solicitacaoInfo.solicitacaoEmpresaStatus}</Text></TextBold>
                         <TextBold>Usuario: <Text>{solicitacaoInfo.solicitacaoUsuarioStatus}</Text></TextBold>
                     </DescriptionArea>
+
+                    {solicitacaoInfo.descricao &&
+                        <>
+                            <SubTitle>Descrição da entrevista</SubTitle>
+                            <DescriptionArea>
+                                <TextBold>Data: <Text>{solicitacaoInfo.descricao}</Text></TextBold>
+                            </DescriptionArea>
+                        </>
+                    }
 
                     {solicitacaoInfo.cep &&
                         <>
@@ -146,25 +157,16 @@ export default () => {
                         </>
                     }
 
-
-
-                    {solicitacaoInfo.setorCargoResponses &&
-                        <DescriptionArea>
-                            <Title>Lista de cargos</Title>
-                            {
-                            solicitacaoInfo.setorCargoResponses.map((item, key) => (
-                                <CargoItem key={key}>
-                                    <CargoInfo>
-                                        <CargoName>{item.cargo}</CargoName>
-                                        {item.cargo &&
-                                            <CargoSetor>Setor: {item.setor}</CargoSetor>
-                                        }
-                                    </CargoInfo>
-                                </CargoItem>
-                            ))}
-
-                        </DescriptionArea>
+                    {solicitacaoInfo.horaEntrevista &&
+                        <>
+                            <SubTitle>Horário para a entrevista</SubTitle>
+                            <DescriptionArea>
+                                <TextBold>Data: <Text>{solicitacaoInfo.dataEntrevista}</Text></TextBold>
+                                <TextBold>Hora: <Text>{solicitacaoInfo.horaEntrevista}</Text></TextBold>
+                            </DescriptionArea>
+                        </>
                     }
+
                     {solicitacaoInfo.solicitacaoEmpresaStatus === 'ACEITO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'ACEITO'?
                         <>
                             <SimpleButton onPress={() => handleCargoChoose(solicitacaoInfo, "Deseja aceitar data de entrevista proposta ? " + solicitacaoInfo.nomeEmpresa, "aceitar")}>

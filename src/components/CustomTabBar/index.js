@@ -11,30 +11,7 @@ import FavoriteIcon from '../../assets/favorite.svg';
 import AccountIcon from '../../assets/account.svg';
 
 
-const TabArea = styled.View`
-    height: 60px;
-    background-color: #4EADBE;
-    flex-direction: row;
-`;
-const TabItem = styled.TouchableOpacity`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-`;
-const TabItemCenter = styled.TouchableOpacity`
-    width: 60px;
-    height: 60px;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFF;
-    border-radius: 30px;
-    border: 3px solid #4EADBE;
-`;
-const AvatarIcon = styled.Image`
-    width: 28px;
-    height: 28px;
-    border-radius: 14px;
-`;
+import { TabArea, TabItem, TabItemCenter, AvatarIcon } from './styles';
 
 export default ({ state, navigation }) => {
     const { state:user } = useContext(UserContext);
@@ -61,7 +38,7 @@ export default ({ state, navigation }) => {
 
             <TabItem onPress={()=>goTo('Solicitacoes')}>
                 <FavoriteIcon style={{opacity: state.index===3? 1 : 0.5}} width="28" height="28" fill="#FFFFFF" />
-                <Text style={{color:"#FFFFFF", opacity: state.index===3? 1 : 0.5}} >Aceitos</Text>
+                <Text style={{color:"#FFFFFF", opacity: state.index===3? 1 : 0.5}} >Solicitações</Text>
             </TabItem>
             
             <TabItem onPress={()=>goTo('Profile')}>

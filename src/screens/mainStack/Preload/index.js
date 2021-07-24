@@ -16,28 +16,22 @@ export default ()=>{
     useEffect(()  => {
         const checkToken = async () => {
             const token = await AsyncStorage.getItem('token');
+            const perfil = await AsyncStorage.getItem('perfil');
+            
+            
             if(token) {
-                //validar o token
-                    //let res = await Api.checkToken(token);
-                //if(res.token){
 
-                    // await AsyncStorage.setItem('token', json.token);
-
-                    // userDispatch({
-                    //     type: 'setAvatar',
-                    //     payload:{
-                    //         avatar: json.data.avatar
-                    //     }
-                    // });
-
+                if(perfil==='USUARIO'){
                     navigation.reset({
                         routes: [{name: 'MainTab'}]
                     });
-    
-                // } else {
-                //     navigation.navigate('SignIn');
-                // }
+                } else {
+                    navigation.reset({
+                        routes: [{name: 'MainTab'}]
+                    });
+                }
 
+    
             } else {
                 navigation.navigate('SignIn');
             }

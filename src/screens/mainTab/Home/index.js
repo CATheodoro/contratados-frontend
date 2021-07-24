@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Platform, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage'; 
 
 import Api from '../../../Api'
 
@@ -21,7 +22,9 @@ import {
 import VagaItem from '../../../components/VagaItem';
 
 import SearchIcon from '../../../assets/search.svg';
-import { Linha } from '../../styles/View';
+import { EntreEspacosGrande, Linha } from '../../styles/View';
+import { PerfilButton } from '../../styles/Button';
+import { Text } from '../../styles/Text';
 
 export default () => {
 
@@ -31,9 +34,17 @@ export default () => {
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
+    const [perfil, setPerfil] = useState('');
+    const [perfilId, setPerfilId] = useState('');
+
+    const getPerfil = async () => {
+        setPerfil(await AsyncStorage.getItem('perfil'));
+        setPerfilId(await AsyncStorage.getItem('id'))
+    }
+
     const getVagas = async () => {
         setLoading(true);
- 
+
         let res = await Api.getVagas();
 
         if(res.content) {
@@ -45,12 +56,19 @@ export default () => {
     }
 
     useEffect(()=>{
+        getPerfil();
         getVagas();
     }, []);
 
     const refresh = () =>{
         setRefreshing(false);
         getVagas();
+    }
+
+    const handleClick = () =>{
+        navigation.navigate('CreateAnuncioVaga',{
+            empresaId: perfilId
+        });
     }
 
     return (
@@ -60,12 +78,29 @@ export default () => {
             }>
                 
                 <HeaderArea>
-                    <HeaderTitle >Pronto para encontrar um novo emprego ?</HeaderTitle>
+                    
+                    {perfil==='USUARIO' ?
+                        <HeaderTitle >Pronto para encontrar um novo emprego ?</HeaderTitle>
+                        :
+                        <HeaderTitle >Pronto para encontrar o funcionário ideal ?</HeaderTitle>
+                    }
                     <SearchButtom onPress={()=>navigation.navigate('Search')}>
                         <SearchIcon width="26" height="26" fill="#63C2D1"/>
                     </SearchButtom>
                 </HeaderArea>
                 <Linha/>
+
+                {perfil==='EMPRESA' && 
+                    <>
+                        <EntreEspacosGrande/>
+                        <PerfilButton onPress={() => handleClick()}>
+                            <Text>Criar um novo anúncio</Text>
+                        </PerfilButton>
+                        <EntreEspacosGrande/>
+                        <Linha/>
+                    </>
+                }
+                
                 {loading &&
                     <LoadingIcon size="large" color="#63C2D1" />
                 }

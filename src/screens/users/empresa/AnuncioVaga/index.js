@@ -24,6 +24,7 @@ import { CirculateButton, BackButtom, SimpleButton } from '../../../styles/Butto
 //Styles END ###########################################################
 
 import Api from '../../../../Api';
+import { EntreEspacosGrande } from '../CreateAnuncioVaga/styles';
 
 export default () => {
 
@@ -119,8 +120,19 @@ export default () => {
 
                     <DescriptionArea>
                         <TextBold>Descrição da vaga</TextBold>
-                        <Text>{userInfo.requisitos}</Text>
+                        <Text>{userInfo.descricao}</Text>
+                
+                        <TextBold>Requisitos: <Text>{userInfo.requisitos}</Text></TextBold>
+                        <EntreEspacos/>
+                        {userInfo.cargaHoraria &&
+                            <TextBold>Carga horária: <Text>{userInfo.cargaHoraria}</Text></TextBold>
+                        }
+                        <EntreEspacos/>
+                        {userInfo.salario &&
+                            <TextBold>Salário: <Text>{userInfo.salario}</Text></TextBold>
+                        }
                     </DescriptionArea>
+                    
 
                     <SubTitle>Contatos</SubTitle>
                     <DescriptionArea>

@@ -16,6 +16,7 @@ import ProfileExperienciaFormacao from '../screens/users/usuario/ProfileExperien
 import ProfileUsuarioUpdateExperienciaFormacao from '../screens/users/usuario/ProfileUsuarioUpdateExperienciaFormacao';
 
 import Solicitacao from '../screens/users/Solicitacao';
+import CreateAnuncioVaga from '../screens/users/empresa/CreateAnuncioVaga'
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,8 @@ export default () =>(
         <Stack.Screen name="ProfileUsuarioUpdateExperienciaFormacao" component={ProfileUsuarioUpdateExperienciaFormacao} />
 
         <Stack.Screen name="Solicitacao" component={Solicitacao} />
+        <Stack.Screen name="CreateAnuncioVaga" component={CreateAnuncioVaga} />
+        
         
     </Stack.Navigator>
 );

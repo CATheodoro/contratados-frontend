@@ -30,7 +30,7 @@ import InfoTopProfile from '../../../../components/InfoTopProfile';
 
 
 
-import DatePicker from '@react-native-community/datetimepicker';
+import TimePiker from '@react-native-community/datetimepicker';
 
 export default () => {
 
@@ -38,28 +38,8 @@ export default () => {
     const route = useRoute();
 
     const [userInfo, setUserInfo] = useState({
+        id: route.params.empresaId,
         nome: route.params.nome,
-        email: route.params.email,
-        
-        dataNascimento: route.params.dataNascimento,
-
-        celular: route.params.celular,
-        telefone: route.params.telefone,
-
-        status: route.params.status,
-        dataCriacaoPerfil: route.params.dataCriacaoPerfil,
-
-        formacao: route.params.formacao,
-        experiencia: route.params.experiencia,
-
-        cep: route.params.cep,
-        logradouro: route.params.logradouro,
-        complemento: route.params.complemento,
-        bairro: route.params.bairro,
-        localidade: route.params.localidade,
-        uf: route.params.uf,
-        numero: route.params.numero,
-
     });
 
     const [loading, setLoading] = useState(false);
@@ -67,31 +47,34 @@ export default () => {
 
     const [viaCep, setViaCep] = useState({})
 
-    const [nomeField, setNomeField] = useState(userInfo.nome);
-    const [dataNascimentoField, setDataNascimentoField] = useState(userInfo.dataNascimento !== null ? new Date(userInfo.dataNascimento) : new Date());
-    const [celularField, setCelularField] = useState(userInfo.celular);
-    const [telefoneField, setTelefoneField] = useState(userInfo.telefone);
-    const [statusField, setStatusField] = useState(userInfo.status);
+    const [tituloField, setTituloField] = useState('');
+    const [requisitoField, setRequisitoField] = useState('');
+    const [descricaoField, setDescricaoField] = useState('');
+
     const [enderecoCepField, setEnderecoCepField] = useState(userInfo.cep);
     const [complementoField, setComplementoField] = useState(userInfo.complemento);
     const [numeroField, setNumeroField] = useState(userInfo.numero);
 
+    const [cargaHoraria, setCargaHoraria] = useState(new Date());
+    const [salarioField, setSalarioField] = useState(userInfo.numero);
+
     const handleChangeClick = async () => {
         setLoading(true);
 
-            let res = await Api.updateUsuario(
-                nomeField, 
-                dataNascimentoField, 
-                celularField, 
-                telefoneField, 
-                statusField, 
+            let res = await Api.postVaga(
+                tituloField, 
+                requisitoField,
+                descricaoField,
                 enderecoCepField, 
                 complementoField, 
-                numeroField);
+                numeroField, 
+                cargaHoraria.toLocaleTimeString(), 
+                salarioField
+                );
 
              if(res.id) {
 
-                 alert("Dados do perfil alterados com sucesso !!!");
+                 alert("Anúncio cadastrado com sucesso !!!");
                  navigation.goBack();
             
             } else {
@@ -125,10 +108,11 @@ export default () => {
             }
         }
 
-        const getPerfilUsuario = async () =>{
+        
+        const getPerfilEmpresa = async () =>{
             setLoading(true);
             getCep();
-            let json = await Api.getPerfilUsuario();
+            let json = await Api.getPerfilEmpresa(userInfo.id);
             if(json){
                 setUserInfo(json);
             } else {
@@ -148,35 +132,17 @@ export default () => {
         }
 
         useEffect(()=>{
-            getPerfilUsuario();
+            getPerfilEmpresa();
         },[]);
 
         const handleBackButton = () => {
             navigation.goBack();
         }
 
-        const handleExperiencia = () => {
-            navigation.navigate('ProfileExperienciaFormacao', {
-                nome: userInfo.nome,
-                email: userInfo.email,
-                experiencia: userInfo.experiencia,
-                formacao: ''
-            });
-        }
-
-        const handlFormacao = () => {
-            navigation.navigate('ProfileExperienciaFormacao', {
-                nome: userInfo.nome,
-                email: userInfo.email,
-                experiencia: '',
-                formacao: userInfo.formacao,
-            });
-        }
-
         const onChange = (event, selectedDate) => {
             const currentDate = selectedDate || dataNascimentoField;
             setShow(Platform.OS === 'ios');
-            setDataNascimentoField(currentDate);
+            setCargaHoraria(currentDate);
           };
         
         const [show, setShow] = useState(false);
@@ -198,91 +164,43 @@ export default () => {
 
                 <EntreEspacosGrande/>
 
-                    <PerfilButton onPress={() => handleExperiencia()}>
-                        <PersonIcon width="24" height="24" fill="#268596" />
-                        <Text>Alterar experiências</Text>
-                    </PerfilButton>
-
-                    <PerfilButton onPress={()=>handlFormacao()}>
-                        <EmailIcon width="24" height="24" fill="#268596" />
-                        <Text>Alterar formações</Text>
-                    </PerfilButton>
-
-                    <PdfButton>
-                        <ButtonWhiteText>Enviar um currículo em PDF</ButtonWhiteText>
-                    </PdfButton>
-
-                    <EntreEspacosGrande/>
-
-                    <Linha/>
-
-
-                    <Title>Atualizar perfil</Title>
+                    <Title>Deseja criar um novo anúncio ?</Title>
                     <DescriptionArea>
-                        
 
                         <EntreEspacos/>
 
-                        <Title>Informações pessoais</Title>
+                        <Title>Informações obrigatórias</Title>
                         <InvisibleDescriptionArea>
-                            <Text>Alterar Nome</Text>
+                            <Text>Título do anúncio</Text>
                             <SignInput 
                                 IconSvg={PersonIcon}
-                                placeholder="Nome"
-                                value={nomeField}
-                                onChangeText={t=>setNomeField(t)}
+                                placeholder="Título"
+                                value={tituloField}
+                                onChangeText={t=>setTituloField(t)}
                                 password = {false}
                             />
 
-                            
-                            <Text>Alterar data de nascimento</Text>
-                            <InputButtonArea onPress={showMode}>
-                                    <TodayIcon width="24" height="24" fill="#268596" />
-                                    <InputButtonText>{dataNascimentoField.toLocaleDateString("pt-BR")}</InputButtonText>
-                            </InputButtonArea>
+                            <Text>Requisitos para a vaga</Text>
+                            <SignInput 
+                                IconSvg={PersonIcon}
+                                placeholder="Requisitos"
+                                value={requisitoField}
+                                onChangeText={t=>setRequisitoField(t)}
+                                password = {false}
+                            />
 
-                            {show && (
-                                <DatePicker
-                                value={dataNascimentoField}
-                                mode='date'
-                                onChange={onChange}
-                                />
-                            )}
+                            <Text>Descrição da vaga</Text>
+                            <SignInput 
+                                IconSvg={PersonIcon}
+                                placeholder="Descrição"
+                                value={descricaoField}
+                                onChangeText={t=>setDescricaoField(t)}
+                                password = {false}
+                            />
 
-                        </InvisibleDescriptionArea>
 
-
-                        <LinhaCentral/>
-                        
+                            <Title>Localização</Title>
                     
-                        <Title>Contatos</Title>
-                        <InvisibleDescriptionArea>
-                            <Text>Alterar número de celular</Text>
-                            <SignInput 
-                                IconSvg={EmailIcon}
-                                placeholder="Número do celular"
-                                value={celularField}
-                                onChangeText={t=>setCelularField(t)}
-                                password = {false}
-                                keyboardType = 'number-pad'
-                            />
-
-                            <Text>Alterar número de telefone</Text>
-                            <SignInput 
-                                IconSvg={EmailIcon}
-                                placeholder="Número do telefone"
-                                value={telefoneField}
-                                onChangeText={t=>setTelefoneField(t)}
-                                password = {false}
-                                keyboardType = 'number-pad'
-                            />
-                        </InvisibleDescriptionArea>
-
-                        <LinhaCentral/>
-
-                        <Title>Localização</Title>
-                        <InvisibleDescriptionArea>
-                        
                             <Text>Alterar CEP</Text>
                             <SignInput 
                                 IconSvg={EmailIcon}
@@ -295,8 +213,7 @@ export default () => {
                             />
 
                             {loadingCep &&
-                                <LoadingIconBasic size="large" color="#63C2D1" />
-                                
+                                <LoadingIconBasic size="large" color="#63C2D1" />                                
                             }
 
                             {viaCep.cep &&
@@ -314,8 +231,7 @@ export default () => {
                                         placeholder="Complemento"
                                         value={complementoField}
                                         onChangeText={t=>setComplementoField(t)}
-                                        password = {false}
-                                        
+                                        password = {false}                                    
                                     />
 
                                     <Text>Alterar número</Text>
@@ -330,7 +246,39 @@ export default () => {
                                 </>
                             }
 
-                            </InvisibleDescriptionArea>
+                        </InvisibleDescriptionArea>
+
+
+                        <LinhaCentral/>
+                        <Title>Informações opcionais</Title>
+                        <InvisibleDescriptionArea>
+                            <Text>Carga horária</Text>
+                                <InputButtonArea onPress={showMode}>
+                                        <TodayIcon width="24" height="24" fill="#268596" />
+                                        <InputButtonText>{cargaHoraria.toLocaleTimeString()}</InputButtonText>
+                                </InputButtonArea>
+
+                                {show && (
+                                    <TimePiker
+                                    value={cargaHoraria}
+                                    mode='time'
+                                    onChange={onChange}
+                                    />
+                                )}
+
+                            <Text>Salário</Text>
+                            <SignInput 
+                                IconSvg={EmailIcon}
+                                placeholder="Salário"
+                                value={salarioField}
+                                onChangeText={t=>setSalarioField(t)}
+                                password = {false}
+                                keyboardType = 'number-pad'
+                            />
+                        </InvisibleDescriptionArea>
+
+                        <LinhaCentral/>
+
 
                         <EntreEspacos/>
 
@@ -338,7 +286,7 @@ export default () => {
                             {loading ?
                                 <LoadingIconBasic size="large" color="#FFF" />
                                 :
-                                <CustomButtonText>ATUALIZAR</CustomButtonText>
+                                <CustomButtonText>CRIAR NOVO ANÚNCIO</CustomButtonText>
                             }
                         </CustomButton>
 

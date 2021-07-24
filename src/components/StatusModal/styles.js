@@ -47,24 +47,32 @@ export const UserName = styled.Text`
 `;
 
 export const ButtonArea = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 export const FinishButton = styled.TouchableOpacity`
-  background-color: #268596;
-  height: 60px;
-  width: 40%;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
+    background-color: #FFF;
+    height: 60px;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  
 `;
-export const FinishButtonText = styled.Text`
-  color: #ffffff;
+
+export const TextOrange = styled.Text`
   font-size: 17px;
   font-weight: bold;
+  color: #FF851B;
+
 `;
+
+export const TextGreen = styled.Text`
+  font-size: 17px;
+  font-weight: bold;
+  color: #2ECC40;
+
+`;
+
 
 export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 10px;
