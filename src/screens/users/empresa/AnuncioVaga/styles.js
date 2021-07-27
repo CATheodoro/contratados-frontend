@@ -13,29 +13,43 @@ export const UserInfoArea = styled.View`
     margin-top: -35px;
 `;
 
-export const UserInfoName = styled.Text`
+export const UserInfo = styled.View`
     flex: 1;
-    justify-content: flex-end;
+`;
+
+export const UserInfoName = styled.Text`
     margin-top: 35px;
     color: #000000;
     font-size: 18px;
     font-weight: bold;
 `;
 
-export const CargoItem = styled.View`
+export const SimpleButtonInfoArea = styled.TouchableOpacity`
+    background-color: #4EADBE;
+    border-radius: 10px;
+    padding: 10px 10px;
+
+    margin-right: 30px;
+
+    align-items: center;
+`;
+
+export const CargoItem = styled.View` 
     flex-direction: row;
     margin-left: 30px;
     margin-right: 30px;
     margin-bottom: 10px;
     border: 1px solid #63C2D1;
     border-radius: 10px;
+
+    justify-content: center;
+    align-items: center;
 `;
 
 export const CargoInfo = styled.View`
     flex: 1;
     margin-left: 15px;
     margin-right: 15px;
-
 `;
 
 export const CargoName = styled.Text`

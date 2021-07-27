@@ -13,14 +13,28 @@ export const UserInfoArea = styled.View`
     margin-top: -35px;
 `;
 
-export const UserInfoName = styled.Text`
+
+export const UserInfo = styled.View`
     flex: 1;
-    justify-content: flex-end;
+`;
+
+export const UserInfoName = styled.Text`
     margin-top: 35px;
     color: #000000;
     font-size: 18px;
     font-weight: bold;
 `;
+
+export const SimpleButtonInfoArea = styled.TouchableOpacity`
+    background-color: #4EADBE;
+    border-radius: 10px;
+    padding: 10px 10px;
+
+    margin-right: 30px;
+
+    align-items: center;
+`;
+
 
 export const CargoItem = styled.View`
     flex-direction: row;

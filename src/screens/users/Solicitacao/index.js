@@ -9,17 +9,17 @@ import FavoriteFullIcon from '../../../assets/favorite_full.svg'
 
 //Styles    ###########################################################
 
-import { PageBody, UserInfoArea, UserInfoName, CargoItem, CargoInfo, CargoName, CargoSetor } from './styles';
+import { PageBody, UserInfoArea, UserInfoName, UserInfo, SimpleButtonInfoArea } from './styles';
 
 import { Container, Scroller, LoadingIcon } from '../../styles/Basic';
 
 import { BackgroundImageOpen, BackgroundImageClosed, EmpresaAnuncioAvatarDefault, EmpresaAnuncioAvatar } from '../../styles/Image';
 
-import { BigTextBold, ButtonWhiteText, SubTitle, Text, TextBold, Title } from '../../styles/Text';
+import { BigTextBold, ButtonWhiteText, SubTitle, Text, TextBold, TextWhite, Title } from '../../styles/Text';
 
 import { DescriptionArea, EntreEspacos, EntreEspacosGrande, InvisibleDescriptionArea, Linha } from '../../styles/View';
 
-import { CirculateButton, BackButtom, SimpleButton, SimpleButtonRed, PerfilButton } from '../../styles/Button';
+import { CirculateButton, BackButtom, SimpleButton, SimpleButtonRed, PerfilButton, PerfilBlueButton } from '../../styles/Button';
 
 //Styles END ###########################################################
 
@@ -35,10 +35,15 @@ export default () => {
         solicitacaoEmpresaStatus: route.params.solicitacaoEmpresaStatus,
         solicitacaoUsuarioStatus: route.params.solicitacaoUsuarioStatus,
         id: route.params.solicitacaoId,
+
+        usuarioId: route.params.usuarioId,
+        nomeUsuario: route.params.nomeUsuario,
     });
 
 
-
+    const [typeProfile, setTypeProfile] = useState({
+        perfil: route.params.perfil,
+    });
 
     const [loading, setLoading] = useState(false);
 
@@ -49,6 +54,7 @@ export default () => {
         setLoading(true);
 
         let res = await Api.getSolicitacao(solicitacaoInfo.id);
+
         if (res) {
             setUserSolicitacaoInfo(res);
         } else {
@@ -75,20 +81,46 @@ export default () => {
     const [typeInfo, setTypeInfo] = useState(null);
     const [escolha, setEscolha] = useState('');
 
-    const handleCargoChoose = (info, description, escolha) => {
+    const handleSolicitacaoChoose = (info, description, escolha) => {
         setTypeInfo(info);
         setTextDescription(description);
         setEscolha(escolha)
         setShowModal(true);
     }
 
-    const handleClick = () =>{
+    const handleSolicitacaoUpdate = () => {
+        navigation.navigate('SolicitacaoEmpresaUpdate',{
+            id: solicitacaoInfo.id,
+            empresaId: solicitacaoInfo.empresaId,
+            descricao: solicitacaoInfo.descricao,
+            horaEntrevista: solicitacaoInfo.horaEntrevista,
+            dataEntrevista: solicitacaoInfo.dataEntrevista,
+            
+            enderecoCep: solicitacaoInfo.enderecoCep,
+            complemento: solicitacaoInfo.complemento,
+            numero: solicitacaoInfo.numero
+        
+          });
+    }
+
+    const handleClick = () => {
         navigation.navigate('AnuncioVaga', {
             id: solicitacaoInfo.anuncioVagaId,
             titulo: solicitacaoInfo.titulo,
             nomeEmpresa: solicitacaoInfo.nomeEmpresa,
+            perfil: typeProfile.perfil,
         })
     }
+
+    const handleSolicitanteClick = () => {
+        navigation.navigate('ProfileUsuario', {
+            id: solicitacaoInfo.usuarioId,
+            nomeUsuario: solicitacaoInfo.nomeUsuario,
+        })
+    }
+
+
+
 
     return (
         <Container>
@@ -103,21 +135,32 @@ export default () => {
 
                         <EmpresaAnuncioAvatarDefault />
 
+                        <UserInfo>
+                            <UserInfoName>{solicitacaoInfo.nomeEmpresa}</UserInfoName>
+                            <SimpleButtonInfoArea onPress={handleEmpresaClick}>
+                                <ButtonWhiteText>Ver empresa</ButtonWhiteText>
+                            </SimpleButtonInfoArea>
+                        </UserInfo>
 
-                        <UserInfoName>{solicitacaoInfo.nomeEmpresa}</UserInfoName>
-
-                        <CirculateButton onPress={handleEmpresaClick}>
-                            <FavoriteFullIcon width="24" height="24" fill="#63C2D1" />
-                        </CirculateButton>
                     </UserInfoArea>
 
                     <SubTitle>{solicitacaoInfo.titulo}</SubTitle>
                     <Linha />
                     <EntreEspacos />
 
-                    <PerfilButton onPress={() => handleClick()}>
-                        <Text>Ver anúncio</Text>
-                    </PerfilButton>
+                    <PerfilBlueButton onPress={() => handleClick()}>
+                        <TextWhite>Ver anúncio</TextWhite>
+                    </PerfilBlueButton>
+                    {typeProfile.perfil !== 'USUARIO' &&
+                        <>
+                            <EntreEspacos />
+                            <Linha />
+                            <SubTitle>{solicitacaoInfo.nomeUsuario}</SubTitle>
+                            <PerfilBlueButton onPress={() => handleSolicitanteClick()}>
+                                <TextWhite>Ver perfil do solicitante</TextWhite>
+                            </PerfilBlueButton>
+                        </>
+                    }
                     <EntreEspacos />
                     <Linha />
 
@@ -167,23 +210,38 @@ export default () => {
                         </>
                     }
 
-                    {solicitacaoInfo.solicitacaoEmpresaStatus === 'ACEITO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'ACEITO'?
+                    {solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && typeProfile.perfil === 'EMPRESA' && solicitacaoInfo.solicitacaoEmpresaStatus === 'PENDENTE' ?
                         <>
-                            <SimpleButton onPress={() => handleCargoChoose(solicitacaoInfo, "Deseja aceitar data de entrevista proposta ? " + solicitacaoInfo.nomeEmpresa, "aceitar")}>
-                                <ButtonWhiteText>Confirmar a solicitação</ButtonWhiteText>
+                            <SimpleButton onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja aceitar a solicitação de " + solicitacaoInfo.nomeEmpresa + " ?", "aceitarSolicitacao")}>
+                                <ButtonWhiteText>Marcar uma entrevista</ButtonWhiteText>
                             </SimpleButton>
 
-                            <SimpleButtonRed onPress={() => handleCargoChoose(solicitacaoInfo, "Deseja cancelar a solicitação enviada para " + solicitacaoInfo.nomeEmpresa + " ?", "cancelar")}>
-                                <ButtonWhiteText>Cancelar a solicitação</ButtonWhiteText>
+                            <SimpleButtonRed onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja recusar a solicitação de " + solicitacaoInfo.nomeUsuario + " ?", "cancelarSolicitacao")}>
+                                <ButtonWhiteText>Recusar solicitação</ButtonWhiteText>
                             </SimpleButtonRed>
-
                         </>
+                        : solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && typeProfile.perfil === 'EMPRESA' && solicitacaoInfo.solicitacaoEmpresaStatus === 'ACEITO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' ?
 
-                        : solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && solicitacaoInfo.solicitacaoEmpresaStatus != 'RECUSADO' && solicitacaoInfo.solicitacaoEmpresaStatus &&
+                            <SimpleButton onPress={() => handleSolicitacaoUpdate()}>
+                                <ButtonWhiteText>Atualizar informações da solicitação</ButtonWhiteText>
+                            </SimpleButton>
 
-                        <SimpleButton onPress={() => handleCargoChoose(solicitacaoInfo, "Deseja cancelar a solicitação enviada para " + solicitacaoInfo.nomeEmpresa + " ?", "cancelar")}>
-                            <ButtonWhiteText>Cancelar a solicitação</ButtonWhiteText>
-                        </SimpleButton>
+                            : typeProfile.perfil !== 'EMPRESA' && solicitacaoInfo.solicitacaoEmpresaStatus === 'ACEITO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && solicitacaoInfo.solicitacaoUsuarioStatus != 'ACEITO' ?
+                                <>
+                                    <SimpleButton onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja aceitar data de entrevista proposta da " + solicitacaoInfo.nomeEmpresa + " ?", "aceitar")}>
+                                        <ButtonWhiteText>Confirmar a solicitação</ButtonWhiteText>
+                                    </SimpleButton>
+
+                                    <SimpleButtonRed onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja cancelar a solicitação enviada para " + solicitacaoInfo.nomeEmpresa + " ?", "cancelar")}>
+                                        <ButtonWhiteText>Cancelar a solicitação</ButtonWhiteText>
+                                    </SimpleButtonRed>
+                                </>
+
+                                : typeProfile.perfil !== 'EMPRESA' && solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && solicitacaoInfo.solicitacaoEmpresaStatus != 'RECUSADO' && solicitacaoInfo.solicitacaoEmpresaStatus &&
+
+                                <SimpleButton onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja cancelar a solicitação enviada para " + solicitacaoInfo.nomeEmpresa + " ?", "cancelar")}>
+                                    <ButtonWhiteText>Cancelar a solicitação</ButtonWhiteText>
+                                </SimpleButton>
 
 
                     }

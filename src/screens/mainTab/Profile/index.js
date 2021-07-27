@@ -8,7 +8,7 @@ import { } from './styles';
 import { BackgroundImageProfile } from '../../styles/Image';
 
 import { Container, Scroller, LoadingIconBasic } from '../../styles/Basic';
-    
+
 import { PageBodyProfile, Linha, EntreEspacosGrande } from '../../styles/View';
 
 import { ExitButtonProfileText, ButtonWhiteText, Text, TextOrange, TextGreen } from '../../styles/Text';
@@ -35,92 +35,166 @@ import StatusModal from '../../../components/StatusModal';
 export default () => {
 
     const navigation = useNavigation();
-    const route = useRoute();
 
     const [userInfo, setUserInfo] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    
+    const [perfil, setPerfil] = useState( AsyncStorage.getItem('perfil'));
 
-    useEffect(()=>{
-        getPerfilUsuario();
-    },[]);
+    const getPerfil = async () => {
+        setPerfil(await AsyncStorage.getItem('perfil'));
+    }
 
-    const getPerfilUsuario = async () =>{
+    const getPerfilUsuario = async () => {
         setLoading(true)
         let json = await Api.getPerfilUsuario();
-        if(json){
+        if (json) {
             setUserInfo(json);
         } else {
-            alert("Erro: "+json.error);
+            alert("Erro: " + json.error);
         }
         setLoading(false);
     };
 
+    const getPerfilEmpresa = async () => {
+        setLoading(true);
+        let json = await Api.getPerfilEmpresa();
+        if (json) {
+            setUserInfo(json);
+        } else {
+            alert("Erro: " + json.error);
+        }
+        setLoading(false);
+    };
 
     
-    const refresh = () =>{
-        setRefreshing(false);
-        getPerfilUsuario();
+    const getUserPerfilLogado = () =>{
+        if (perfil === 'USUARIO') {
+            getPerfilUsuario();
+        } else {
+            getPerfilEmpresa();
+        }
     }
 
-    const handlChange = typeString =>{
-        getPerfilUsuario();
+
+    useEffect(() => {
+        getPerfil();
+        getUserPerfilLogado();
+    }, []);
+
+    const refresh = () => {
+        setRefreshing(false);
+        if (perfil === 'USUARIO') {
+            getPerfilUsuario();
+        } else {
+            getPerfilEmpresa();
+        }
+    }
+
+    const handlChange = typeString => {
+        if (perfil === 'USUARIO') {
+            getPerfilUsuario();
+        } else {
+            getPerfilEmpresa();
+        }
         navigation.navigate('ProfileUpdateEmailPassword', {
             nome: userInfo.nome,
             email: userInfo.email,
-            type: typeString
+            type: typeString,
+            perfil: perfil
         });
     }
+
+    const handleChangePerfil = () => {
+        if (perfil === 'USUARIO') {
+            getPerfilUsuario();
+            navigation.navigate('ProfileUsuarioUpdate', {
+                nome: userInfo.nome,
+                email: userInfo.email,
     
-    const handleChangePerfil = () =>{
-        getPerfilUsuario();
-        navigation.navigate('ProfileUsuarioUpdate', {
-            nome: userInfo.nome,
-            email: userInfo.email,
-            
-            dataNascimento: userInfo.dataNascimento,
+                dataNascimento: '',
     
-            celular: userInfo.celular,
-            telefone: userInfo.telefone,
+                celular: userInfo.celular,
+                telefone: userInfo.telefone,
     
-            status: userInfo.status,
-            dataCriacaoPerfil: userInfo.dataCriacaoPerfil,
+                status: userInfo.status,
+                dataCriacaoPerfil: userInfo.dataCriacaoPerfil,
     
-            formacao: userInfo.formacao,
-            experiencia: userInfo.experiencia,
+                formacao: userInfo.formacao,
+                experiencia: userInfo.experiencia,
     
-            cep: userInfo.cep,
-            logradouro: userInfo.logradouro,
-            complemento: userInfo.complemento,
-            bairro: userInfo.bairro,
-            localidade: userInfo.localidade,
-            uf: userInfo.uf,
-            numero: userInfo.numero,
-        });
+                cep: userInfo.cep,
+                logradouro: userInfo.logradouro,
+                complemento: userInfo.complemento,
+                bairro: userInfo.bairro,
+                localidade: userInfo.localidade,
+                uf: userInfo.uf,
+                numero: userInfo.numero,
+
+                perfil: perfil
+            });
+        } else {
+            getPerfilEmpresa();
+            navigation.navigate('ProfileUsuarioUpdate', {
+                nome: userInfo.nome,
+                email: userInfo.email,
+    
+                descricao: userInfo.descricao,
+    
+                celular: userInfo.celular,
+                telefone: userInfo.telefone,
+    
+                cnpj: userInfo.cnpj,
+
+                dataFundacao: '',
+
+                perfil: perfil
+            });
+        }
+
     }
 
     const [showModal, setShowModal] = useState(false);
 
-    const handleLogoutClick = async () =>{
+    const handleLogoutClick = async () => {
         await AsyncStorage.clear();
         navigation.reset({
-            routes:[{name: 'SignIn'}]
+            routes: [{ name: 'SignIn' }]
         });
     }
 
-    const handleChangeStatus = () =>{
+    const handleChangeStatus = () => {
         getPerfilUsuario();
+        
         setShowModal(true);
     }
 
+    
+    const handleVerPerfil = () => {
+        if (perfil === 'USUARIO') {
+            getPerfilUsuario();
+        } else {
+            navigation.navigate('ProfileEmpresa',{
+                id: userInfo.id,
+                nome: userInfo.nome,
+                email: userInfo.email,
+    
+                celular: userInfo.celular,
+                telefone: userInfo.telefone,
+
+            });
+        }
+    }
+
+    
+
     return (
         <Container>
-            <Scroller refreshControl ={
+            <Scroller refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={refresh} />
             }>
-                <BackgroundImageProfile />      
+                <BackgroundImageProfile />
 
                 <PageBodyProfile>
 
@@ -130,52 +204,68 @@ export default () => {
                         <LoadingIconBasic size="large" color="#000000" />
                     }
 
-                    <EntreEspacosGrande/>
+                    <EntreEspacosGrande />
 
-                    <PerfilButton onPress={() => handleChangeStatus()}>
+                    <PerfilButton onPress={() => handleVerPerfil()}>
                         <PersonIcon width="24" height="24" fill="#268596" />
-                        <Text>Definir status</Text>
-                        {userInfo.status =='DISPONIVEL' ?
-                            <TextGreen>Disponível</TextGreen>
-                            :
-                            <TextOrange>Indisponível</TextOrange>
-                        }
+                        <Text>Ver perfil</Text>
                     </PerfilButton>
+                    <EntreEspacosGrande />
 
-                    <EntreEspacosGrande/>
+                    <Linha />
 
-                    <Linha/>
+                    {perfil === 'USUARIO' &&
+                        <>
+                            <PerfilButton onPress={() => handleChangeStatus()}>
+                                <PersonIcon width="24" height="24" fill="#268596" />
+                                <Text>Definir status</Text>
+                                {userInfo.status == 'DISPONIVEL' ?
+                                    <TextGreen>Disponível</TextGreen>
+                                    :
+                                    <TextOrange>Indisponível</TextOrange>
+                                }
+                            </PerfilButton>
+                            <EntreEspacosGrande />
+
+                            <Linha />
+                        </>
+                    }
+
+
 
                     <PerfilButton onPress={() => handleChangePerfil()}>
                         <PersonIcon width="24" height="24" fill="#268596" />
                         <Text>Atualizar perfil</Text>
                     </PerfilButton>
 
-                    <PerfilButton onPress={()=>handlChange('e-mail')}>
+                    <PerfilButton onPress={() => handlChange('e-mail')}>
                         <EmailIcon width="24" height="24" fill="#268596" />
                         <Text>Alterar e-mail</Text>
                     </PerfilButton>
 
-                    <PerfilButton onPress={()=>handlChange('senha')}>
+                    <PerfilButton onPress={() => handlChange('senha')}>
                         <LockIcon width="24" height="24" fill="#268596" />
                         <Text>Alterar senha</Text>
                     </PerfilButton>
 
-                    <Linha/>
+                    {perfil === 'USUARIO' &&
+                        <>
+                            <Linha />
+                            <PdfButton onPress={() => OpenAnyThing.Pdf('https://cepein.femanet.com.br/BDigital/arqTccs/0911270036.pdf')}>
+                                <ButtonWhiteText>Visualizar o currículo</ButtonWhiteText>
+                            </PdfButton>
+                            <Linha />
+                        </>
+                    }
 
-                    <PdfButton onPress={() => OpenAnyThing.Pdf('https://cepein.femanet.com.br/BDigital/arqTccs/0911270036.pdf')}>
-                        <ButtonWhiteText>Visualizar o currículo</ButtonWhiteText>
-                    </PdfButton>
 
-                    <Linha/>
-
-                    <ExitButtonProfile onPress={()=>handleLogoutClick()}>
+                    <ExitButtonProfile onPress={() => handleLogoutClick()}>
                         <ExitButtonProfileText>Sair da conta</ExitButtonProfileText>
                     </ExitButtonProfile>
 
                 </PageBodyProfile>
 
-                <StatusModal 
+                <StatusModal
                     show={showModal}
                     setShow={setShowModal}
                     status={userInfo.status}

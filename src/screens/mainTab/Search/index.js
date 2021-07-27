@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Platform, RefreshControl } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'; 
 
 import Api from '../../../Api'
 
@@ -39,9 +40,14 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [perfil, setPerfil] = useState('');
 
     const handleLocationFinder = async () =>{
         getAnuncioVagas();
+    }
+
+    const getPerfil = async () => {
+        setPerfil(await AsyncStorage.getItem('perfil'));
     }
 
     const getAnuncioVagas = async () => {
@@ -70,6 +76,10 @@ export default () => {
         getAnuncioVagas();
     }
 
+    useEffect(()=>{
+        getPerfil();
+    }, []);
+
 
     return (
         <Container>
@@ -88,7 +98,7 @@ export default () => {
                     <Title>Buscar Local</Title>
                     <LocationArea>
                         <LocationInput 
-                            placeholder="Onde você está ?"
+                            placeholder={perfil === 'USUARIO' ? "Onde você está ?" : "Local do anúncio"}
                             placeholderTextColor="#FFFFFF"
                             value={locationText}
                             onChangeText={t=>setLocationText(t)}
@@ -101,7 +111,7 @@ export default () => {
                     <Title>Buscar Cargo</Title>
                     <LocationArea>
                         <LocationInput 
-                            placeholder="Qual cargo você deseja ?"
+                            placeholder={perfil === 'USUARIO' ? "Qual cargo você deseja ?" : "Filtrar cargo"}
                             placeholderTextColor="#FFFFFF"
                             value={cargoText}
                             onChangeText={t=>setCargoText(t)}

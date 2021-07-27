@@ -4,17 +4,22 @@ export const Linha = styled.View`
     border: 1px solid #63C2D1;
     margin-left: 15px;
     margin-right: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 `;
 
+export const LinhaCentral = styled.View`
+    border: 1px solid #63C2D1;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+`;
 export const EntreEspacos = styled.View`
     margin-bottom: 10px;
 `;
-
 export const EntreEspacosGrande = styled.View`
     margin-bottom: 20px;
 `;
-
 
 export const CustomButton = styled.TouchableOpacity`
     background-color: #268596;
@@ -28,30 +33,27 @@ export const CustomButton = styled.TouchableOpacity`
     margin-right: 15px;
 `;
 
-export const ObjectItem = styled.View`
+export const CustomButtonText = styled.Text`
+    font-size: 18px;
+    color: #FFF;
+`;
+
+export const InputButtonArea = styled.TouchableOpacity`
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 60px;
+    background-color: #FFFFFF;
     flex-direction: row;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-bottom: 10px;
-    border: 1px solid #63C2D1;
-    border-radius: 10px;
-
-    justify-content: center;
+    border-radius: 15px;
+    padding-left: 15px;
     align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid #63C2D1;
 `;
 
-export const ObjectInfo = styled.View`
+export const InputButtonText = styled.Text`
     flex: 1;
-    margin-left: 15px;
-    margin-right: 15px;
-`;
-
-export const Description = styled.Text`
     font-size: 16px;
     color: #268596;
-`;
-
-export const SubDescription = styled.Text`
-    font-size: 14px;
-    color: #000000;
+    margin-left: 10px;
 `;

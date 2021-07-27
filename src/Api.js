@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-const BASE_API = 'http://192.168.1.38:8080';
+const BASE_API = 'http://192.168.1.40:8080';
 const VIA_CEP = 'https://viacep.com.br/ws';
 
 export default {
@@ -33,8 +33,21 @@ export default {
         return json;
     },
 
-    signUp: async (nome, email, senha) =>{
+    signUpUsuario: async (nome, email, senha) =>{
         const req = await fetch(`${BASE_API}/usuario`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({nome, email, senha})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    signUpEmpresa: async (nome, email, senha) =>{
+        const req = await fetch(`${BASE_API}/empresa`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -92,11 +105,75 @@ export default {
         return json;
     },
 
-    
-    getSolicitacoes: async (page, status) => {
+    putVaga: async (id, titulo, requisitos, descricao, enderecoCep, complemento, numero, cargaHoraria, salario) => {
         const token = await AsyncStorage.getItem('token');
         
-        const req = await fetch(`${BASE_API}/solicitacao?page=${page}&status=${status}`, {
+        const req = await fetch(`${BASE_API}/anunciovaga/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({titulo, requisitos, descricao, enderecoCep, complemento, numero, cargaHoraria, salario})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    postSetorCargo: async (anuncioVagaId, setor, cargo) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/setorcargo`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({anuncioVagaId, setor, cargo})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    putSetorCargo: async (id, setor, cargo) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/setorcargo/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ setor, cargo})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    
+    deleteSetorCargo: async (id) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/setorcargo/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    
+    getSolicitacoes: async (page='', anuncioId='', status='') => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/solicitacao?page=${page}&anuncioId=${anuncioId}&status=${status}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -157,6 +234,39 @@ export default {
         return json;
     },
 
+    empresaSolicitacao: async (solicitacaoEmpresaStatus, id) =>{
+        const token = await AsyncStorage.getItem('token');
+
+        const req = await fetch(`${BASE_API}/solicitacao/empresa/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({solicitacaoEmpresaStatus})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+
+    updateSolicitacao: async (id, descricao, horaEntrevista, dataEntrevista, enderecoCep, complemento, numero) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/solicitacao/empresaatualizar/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({descricao, horaEntrevista, dataEntrevista, enderecoCep, complemento, numero})
+        });
+        const json = await req.json();
+        return json;
+    },
+
 
     getPerfilEmpresa: async (id='0') => {
         const token = await AsyncStorage.getItem('token');
@@ -172,6 +282,57 @@ export default {
         const json = await req.json();
         return json;
     },
+
+    updateEmailEmpresa: async (oldPassword, email) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/empresa/email/0`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({oldPassword, email})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+    updatePasswordEmpresa: async (oldPassword, password) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/empresa/senha/0`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({oldPassword, password})
+        });
+        const json = await req.json();
+        return json;
+    },
+
+
+
+    updateEmpresa: async (nome, descricao, cnpj, dataFundacao, celular, telefone) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/empresa/0`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({nome, descricao, cnpj, dataFundacao, celular, telefone})
+        });
+        const json = await req.json();
+        return json;
+    },
+
 
     getPerfilUsuario: async (id='0') => {
         const token = await AsyncStorage.getItem('token');
@@ -251,6 +412,7 @@ export default {
         const json = await req.json();
         return json;
     },
+
 
     createExperiencia: async (descricao, inicio, termino) => {
         const token = await AsyncStorage.getItem('token');

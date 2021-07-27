@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 //Styles    ###########################################################
 
-import { CustomButtonText, Linha, CustomListButton, EntreEspacosGrande, Description, SubDescription, ObjectInfo, ObjectItem } from './styles';
+import { Linha, EntreEspacosGrande, Description, SubDescription, ObjectInfo, ObjectItem } from './styles';
 
 import { BackgroundImageProfile } from '../../../styles/Image';
 
@@ -11,9 +11,9 @@ import { Container, Scroller } from '../../../styles/Basic';
     
 import { PageBodyProfile } from '../../../styles/View';
 
-import { Title, Text, SubTitle } from '../../../styles/Text';
+import { Title, Text, SubTitle, CustomButtonText } from '../../../styles/Text';
 
-import { BackButtom, PerfilButton } from '../../../styles/Button';
+import { BackButtom, CustomListButton, PerfilButton } from '../../../styles/Button';
 
 //Styles END ###########################################################
 

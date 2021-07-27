@@ -9,9 +9,11 @@ import ExpandIcon from '../../assets/expand';
 import Api from '../../Api';
 import { Text } from '../../screens/styles/Text';
 
-import { Modal, ModalArea, ModalBody, CloseButton, ModalItem, 
+import {
+  Modal, ModalArea, ModalBody, CloseButton, ModalItem,
   UserInfo, UserAvatar, UserName, ButtonArea,
-  FinishButton, FinishButtonText, LoadingIcon } from './styles';
+  FinishButton, FinishButtonText, LoadingIcon
+} from './styles';
 
 
 
@@ -28,6 +30,7 @@ export default ({ show, setShow, user, description, choose }) => {
     if (choose === "enviar") {
 
       let res = await Api.sendSoliciacao(user.id);
+
       if (res.anuncioVagaId === user.id) {
         alert("Solicitação Enviada Com Sucesso !!!");
         navigation.navigate('Home');
@@ -35,10 +38,8 @@ export default ({ show, setShow, user, description, choose }) => {
         alert("Erro: " + res.error);
         navigation.navigate('Home');
       }
-
-
     } else {
-      if(choose === 'cancelar'){
+      if (choose === 'cancelar') {
         let res = await Api.usuarioSoliciacao('CANCELADO', user.id);
         if (res.id === user.id) {
           alert("Solicitação Cancelada");
@@ -48,17 +49,50 @@ export default ({ show, setShow, user, description, choose }) => {
           navigation.navigate('Home');
         }
       } else {
-        let res = await Api.usuarioSoliciacao('ACEITO', user.id);
-        if (res.id === user.id) {
-          alert("Solicitação Confirmada");
-          navigation.navigate('Home');
+        if (choose === 'aceitar') {
+          let res = await Api.usuarioSoliciacao('ACEITO', user.id);
+          if (res.id === user.id) {
+            alert("Solicitação Confirmada");
+            navigation.navigate('Home');
+          } else {
+            alert("Erro: " + res.error);
+            navigation.navigate('Home');
+          }
         } else {
-          alert("Erro: " + res.error);
-          navigation.navigate('Home');
+          if (choose === 'aceitarSolicitacao') {
+            let res = await Api.empresaSolicitacao('ACEITO', user.id);
+
+            if (res.id === user.id) {
+              alert("Solicitação Aceita");
+              navigation.navigate('SolicitacaoEmpresaUpdate',{
+                id: res.id,
+                empresaId: res.empresaId,
+                descricao: '',
+                horaEntrevista: '',
+                dataEntrevista: '',
+                
+                enderecoCep: '',
+                complemento: '',
+                numero: ''
+              });
+            } else {
+              alert("Erro: " + res.error);
+              navigation.navigate('Home');
+            }
+          } else {
+            let res = await Api.empresaSolicitacao('RECUSADO', user.id);
+            if (res.id === user.id) {
+              alert("Solicitação Recusada");
+              navigation.navigate('Home');
+            } else {
+              alert("Erro: " + res.error);
+              navigation.navigate('Home');
+            }
+
+          }
         }
+
       }
-
-
     }
     setLoading(false);
   };
@@ -92,14 +126,14 @@ export default ({ show, setShow, user, description, choose }) => {
               </UserInfo>
             </ModalItem>
 
-            : 
+            :
             choose === "aceitar" &&
 
             <ModalItem>
               <UserInfo>
                 <Text>Caso esteje insatisfeito como o horario ou local da entrevista ligue para empresa para alterar a data ou local da entrevista.</Text>
               </UserInfo>
-            </ModalItem> 
+            </ModalItem>
           }
 
           {loading ?

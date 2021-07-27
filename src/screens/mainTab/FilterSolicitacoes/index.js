@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage'; 
 
 import Api from '../../../Api'
 
@@ -28,11 +29,17 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [perfil, setPerfil] = useState('');
+
+    
+    const getPerfil = async () => {
+        setPerfil(await AsyncStorage.getItem('perfil'));
+    }
 
     const getVagas = async () => {
         setLoading(true);
 
-        let res = await Api.getSolicitacoes('', 'ACEITO');
+        let res = await Api.getSolicitacoes('', '','ACEITO');
 
         if(res.content) {
             setList(res.content);
@@ -43,6 +50,7 @@ export default () => {
     }
 
     useEffect(()=>{
+        getPerfil();
         getVagas();
     }, []);
 
@@ -69,7 +77,7 @@ export default () => {
 
                 <ListArea>
                     {list.map(item=>(
-                        <SolicitacaoItem key={item.id} data={item} />
+                        <SolicitacaoItem key={item.id} data={item}  perfil={perfil} />
                     ))}
                 </ListArea>
 

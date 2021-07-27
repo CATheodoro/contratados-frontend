@@ -39,7 +39,7 @@ export default () => {
 
     const getPerfil = async () => {
         setPerfil(await AsyncStorage.getItem('perfil'));
-        setPerfilId(await AsyncStorage.getItem('id'))
+        setPerfilId(await AsyncStorage.getItem('id'));
     }
 
     const getVagas = async () => {
@@ -67,7 +67,9 @@ export default () => {
 
     const handleClick = () =>{
         navigation.navigate('CreateAnuncioVaga',{
-            empresaId: perfilId
+            empresaId: perfilId,
+            cargaHoraria: '',
+            atualizar: ''
         });
     }
 
@@ -107,7 +109,7 @@ export default () => {
 
                 <ListArea>
                     {list.map(item=>(
-                        <VagaItem key={item.id} data={item} />
+                        <VagaItem key={item.id} data={item} perfil={perfil} />
                     ))}
                 </ListArea>
 

@@ -5,59 +5,52 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { CustomButton, CustomButtonText, Linha, EntreEspacos, LinhaCentral, EntreEspacosGrande, InputButtonArea, InputButtonText } from './styles';
 
-import { BackgroundImageProfile } from '../../../styles/Image';
+import { BackgroundImageProfile } from '../../styles/Image';
 
-import { Container, Scroller, LoadingIconBasic } from '../../../styles/Basic';
+import { Container, Scroller, LoadingIconBasic } from '../../styles/Basic';
 
-import { PageBodyProfile, DescriptionArea, InvisibleDescriptionArea } from '../../../styles/View';
+import { PageBodyProfile, DescriptionArea, InvisibleDescriptionArea } from '../../styles/View';
 
-import { TextBold, Title, Text } from '../../../styles/Text';
+import { TextBold, Title, Text } from '../../styles/Text';
 
-import { BackButtom } from '../../../styles/Button';
+import { BackButtom } from '../../styles/Button';
 
 //Styles END ###########################################################
 
 
-import Api from '../../../../Api';
+import Api from '../../../Api';
 
-import SignInput from '../../../../components/SignInput';
+import SignInput from '../../../components/SignInput';
 
-import BackIcon from '../../../../assets/back.svg';
-import EmailIcon from '../../../../assets/email.svg'
-import TodayIcon from '../../../../assets/today.svg';
-import PersonIcon from '../../../../assets/person.svg'
-import InfoTopProfile from '../../../../components/InfoTopProfile';
+import BackIcon from '../../../assets/back.svg';
+import EmailIcon from '../../../assets/email.svg'
+import TodayIcon from '../../../assets/today.svg';
+import PersonIcon from '../../../assets/person.svg'
+import InfoTopProfile from '../../../components/InfoTopProfile';
 
 
 
-import TimePiker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default () => {
 
     const navigation = useNavigation();
     const route = useRoute();
 
-    const [userInfo, setUserInfo] = useState({
-        id: route.params.empresaId,
-        nome: route.params.nome,
+    const [solicitacaoInfo, setSolicitacaoInfo] = useState({
+        id: route.params.id,
+        empresaId: route.params.empresaId,
 
-        anuncioId: route.params.anuncioId,
-        titulo: route.params.titulo,
-        requisitos: route.params.requisitos,
         descricao: route.params.descricao,
+        horaEntrevista: route.params.horaEntrevista,
+        dataEntrevista: route.params.dataEntrevista,
 
-        cargaHoraria: route.params.cargaHoraria,
-        salario: route.params.salario,
-
-        cep: route.params.cep,
-        logradouro: route.params.logradouro,
+        enderecoCep: route.params.enderecoCep,
         complemento: route.params.complemento,
-        bairro: route.params.bairro,
-        localidade: route.params.localidade,
-        uf: route.params.uf,
-        numero: route.params.numero,
-
+        numero: route.params.numero
     });
+
+    const [empresaInfo, setEmpresaInfo] = useState([]);
 
     const [type, setType] = useState({
         atualizar: route.params.atualizar
@@ -69,74 +62,40 @@ export default () => {
 
     const [viaCep, setViaCep] = useState({})
 
-    const [tituloField, setTituloField] = useState(userInfo.titulo);
-    const [requisitoField, setRequisitoField] = useState(userInfo.requisitos);
-    const [descricaoField, setDescricaoField] = useState(userInfo.descricao);
+    const [descricaoField, setDescricaoField] = useState(solicitacaoInfo.descricao);
 
-    const [enderecoCepField, setEnderecoCepField] = useState(userInfo.cep);
-    const [complementoField, setComplementoField] = useState(userInfo.complemento);
-    const [numeroField, setNumeroField] = useState(userInfo.numero);
+    const [enderecoCepField, setEnderecoCepField] = useState(solicitacaoInfo.enderecoCep);
+    const [complementoField, setComplementoField] = useState(solicitacaoInfo.complemento);
+    const [numeroField, setNumeroField] = useState(solicitacaoInfo.numero);
 
-    const [cargaHoraria, setCargaHoraria] = useState(userInfo.cargaHoraria !== '' ? new Date("2020-01-01T" + userInfo.cargaHoraria) : new Date());
-    const [salarioField, setSalarioField] = useState(userInfo.salario);
+    const [horaEntrevistaField, setHoraEntrevistaField] = useState(solicitacaoInfo.horaEntrevista !== '' ? new Date("2020-01-01T" + solicitacaoInfo.horaEntrevista) : new Date());
+    const [dataEntrevistaField, setDataEntrevistaFieldField] = useState(solicitacaoInfo.dataEntrevista !== '' ? new Date(solicitacaoInfo.dataEntrevista) : new Date());
+
 
 
     const handleChangeClick = async () => {
         setLoading(true);
-        if (tituloField != '' && requisitoField != '' && descricaoField != '' && enderecoCepField != '') {
-            if (type.atualizar === '') {
-                let res = await Api.postVaga(
-                    tituloField,
-                    requisitoField,
-                    descricaoField,
-                    enderecoCepField,
-                    complementoField,
-                    numeroField,
-                    cargaHoraria.toLocaleTimeString(),
-                    salarioField
-                );
+        if (descricaoField != '' && horaEntrevistaField != '' && dataEntrevistaField != '') {
+            let res = await Api.updateSolicitacao(
+                solicitacaoInfo.id,
+                descricaoField,
+                horaEntrevistaField.toLocaleTimeString(),
+                dataEntrevistaField,
 
-                if (res.id) {
-                    alert("Anúncio cadastrado com sucesso !!!");
-                    navigation.navigate('CreateSetorCargo', {
-                        id: res.id,
-                        titulo: res.titulo,
-                        nome: userInfo.nome,
-                        email: userInfo.email,
-                        object: ''
-                    });
+                enderecoCepField,
+                complementoField,
+                numeroField,
+            );
+            if (res.id) {
+                alert("Anúncio cadastrado com sucesso !!!");
+                navigation.navigate('Solicitacoes');
 
-                } else {
-                    if (res.error) {
-                        alert("Erro: " + res.error);
-                    } else
-                        alert("Erro: " + res[0].error);
-
-                }
             } else {
-                let res = await Api.putVaga(
-                    userInfo.anuncioId,
-                    tituloField,
-                    requisitoField,
-                    descricaoField,
-                    enderecoCepField,
-                    complementoField,
-                    numeroField,
-                    cargaHoraria.toLocaleTimeString(),
-                    salarioField
-                );
+                if (res.error) {
+                    alert("Erro: " + res.error);
+                } else
+                    alert("Erro: " + res[0].error);
 
-                if (res.id) {
-                    alert("Anúncio atualizado com sucesso !!!");
-                    navigation.goBack();
-
-                } else {
-                    if (res.error) {
-                        alert("Erro: " + res.error);
-                    } else
-                        alert("Erro: " + res[0].error);
-
-                }
             }
         } else {
             alert("Preencha os campos obrigatórios")
@@ -170,9 +129,9 @@ export default () => {
     const getPerfilEmpresa = async () => {
         setLoading(true);
         getCep();
-        let json = await Api.getPerfilEmpresa(userInfo.id);
+        let json = await Api.getPerfilEmpresa(solicitacaoInfo.empresaId);
         if (json) {
-            setUserInfo(json);
+            setEmpresaInfo(json);
         } else {
             alert("Erro: " + json.error);
         }
@@ -197,16 +156,27 @@ export default () => {
         navigation.goBack();
     }
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || dataNascimentoField;
-        setShow(Platform.OS === 'ios');
-        setCargaHoraria(currentDate);
+    const onChangeTime = (event, selectedDate) => {
+        const currentDate = selectedDate || horaEntrevistaField;
+        setShowTime(Platform.OS === 'ios');
+        setHoraEntrevistaField(currentDate);
     };
 
-    const [show, setShow] = useState(false);
+    const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate || dataEntrevistaField;
+        setShowDate(Platform.OS === 'ios');
+        setDataEntrevistaFieldField(currentDate);
+    };
 
-    const showMode = () => {
-        setShow(true);
+    const [showTime, setShowTime] = useState(false);
+    const [showDate, setShowDate] = useState(false);
+
+    const showTimeMode = () => {
+        setShowTime(true);
+    };
+
+    const showDateMode = () => {
+        setShowDate(true);
     };
 
 
@@ -218,7 +188,7 @@ export default () => {
 
                 <PageBodyProfile>
 
-                    <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
+                    <InfoTopProfile nome={empresaInfo.nome} email={empresaInfo.email} image={''} />
                     {loading &&
                         <LoadingIconBasic size="large" color="#000000" />
                     }
@@ -230,27 +200,9 @@ export default () => {
 
                         <EntreEspacos />
 
-                        <Title>Informações obrigatórias</Title>
+                        <Title>Informações da entrevista</Title>
                         <InvisibleDescriptionArea>
-                            <Text>Título do anúncio</Text>
-                            <SignInput
-                                IconSvg={PersonIcon}
-                                placeholder="Título"
-                                value={tituloField}
-                                onChangeText={t => setTituloField(t)}
-                                password={false}
-                            />
-
-                            <Text>Requisitos para a vaga</Text>
-                            <SignInput
-                                IconSvg={PersonIcon}
-                                placeholder="Requisitos"
-                                value={requisitoField}
-                                onChangeText={t => setRequisitoField(t)}
-                                password={false}
-                            />
-
-                            <Text>Descrição da vaga</Text>
+                            <Text>Descrição</Text>
                             <SignInput
                                 IconSvg={PersonIcon}
                                 placeholder="Descrição"
@@ -259,8 +211,7 @@ export default () => {
                                 password={false}
                             />
 
-
-                            <Title>Localização</Title>
+                            <Title>Localização opcional</Title>
 
                             <Text>Alterar CEP</Text>
                             <SignInput
@@ -311,31 +262,37 @@ export default () => {
 
 
                         <LinhaCentral />
-                        <Title>Informações opcionais</Title>
+                        <Title>Data e hora</Title>
                         <InvisibleDescriptionArea>
-                            <Text>Carga horária</Text>
-                            <InputButtonArea onPress={showMode}>
+
+                            <Text>Data da entrevista</Text>
+                            <InputButtonArea onPress={showDateMode}>
                                 <TodayIcon width="24" height="24" fill="#268596" />
-                                <InputButtonText>{cargaHoraria.toLocaleTimeString()}</InputButtonText>
+                                <InputButtonText>{dataEntrevistaField.toLocaleDateString()}</InputButtonText>
                             </InputButtonArea>
 
-                            {show && (
-                                <TimePiker
-                                    value={cargaHoraria}
+                            <Text>Horário da entrevista</Text>
+                            <InputButtonArea onPress={showTimeMode}>
+                                <TodayIcon width="24" height="24" fill="#268596" />
+                                <InputButtonText>{horaEntrevistaField.toLocaleTimeString()}</InputButtonText>
+                            </InputButtonArea>
+
+                            {showTime && (
+                                <DateTimePicker
+                                    value={horaEntrevistaField}
                                     mode='time'
-                                    onChange={onChange}
+                                    onChange={onChangeTime}
                                 />
                             )}
 
-                            <Text>Salário</Text>
-                            <SignInput
-                                IconSvg={EmailIcon}
-                                placeholder="Salário"
-                                value={salarioField}
-                                onChangeText={t => setSalarioField(t)}
-                                password={false}
-                                keyboardType='number-pad'
-                            />
+                            {showDate && (
+                                <DateTimePicker
+                                    value={dataEntrevistaField}
+                                    mode='date'
+                                    onChange={onChangeDate}
+                                />
+                            )}
+
                         </InvisibleDescriptionArea>
 
                         <LinhaCentral />

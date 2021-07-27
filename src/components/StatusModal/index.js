@@ -70,9 +70,6 @@ export default ({ show, setShow, status }) => {
               </FinishButton>
             </ButtonArea>
           }
-
-
-
         </ModalBody>
       </ModalArea>
     </Modal>

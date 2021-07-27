@@ -8,8 +8,8 @@ import { CustomButton, CustomButtonText, Linha, EntreEspacos, LinhaCentral, Entr
 import { BackgroundImageProfile } from '../../../styles/Image';
 
 import { Container, Scroller, LoadingIconBasic } from '../../../styles/Basic';
-    
-import { PageBodyProfile,  DescriptionArea, InvisibleDescriptionArea } from '../../../styles/View';
+
+import { PageBodyProfile, DescriptionArea, InvisibleDescriptionArea } from '../../../styles/View';
 
 import { TextBold, Title, Text, ButtonWhiteText } from '../../../styles/Text';
 
@@ -40,7 +40,7 @@ export default () => {
     const [userInfo, setUserInfo] = useState({
         nome: route.params.nome,
         email: route.params.email,
-        
+
         dataNascimento: route.params.dataNascimento,
 
         celular: route.params.celular,
@@ -60,6 +60,15 @@ export default () => {
         uf: route.params.uf,
         numero: route.params.numero,
 
+
+        descricao: route.params.descricao,
+        cnpj: route.params.cnpj,
+        dataFundacao: route.params.dataFundacao,
+
+    });
+
+    const [typeProfile, setTypeProfile] = useState({
+        perfil: route.params.perfil,
     });
 
     const [loading, setLoading] = useState(false);
@@ -68,7 +77,7 @@ export default () => {
     const [viaCep, setViaCep] = useState({})
 
     const [nomeField, setNomeField] = useState(userInfo.nome);
-    const [dataNascimentoField, setDataNascimentoField] = useState(userInfo.dataNascimento !== null ? new Date(userInfo.dataNascimento) : new Date());
+    const [dataNascimentoField, setDataNascimentoField] = useState(userInfo.dataNascimento !== '' ? new Date(userInfo.dataNascimento) : new Date());
     const [celularField, setCelularField] = useState(userInfo.celular);
     const [telefoneField, setTelefoneField] = useState(userInfo.telefone);
     const [statusField, setStatusField] = useState(userInfo.status);
@@ -76,263 +85,352 @@ export default () => {
     const [complementoField, setComplementoField] = useState(userInfo.complemento);
     const [numeroField, setNumeroField] = useState(userInfo.numero);
 
+    const [descricaoField, setDescricaoField] = useState(userInfo.descricao);
+    const [cnpjField, setCnpjField] = useState(userInfo.cnpj);
+    const [dataFundacaoField, setDataFundacaoField] = useState(userInfo.dataFundacao !== '' ? new Date(userInfo.dataFundacao) : new Date());
+
+
     const handleChangeClick = async () => {
         setLoading(true);
 
+        if(typeProfile.perfil === "USUARIO"){
             let res = await Api.updateUsuario(
-                nomeField, 
-                dataNascimentoField, 
-                celularField, 
-                telefoneField, 
-                statusField, 
-                enderecoCepField, 
-                complementoField, 
+                nomeField,
+                dataNascimentoField,
+                celularField,
+                telefoneField,
+                statusField,
+                enderecoCepField,
+                complementoField,
                 numeroField);
-
-             if(res.id) {
-
-                 alert("Dados do perfil alterados com sucesso !!!");
-                 navigation.goBack();
-            
+    
+            if (res.id) {
+    
+                alert("Dados do perfil alterados com sucesso !!!");
+                navigation.goBack();
+    
             } else {
-                if(res.error){
+                if (res.error) {
                     alert("Erro: " + res.error);
                 } else
                     alert("Erro: " + res[0].error);
-                
+    
             }
-            setLoading(false);
+        } else{
+            let res = await Api.updateEmpresa(
+                nomeField,
+                descricaoField,
+                cnpjField,
+                dataFundacaoField,
+                celularField,
+                telefoneField,
+                )
+            if (res.id) {
+    
+                alert("Dados do perfil alterados com sucesso !!!");
+                navigation.goBack();
+    
+            } else {
+                if (res.error) {
+                    alert("Erro: " + res.error);
+                } else
+                    alert("Erro: " + res[0].error);
+    
+            }
         }
         
+        setLoading(false);
+    }
 
-        const handleCepClick = async () => {
-            if(enderecoCepField != '' && enderecoCepField != null){
-                if(enderecoCepField.length == 8){
-                    setLoadingCep(true);
-                    let res = await Api.getViaCep(enderecoCepField);
-            
-                        if(res.cep) {
-                            setViaCep(res);
-                        } else {
-                            alert("Cep inválido");
-                            setEnderecoCepField('');
-                        }
-                    setLoadingCep(false);
-                } else {
-                    alert("O cep deve conter 8 dígitos");
-                    setEnderecoCepField('');
-                }
-            }
-        }
 
-        const getPerfilUsuario = async () =>{
-            setLoading(true);
-            getCep();
-            let json = await Api.getPerfilUsuario();
-            if(json){
-                setUserInfo(json);
-            } else {
-                alert("Erro: "+json.error);
-            }
-            setLoading(false);
-        };
-
-        const getCep = async () => {
-            
-            if(enderecoCepField != '' && enderecoCepField != null){
+    const handleCepClick = async () => {
+        if (enderecoCepField != '' && enderecoCepField != null) {
+            if (enderecoCepField.length == 8) {
                 setLoadingCep(true);
                 let res = await Api.getViaCep(enderecoCepField);
-                setViaCep(res);  
+
+                if (res.cep) {
+                    setViaCep(res);
+                } else {
+                    alert("Cep inválido");
+                    setEnderecoCepField('');
+                }
                 setLoadingCep(false);
+            } else {
+                alert("O cep deve conter 8 dígitos");
+                setEnderecoCepField('');
             }
         }
+    }
 
-        useEffect(()=>{
+    const getPerfilUsuario = async () => {
+        setLoading(true);
+        getCep();
+        let json = await Api.getPerfilUsuario();
+        if (json) {
+            setUserInfo(json);
+        } else {
+            alert("Erro: " + json.error);
+        }
+        setLoading(false);
+    };
+
+
+    const getPerfilEmpresa = async () => {
+        setLoading(true);
+        let json = await Api.getPerfilEmpresa('0');
+        if (json) {
+            setUserInfo(json);
+        } else {
+            alert("Erro: " + json.error);
+        }
+        setLoading(false);
+    };
+
+    const getCep = async () => {
+
+        if (enderecoCepField != '' && enderecoCepField != null) {
+            setLoadingCep(true);
+            let res = await Api.getViaCep(enderecoCepField);
+            setViaCep(res);
+            setLoadingCep(false);
+        }
+    }
+
+    useEffect(() => {
+        if (typeProfile.perfil === 'USUARIO') {
             getPerfilUsuario();
-        },[]);
-
-        const handleBackButton = () => {
-            navigation.goBack();
+        } else {
+            getPerfilEmpresa();
         }
+    }, []);
 
-        const handleExperiencia = () => {
-            navigation.navigate('ProfileExperienciaFormacao', {
-                nome: userInfo.nome,
-                email: userInfo.email,
-                experiencia: userInfo.experiencia,
-                formacao: ''
-            });
-        }
+    const handleBackButton = () => {
+        navigation.goBack();
+    }
 
-        const handlFormacao = () => {
-            navigation.navigate('ProfileExperienciaFormacao', {
-                nome: userInfo.nome,
-                email: userInfo.email,
-                experiencia: '',
-                formacao: userInfo.formacao,
-            });
-        }
+    const handleExperiencia = () => {
+        navigation.navigate('ProfileExperienciaFormacao', {
+            nome: userInfo.nome,
+            email: userInfo.email,
+            experiencia: userInfo.experiencia,
+            formacao: ''
+        });
+    }
 
-        const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate || dataNascimentoField;
+    const handlFormacao = () => {
+        navigation.navigate('ProfileExperienciaFormacao', {
+            nome: userInfo.nome,
+            email: userInfo.email,
+            experiencia: '',
+            formacao: userInfo.formacao,
+        });
+    }
+
+    const onChange = (event, selectedDate) => {
+        let currentDate;
+        if(typeProfile.perfil === "USUARIO"){
+            currentDate = selectedDate || dataNascimentoField;
             setShow(Platform.OS === 'ios');
             setDataNascimentoField(currentDate);
-          };
+        } else {
+            currentDate = selectedDate  || dataFundacaoField;
+            setShow(Platform.OS === 'ios');
+            setDataFundacaoField(currentDate);
+        }
         
-        const [show, setShow] = useState(false);
+ 
+    };
 
-        const showMode = () => {
-            setShow(true);
-          };
+    const [show, setShow] = useState(false);
 
-        
+    const showMode = () => {
+        setShow(true);
+    };
 
     return (
         <Container>
             <Scroller>
-                    <BackgroundImageProfile />      
+                <BackgroundImageProfile />
 
                 <PageBodyProfile>
 
-                <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
+                    <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
 
-                <EntreEspacosGrande/>
+                    <EntreEspacosGrande />
+                    {typeProfile.perfil === 'USUARIO' &&
+                        <>
+                            <PerfilButton onPress={() => handleExperiencia()}>
+                                <PersonIcon width="24" height="24" fill="#268596" />
+                                <Text>Alterar experiências</Text>
+                            </PerfilButton>
 
-                    <PerfilButton onPress={() => handleExperiencia()}>
-                        <PersonIcon width="24" height="24" fill="#268596" />
-                        <Text>Alterar experiências</Text>
-                    </PerfilButton>
+                            <PerfilButton onPress={() => handlFormacao()}>
+                                <EmailIcon width="24" height="24" fill="#268596" />
+                                <Text>Alterar formações</Text>
+                            </PerfilButton>
 
-                    <PerfilButton onPress={()=>handlFormacao()}>
-                        <EmailIcon width="24" height="24" fill="#268596" />
-                        <Text>Alterar formações</Text>
-                    </PerfilButton>
+                            <PdfButton>
+                                <ButtonWhiteText>Enviar um currículo em PDF</ButtonWhiteText>
+                            </PdfButton>
 
-                    <PdfButton>
-                        <ButtonWhiteText>Enviar um currículo em PDF</ButtonWhiteText>
-                    </PdfButton>
+                            <EntreEspacosGrande />
 
-                    <EntreEspacosGrande/>
+                            <Linha />
+                        </>
+                    }
 
-                    <Linha/>
 
 
                     <Title>Atualizar perfil</Title>
                     <DescriptionArea>
-                        
 
-                        <EntreEspacos/>
+
+                        <EntreEspacos />
 
                         <Title>Informações pessoais</Title>
                         <InvisibleDescriptionArea>
                             <Text>Alterar Nome</Text>
-                            <SignInput 
+                            <SignInput
                                 IconSvg={PersonIcon}
                                 placeholder="Nome"
                                 value={nomeField}
-                                onChangeText={t=>setNomeField(t)}
-                                password = {false}
+                                onChangeText={t => setNomeField(t)}
+                                password={false}
                             />
 
-                            
-                            <Text>Alterar data de nascimento</Text>
+                            {typeProfile.perfil !== 'USUARIO' &&
+                                <>
+                                    <Text>Alterar descrição</Text>
+                                    <SignInput
+                                        IconSvg={PersonIcon}
+                                        placeholder="Descrição"
+                                        value={descricaoField}
+                                        onChangeText={t => setDescricaoField(t)}
+                                        password={false}
+                                    />
+
+                                    <Text>Alterar CNPJ</Text>
+                                    <SignInput
+                                        IconSvg={PersonIcon}
+                                        placeholder="CNPJ"
+                                        value={cnpjField}
+                                        onChangeText={t => setCnpjField(t)}
+                                        password={false}
+                                    />
+                                </>
+                            }
+
+                            {typeProfile.perfil === 'USUARIO' ?
+                                <Text>Alterar data de nascimento</Text>
+                                :
+                                <Text>Alterar data de fundação</Text>
+                            }
                             <InputButtonArea onPress={showMode}>
-                                    <TodayIcon width="24" height="24" fill="#268596" />
-                                    <InputButtonText>{dataNascimentoField.toLocaleDateString("pt-BR")}</InputButtonText>
+                                <TodayIcon width="24" height="24" fill="#268596" />
+                                <InputButtonText>{typeProfile.perfil === 'USUARIO' ?
+                                    dataNascimentoField.toLocaleDateString("pt-BR")
+                                    :
+                                    dataFundacaoField.toLocaleDateString("pt-BR")
+                                }</InputButtonText>
                             </InputButtonArea>
 
                             {show && (
                                 <DatePicker
-                                value={dataNascimentoField}
-                                mode='date'
-                                onChange={onChange}
+                                    value={typeProfile.perfil === 'USUARIO' ? dataNascimentoField : dataFundacaoField}
+                                    mode='date'
+                                    onChange={onChange}
                                 />
                             )}
 
                         </InvisibleDescriptionArea>
 
 
-                        <LinhaCentral/>
-                        
-                    
+                        <LinhaCentral />
+
+
                         <Title>Contatos</Title>
                         <InvisibleDescriptionArea>
                             <Text>Alterar número de celular</Text>
-                            <SignInput 
+                            <SignInput
                                 IconSvg={EmailIcon}
                                 placeholder="Número do celular"
                                 value={celularField}
-                                onChangeText={t=>setCelularField(t)}
-                                password = {false}
-                                keyboardType = 'number-pad'
+                                onChangeText={t => setCelularField(t)}
+                                password={false}
+                                keyboardType='number-pad'
                             />
 
                             <Text>Alterar número de telefone</Text>
-                            <SignInput 
+                            <SignInput
                                 IconSvg={EmailIcon}
                                 placeholder="Número do telefone"
                                 value={telefoneField}
-                                onChangeText={t=>setTelefoneField(t)}
-                                password = {false}
-                                keyboardType = 'number-pad'
+                                onChangeText={t => setTelefoneField(t)}
+                                password={false}
+                                keyboardType='number-pad'
                             />
                         </InvisibleDescriptionArea>
 
-                        <LinhaCentral/>
+                        {typeProfile.perfil === 'USUARIO' &&
+                            <>
+                                <LinhaCentral />
 
-                        <Title>Localização</Title>
-                        <InvisibleDescriptionArea>
-                        
-                            <Text>Alterar CEP</Text>
-                            <SignInput 
-                                IconSvg={EmailIcon}
-                                placeholder="CEP"
-                                value={enderecoCepField}
-                                onChangeText={t=>setEnderecoCepField(t)}
-                                password = {false}
-                                keyboardType = 'number-pad'
-                                onEndEditing={handleCepClick}
-                            />
+                                <Title>Localização</Title>
+                                <InvisibleDescriptionArea>
 
-                            {loadingCep &&
-                                <LoadingIconBasic size="large" color="#63C2D1" />
-                                
-                            }
-
-                            {viaCep.cep &&
-                                <>
-                                    <DescriptionArea>
-                                        <TextBold>Rua: <Text>{viaCep.logradouro}</Text></TextBold>
-                                        <TextBold>Bairro: <Text>{viaCep.bairro}</Text></TextBold>
-                                        <TextBold>Cidade: <Text>{viaCep.localidade}</Text></TextBold>
-                                        <TextBold>Estado: <Text>{viaCep.uf}</Text></TextBold>
-                                    </DescriptionArea>
-
-                                    <Text>Alterar complemento</Text>
-                                    <SignInput 
+                                    <Text>Alterar CEP</Text>
+                                    <SignInput
                                         IconSvg={EmailIcon}
-                                        placeholder="Complemento"
-                                        value={complementoField}
-                                        onChangeText={t=>setComplementoField(t)}
-                                        password = {false}
-                                        
+                                        placeholder="CEP"
+                                        value={enderecoCepField}
+                                        onChangeText={t => setEnderecoCepField(t)}
+                                        password={false}
+                                        keyboardType='number-pad'
+                                        onEndEditing={handleCepClick}
                                     />
 
-                                    <Text>Alterar número</Text>
-                                    <SignInput 
-                                        IconSvg={EmailIcon}
-                                        placeholder="Número"
-                                        value={numeroField}
-                                        onChangeText={t=>setNumeroField(t)}
-                                        password = {false}
-                                        keyboardType = 'number-pad'
-                                    />
-                                </>
-                            }
+                                    {loadingCep &&
+                                        <LoadingIconBasic size="large" color="#63C2D1" />
 
-                            </InvisibleDescriptionArea>
+                                    }
 
-                        <EntreEspacos/>
+                                    {viaCep.cep &&
+                                        <>
+                                            <DescriptionArea>
+                                                <TextBold>Rua: <Text>{viaCep.logradouro}</Text></TextBold>
+                                                <TextBold>Bairro: <Text>{viaCep.bairro}</Text></TextBold>
+                                                <TextBold>Cidade: <Text>{viaCep.localidade}</Text></TextBold>
+                                                <TextBold>Estado: <Text>{viaCep.uf}</Text></TextBold>
+                                            </DescriptionArea>
+
+                                            <Text>Alterar complemento</Text>
+                                            <SignInput
+                                                IconSvg={EmailIcon}
+                                                placeholder="Complemento"
+                                                value={complementoField}
+                                                onChangeText={t => setComplementoField(t)}
+                                                password={false}
+
+                                            />
+
+                                            <Text>Alterar número</Text>
+                                            <SignInput
+                                                IconSvg={EmailIcon}
+                                                placeholder="Número"
+                                                value={numeroField}
+                                                onChangeText={t => setNumeroField(t)}
+                                                password={false}
+                                                keyboardType='number-pad'
+                                            />
+                                        </>
+                                    }
+
+                                </InvisibleDescriptionArea>
+                            </>
+                        }
+
+                        <EntreEspacos />
 
                         <CustomButton onPress={handleChangeClick}>
                             {loading ?

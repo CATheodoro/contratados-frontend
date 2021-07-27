@@ -14,7 +14,7 @@ import { BackgroundImageProfile } from '../../../styles/Image';
 
 import { PageBodyProfile, Linha, DescriptionProfileArea, DescriptionArea } from '../../../styles/View';
 
-import { Title, Text, TextBold } from '../../../styles/Text';
+import { Title, Text, TextBold, SubTitle } from '../../../styles/Text';
 
 import { BackButtom } from '../../../styles/Button';
 
@@ -38,18 +38,18 @@ export default () => {
 
     const [loading, setLoading] = useState(false);
 
+    const getPerfilEmpresa = async () =>{
+        setLoading(true);
+        let json = await Api.getPerfilEmpresa(empresaInfo.id);
+        if(json){
+            setEmpresaInfo(json);
+        } else {
+            alert("Erro: "+json.error);
+        }
+        setLoading(false);
+    };
 
     useEffect(()=>{
-        setLoading(true)
-        const getPerfilEmpresa = async () =>{
-            let json = await Api.getPerfilEmpresa(empresaInfo.id);
-            if(json){
-                setEmpresaInfo(json);
-            } else {
-                alert("Erro: "+json.error);
-            }
-            setLoading(false);
-        };
         getPerfilEmpresa();
     },[]);
 
@@ -77,7 +77,7 @@ export default () => {
                         <TextBold>Data de fundação: <Text>{empresaInfo.dataFundacao}</Text></TextBold>
                     </DescriptionProfileArea>
 
-                    <Title>Contatos</Title>
+                    <SubTitle>Contatos</SubTitle>
                     <DescriptionArea>
                         <TextBold>Email: <Text>{empresaInfo.email}</Text></TextBold>
                         {empresaInfo.celular &&

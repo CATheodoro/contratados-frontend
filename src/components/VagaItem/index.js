@@ -107,8 +107,7 @@ const DataPost = styled.Text`
 
 
 
-export default ({data}) => {
-
+export default ({data, perfil}) => {
     const navigation = useNavigation();
 
     const handleClick = () =>{
@@ -121,7 +120,8 @@ export default ({data}) => {
                 requisitos: data.requisitos,
                 localidade: data.localidade,
                 uf: data.uf,
-                solicitacaoEmpresaStatus: null
+                solicitacaoEmpresaStatus: null,
+                perfil: perfil
             });
     }
 

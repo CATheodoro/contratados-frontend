@@ -41,62 +41,119 @@ export default () => {
     const [userInfo, setUserInfo] = useState({
         nome: route.params.nome,
         email: route.params.email,
-        type: route.params.type
+        type: route.params.type,
+        perfil: route.params.perfil
     })
 
 
     const handleChangeClick = async () => {
         setLoading(true);
             if(oldPasswordFiel !='' && itemField != ''){
-                if(userInfo.type==='e-mail'){
-                    if(itemField === confirmItemField){
-                        if(itemField !== userInfo.email){
 
-                            let res = await Api.updateEmailUsuario(oldPasswordFiel, itemField);
-            
-                            if(res.id) {
+                if(userInfo.perfil === 'USUARIO'){
+
+                    if(userInfo.type==='e-mail'){
+                        if(itemField === confirmItemField){
+                            if(itemField !== userInfo.email){
+    
+                                let res = await Api.updateEmailUsuario(oldPasswordFiel, itemField);
                 
-                                alert("E-mail alterada com sucesso !!!");
-                                navigation.navigate('Profile');
-                
+                                if(res.id) {
+                    
+                                    alert("E-mail alterada com sucesso !!!");
+                                    navigation.navigate('Profile');
+                    
+                                } else {
+                                    if(res.error){
+                                        alert("Erro: " + res.error);
+                                    } else
+                                        alert("Erro: " + res[0].error);
+                                    
+                                }
                             } else {
-                                if(res.error){
-                                    alert("Erro: " + res.error);
-                                } else
-                                    alert("Erro: " + res[0].error);
-                                
+                                alert("O novo e-mail não pode ser o mesmo que o atual")
                             }
                         } else {
-                            alert("O novo e-mail não pode ser o mesmo que o atual")
+                            alert ("E-mail diferente, confirme seu e-mail novamente");
                         }
                     } else {
-                        alert ("E-mail diferente, confirme seu e-mail novamente");
+                        if(itemField === confirmItemField){
+                            if(itemField !== oldPasswordFiel){
+                                let res = await Api.updateSenhaUsuario(oldPasswordFiel, itemField);
+            
+                                if(res.id) {
+                    
+                                    alert("Senha alterada com sucesso !!!");
+                                    navigation.navigate('Profile');
+                    
+                                } else {
+                                    if(res.error){
+                                        alert("Erro: " + res.error);
+                                    } else
+                                        alert("Erro: " + res[0].error);
+                                    
+                                }
+                            } else {
+                                alert("A nova senha não pode ser a mesma que a atual");
+                            }
+        
+                        } else {
+                            alert ("Senhas diferentes, confirme sua senha novamente");
+                        }
                     }
                 } else {
-                    if(itemField === confirmItemField){
-                        if(itemField !== oldPasswordFiel){
-                            let res = await Api.updateSenhaUsuario(oldPasswordFiel, itemField);
         
-                            if(res.id) {
+                    if(userInfo.type==='e-mail'){
+                        if(itemField === confirmItemField){
+                            if(itemField !== userInfo.email){
+    
+                                let res = await Api.updateEmailEmpresa(oldPasswordFiel, itemField);
                 
-                                alert("Senha alterada com sucesso !!!");
-                                navigation.navigate('Profile');
-                
+                                if(res.id) {
+                    
+                                    alert("E-mail alterada com sucesso !!!");
+                                    navigation.navigate('Profile');
+                    
+                                } else {
+                                    if(res.error){
+                                        alert("Erro: " + res.error);
+                                    } else
+                                        alert("Erro: " + res[0].error);
+                                    
+                                }
                             } else {
-                                if(res.error){
-                                    alert("Erro: " + res.error);
-                                } else
-                                    alert("Erro: " + res[0].error);
-                                
+                                alert("O novo e-mail não pode ser o mesmo que o atual")
                             }
                         } else {
-                            alert("A nova senha não pode ser a mesma que a atual");
+                            alert ("E-mail diferente, confirme seu e-mail novamente");
                         }
-    
                     } else {
-                        alert ("Senhas diferentes, confirme sua senha novamente");
+                        if(itemField === confirmItemField){
+                            if(itemField !== oldPasswordFiel){
+                                let res = await Api.updatePasswordEmpresa(oldPasswordFiel, itemField);
+            
+                                if(res.id) {
+                    
+                                    alert("Senha alterada com sucesso !!!");
+                                    navigation.navigate('Profile');
+                    
+                                } else {
+                                    if(res.error){
+                                        alert("Erro: " + res.error);
+                                    } else
+                                        alert("Erro: " + res[0].error);
+                                    
+                                }
+                            } else {
+                                alert("A nova senha não pode ser a mesma que a atual");
+                            }
+        
+                        } else {
+                            alert ("Senhas diferentes, confirme sua senha novamente");
+                        }
                     }
                 }
+     
     
             } else {
                 alert ("Preencha os campos");
@@ -111,7 +168,7 @@ export default () => {
     return (
         <Container>
             <Scroller>
-                    <BackgroundImageProfile />      
+                <BackgroundImageProfile />      
 
                 <PageBodyProfile>
 
@@ -169,7 +226,7 @@ export default () => {
                         />
 
                         <EntreEspacos/>
-
+                    
                     <CustomButton onPress={handleChangeClick}>
                         {loading ?
                             <LoadingIconBasic size="large" color="#FFF" />

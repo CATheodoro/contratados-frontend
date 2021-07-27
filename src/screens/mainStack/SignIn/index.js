@@ -43,7 +43,7 @@ export default ()=>{
                 await AsyncStorage.setItem('token', json.token);
                 await AsyncStorage.setItem('perfil', json.perfil);
                 await AsyncStorage.setItem('id', json.id);
-
+                
                 if(json.perfil === 'USUARIO'){
 
                     navigation.reset({

@@ -15,7 +15,6 @@ export const BigTextBold = styled.Text`
     margin-left: 20px;
 `;
 
-
 export const SubTitle = styled.Text`
     font-size: 18px;
     font-weight: bold;
@@ -28,6 +27,13 @@ export const Text = styled.Text`
     font-size: 14px;
     font-weight: bold;
     color: #000000;
+    margin-left: 20px;
+`;
+
+export const TextWhite = styled.Text`
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFF;
     margin-left: 20px;
 `;
 
@@ -69,4 +75,11 @@ export const ButtonWhiteText = styled.Text`
     font-size: 14px;
     font-weight: bold;
     color: #FFFFFF;
+`;
+
+
+export const CustomButtonText = styled.Text`
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFF;
 `;

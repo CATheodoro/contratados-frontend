@@ -78,6 +78,22 @@ export const PerfilButton = styled.TouchableOpacity`
     padding-left: 15px;
 `;
 
+export const PerfilBlueButton = styled.TouchableOpacity`
+    background-color: #4EADBE;
+    border-radius: 10px;
+
+    height: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+
+    align-items: center;
+    
+    flex-direction: row;
+    padding-left: 15px;
+`;
+
 
 export const PdfButton = styled.TouchableOpacity`
     background-color: #E27D60;
@@ -104,3 +120,15 @@ export const DangerButton = styled.TouchableOpacity`
 `;
 
 
+export const CustomListButton = styled.TouchableOpacity`
+    background-color: #268596;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 100px;
+    height: 50px;
+`;

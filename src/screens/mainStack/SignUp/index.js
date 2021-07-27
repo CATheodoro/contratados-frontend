@@ -23,6 +23,7 @@ import BarberLogo from '../../../assets/barber.svg'
 import PersonIcon from '../../../assets/person.svg'
 import EmailIcon from '../../../assets/email.svg'
 import LockIcon from '../../../assets/lock.svg'
+import SignUpModal from '../../../components/SignUpModal';
 
 export default ()=>{
     const { dispatch: userDispatch } = useContext(UserContext);
@@ -34,31 +35,18 @@ export default ()=>{
     const [confirmPasswordField, setConfirmPasswordField] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const [showModal, setShowModal] = useState(false);
+
     const handleSignClick = async () => {
     setLoading(true);
         if(nameField != '' && emailField != '' && passwordField != ''){
-
             if(passwordField === confirmPasswordField){
-                let res = await Api.signUp(nameField, emailField, passwordField);
 
-                if(res.id) {
-    
-                    alert("Cadastro realizado com sucesso !!!");
-                    navigation.reset({
-                        routes: [{name: 'SignIn'}]
-                    });
-    
-                } else {
-                    if(res.error){
-                        alert("Erro: " + res.error);
-                    } else
-                        alert("Erro: " + res[0].error);
-                    
-                }
+            setShowModal(true);
+            
             } else {
                 alert ("Senhas diferentes, confirme sua senha novamente");
             }
-
         } else {
             alert ("Preencha os campos");
         }
@@ -119,6 +107,14 @@ export default ()=>{
                     }
                 </CustomButton>
             </InputArea>
+
+            <SignUpModal
+                    show={showModal}
+                    setShow={setShowModal}
+                    password={passwordField}
+                    email = {emailField}
+                    name = {nameField}
+            />
 
             <SignMessageButton onPress={handleMessageButtonClick}>
                 <SignMessageButtonText>Já possui uma conta?</SignMessageButtonText>

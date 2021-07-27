@@ -73,3 +73,9 @@ export const EntreEspacos = styled.View`
 export const EntreEspacosGrande = styled.View`
     margin-bottom: 10px;
 `;
+
+
+export const TitleArea = styled.View`
+    flex: 1;
+    align-items: center;
+`; 

@@ -7,6 +7,7 @@ import SignUp from '../screens/mainStack/SignUp';
 import MainTab from './MainTab';
 
 import AnuncioVaga from '../screens/users/empresa/AnuncioVaga';
+import ProfileUsuario from '../screens/users/usuario/ProfileUsuario';
 import ProfileEmpresa from '../screens/users/empresa/ProfileEmpresa';
 import ProfileUpdateEmailPassword from '../screens/users/ProfileUpdateEmailPassword';
 
@@ -17,6 +18,11 @@ import ProfileUsuarioUpdateExperienciaFormacao from '../screens/users/usuario/Pr
 
 import Solicitacao from '../screens/users/Solicitacao';
 import CreateAnuncioVaga from '../screens/users/empresa/CreateAnuncioVaga'
+import CreateSetorCargo from '../screens/users/empresa/CreateSetorCargo';
+
+import SolicitacaoEmpresaUpdate from '../screens/users/SolicitacaoEmpresaUpdate';
+
+import FilterAnuncioVagaSolicitacoes from '../screens/users/FilterAnuncioVagaSolicitacoes';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +40,7 @@ export default () =>(
 
         <Stack.Screen name="AnuncioVaga" component={AnuncioVaga} />
 
+        <Stack.Screen name="ProfileUsuario" component={ProfileUsuario} />
         <Stack.Screen name="ProfileEmpresa" component={ProfileEmpresa} />
         <Stack.Screen name="ProfileUpdateEmailPassword" component={ProfileUpdateEmailPassword} />
         <Stack.Screen name="ProfileUsuarioUpdate" component={ProfileUsuarioUpdate} />
@@ -43,6 +50,11 @@ export default () =>(
 
         <Stack.Screen name="Solicitacao" component={Solicitacao} />
         <Stack.Screen name="CreateAnuncioVaga" component={CreateAnuncioVaga} />
+        <Stack.Screen name="CreateSetorCargo" component={CreateSetorCargo} />
+
+        <Stack.Screen name="SolicitacaoEmpresaUpdate" component={SolicitacaoEmpresaUpdate} />
+
+        <Stack.Screen name="FilterAnuncioVagaSolicitacoes" component={FilterAnuncioVagaSolicitacoes} />
         
         
     </Stack.Navigator>
