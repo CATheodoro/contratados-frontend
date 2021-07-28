@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import { UserContext } from '../../../contexts/UserContext';
 
-import { 
+import {
     Container,
     InputArea,
     CustomButton,
@@ -12,7 +12,8 @@ import {
     SignMessageButton,
     SignMessageButtonText,
     SignMessageButtonTextBold,
-    LoadingIcon
+    LoadingIcon,
+    TextWhite
 
 } from './styles';
 
@@ -20,11 +21,11 @@ import Api from '../../../Api';
 
 import SignInput from '../../../components/SignInput';
 
-import BarberLogo from '../../../assets/barber.svg'
-import EmailIcon from '../../../assets/email.svg'
-import LockIcon from '../../../assets/lock.svg'
+import Logo from '../../../assets/logoContratados.svg';
+import EmailIcon from '../../../assets/email.svg';
+import LockIcon from '../../../assets/lock.svg';
 
-export default ()=>{
+export default () => {
     const { dispatch: userDispatch } = useContext(UserContext);
     const navigation = useNavigation();
 
@@ -35,32 +36,32 @@ export default ()=>{
 
     const handleSignClick = async () => {
         setLoading(true);
-        if(emailField != '' && passwordField != ''){   
+        if (emailField != '' && passwordField != '') {
 
             let json = await Api.signIn(emailField, passwordField);
 
-            if(json.token){
+            if (json.token) {
                 await AsyncStorage.setItem('token', json.token);
                 await AsyncStorage.setItem('perfil', json.perfil);
                 await AsyncStorage.setItem('id', json.id);
-                
-                if(json.perfil === 'USUARIO'){
+
+                if (json.perfil === 'USUARIO') {
 
                     navigation.reset({
-                        routes: [{name: 'MainTab'}]
+                        routes: [{ name: 'MainTab' }]
                     });
                 }
 
-                if(json.perfil === 'EMPRESA'){
+                if (json.perfil === 'EMPRESA') {
                     navigation.reset({
-                        routes: [{name: 'MainTab'}]
+                        routes: [{ name: 'MainTab' }]
                     });
                 }
 
-            } else{
+            } else {
                 alert('E-mail e/ou senha incorreto! ');
             }
-        }else{
+        } else {
             alert("Preencha os campos!");
         }
         setLoading(false)
@@ -72,32 +73,33 @@ export default ()=>{
 
     return (
         <Container>
-            <BarberLogo width="100%" height="160" />
+            <Logo width="100%" height="160" />
 
             <InputArea>
-
-                <SignInput 
+                <TextWhite>E-mail:</TextWhite>
+                <SignInput
                     IconSvg={EmailIcon}
                     placeholder="Digite seu E-mail"
                     value={emailField}
-                    onChangeText={t=>setEmailField(t)}
-                    keyboardType = 'email-address'
+                    onChangeText={t => setEmailField(t)}
+                    keyboardType='email-address'
                 />
-                <SignInput 
+                <TextWhite>Senha:</TextWhite>
+                <SignInput
                     IconSvg={LockIcon}
                     placeholder="Digite sua senha"
                     value={passwordField}
-                    onChangeText={t=>setPasswordField(t)}
-                    password = {true}
+                    onChangeText={t => setPasswordField(t)}
+                    password={true}
                 />
 
-            <CustomButton onPress={handleSignClick}>
+                <CustomButton onPress={handleSignClick}>
                     {loading ?
                         <LoadingIcon size="large" color="#FFF" />
                         :
                         <CustomButtonText>ENTRAR</CustomButtonText>
                     }
-                    
+
                 </CustomButton>
             </InputArea>
 

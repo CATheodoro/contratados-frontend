@@ -25,7 +25,8 @@ export const UserInfoName = styled.Text`
 `;
 
 export const SimpleButtonInfoArea = styled.TouchableOpacity`
-    background-color: #4EADBE;
+    background-color: #FFF;
+    border: 1px solid #63C2D1;
     border-radius: 10px;
     padding: 10px 10px;
 

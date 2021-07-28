@@ -21,8 +21,12 @@ import { ExitButtonProfile, PdfButton, PerfilButton } from '../../styles/Button'
 import Api from '../../../Api';
 
 import LockIcon from '../../../assets/lock.svg';
-import PersonIcon from '../../../assets/person.svg';
+import ProfileIcon from '../../../assets/name-id.svg';
 import EmailIcon from '../../../assets/email.svg';
+import UpdateIcon from '../../../assets/registration.svg';
+import CircleIcon from '../../../assets/circle.svg';
+
+
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { RefreshControl } from 'react-native';
@@ -40,7 +44,7 @@ export default () => {
 
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [perfil, setPerfil] = useState( AsyncStorage.getItem('perfil'));
+    const [perfil, setPerfil] = useState(AsyncStorage.getItem('perfil'));
 
     const getPerfil = async () => {
         setPerfil(await AsyncStorage.getItem('perfil'));
@@ -68,8 +72,8 @@ export default () => {
         setLoading(false);
     };
 
-    
-    const getUserPerfilLogado = () =>{
+
+    const getUserPerfilLogado = () => {
         if (perfil === 'USUARIO') {
             getPerfilUsuario();
         } else {
@@ -112,18 +116,18 @@ export default () => {
             navigation.navigate('ProfileUsuarioUpdate', {
                 nome: userInfo.nome,
                 email: userInfo.email,
-    
+
                 dataNascimento: '',
-    
+
                 celular: userInfo.celular,
                 telefone: userInfo.telefone,
-    
+
                 status: userInfo.status,
                 dataCriacaoPerfil: userInfo.dataCriacaoPerfil,
-    
+
                 formacao: userInfo.formacao,
                 experiencia: userInfo.experiencia,
-    
+
                 cep: userInfo.cep,
                 logradouro: userInfo.logradouro,
                 complemento: userInfo.complemento,
@@ -139,12 +143,12 @@ export default () => {
             navigation.navigate('ProfileUsuarioUpdate', {
                 nome: userInfo.nome,
                 email: userInfo.email,
-    
+
                 descricao: userInfo.descricao,
-    
+
                 celular: userInfo.celular,
                 telefone: userInfo.telefone,
-    
+
                 cnpj: userInfo.cnpj,
 
                 dataFundacao: '',
@@ -166,20 +170,28 @@ export default () => {
 
     const handleChangeStatus = () => {
         getPerfilUsuario();
-        
+
         setShowModal(true);
     }
 
-    
+
     const handleVerPerfil = () => {
         if (perfil === 'USUARIO') {
             getPerfilUsuario();
-        } else {
-            navigation.navigate('ProfileEmpresa',{
+            navigation.navigate('ProfileUsuario', {
                 id: userInfo.id,
                 nome: userInfo.nome,
                 email: userInfo.email,
-    
+
+                celular: userInfo.celular,
+                telefone: userInfo.telefone,
+            })
+        } else {
+            navigation.navigate('ProfileEmpresa', {
+                id: userInfo.id,
+                nome: userInfo.nome,
+                email: userInfo.email,
+
                 celular: userInfo.celular,
                 telefone: userInfo.telefone,
 
@@ -187,7 +199,7 @@ export default () => {
         }
     }
 
-    
+
 
     return (
         <Container>
@@ -207,17 +219,20 @@ export default () => {
                     <EntreEspacosGrande />
 
                     <PerfilButton onPress={() => handleVerPerfil()}>
-                        <PersonIcon width="24" height="24" fill="#268596" />
+                        <ProfileIcon width="24" height="24" fill="#268596" />
                         <Text>Ver perfil</Text>
                     </PerfilButton>
                     <EntreEspacosGrande />
 
-                    <Linha />
 
                     {perfil === 'USUARIO' &&
                         <>
                             <PerfilButton onPress={() => handleChangeStatus()}>
-                                <PersonIcon width="24" height="24" fill="#268596" />
+                                {userInfo.status == 'DISPONIVEL' ?
+                                    <CircleIcon width="24" height="24" fill="#2ECC40" />
+                                    :
+                                    <CircleIcon width="24" height="24" fill="#FF851B" />
+                                }
                                 <Text>Definir status</Text>
                                 {userInfo.status == 'DISPONIVEL' ?
                                     <TextGreen>Disponível</TextGreen>
@@ -226,15 +241,14 @@ export default () => {
                                 }
                             </PerfilButton>
                             <EntreEspacosGrande />
-
-                            <Linha />
                         </>
                     }
 
-
+                    <Linha />
+                    <EntreEspacosGrande />
 
                     <PerfilButton onPress={() => handleChangePerfil()}>
-                        <PersonIcon width="24" height="24" fill="#268596" />
+                        <UpdateIcon width="24" height="24" fill="#268596" />
                         <Text>Atualizar perfil</Text>
                     </PerfilButton>
 
@@ -248,10 +262,10 @@ export default () => {
                         <Text>Alterar senha</Text>
                     </PerfilButton>
 
-                    {perfil === 'USUARIO' &&
+                    {perfil === 'USUARIO' && userInfo.linkCurriculo != null &&
                         <>
                             <Linha />
-                            <PdfButton onPress={() => OpenAnyThing.Pdf('https://cepein.femanet.com.br/BDigital/arqTccs/0911270036.pdf')}>
+                            <PdfButton onPress={() => OpenAnyThing.Pdf(userInfo.linkCurriculo)}>
                                 <ButtonWhiteText>Visualizar o currículo</ButtonWhiteText>
                             </PdfButton>
                             <Linha />

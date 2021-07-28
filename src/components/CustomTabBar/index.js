@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import styled from 'styled-components/native';
 
 import { UserContext } from '../../contexts/UserContext';
 
 import HomeIcon from '../../assets/home.svg';
 import SearchIcon from '../../assets/search.svg';
 import TodayIcon from '../../assets/today.svg';
-import FavoriteIcon from '../../assets/favorite.svg';
+import ContratoIcon from '../../assets/contrato.svg';
 import AccountIcon from '../../assets/account.svg';
 
 
@@ -37,7 +36,7 @@ export default ({ state, navigation }) => {
             </TabItemCenter>
 
             <TabItem onPress={()=>goTo('Solicitacoes')}>
-                <FavoriteIcon style={{opacity: state.index===3? 1 : 0.5}} width="28" height="28" fill="#FFFFFF" />
+                <ContratoIcon style={{opacity: state.index===3? 1 : 0.5}} width="28" height="28" fill="#FFFFFF" />
                 <Text style={{color:"#FFFFFF", opacity: state.index===3? 1 : 0.5}} >Solicitações</Text>
             </TabItem>
             

@@ -47,3 +47,9 @@ export const SignMessageButtonTextBold = styled.Text`
 export const LoadingIcon = styled.ActivityIndicator`
 `;
 
+
+export const TextWhite = styled.Text`
+    margin-left: 20px;
+    font-size: 16px;
+    color: #FFF;
+`;

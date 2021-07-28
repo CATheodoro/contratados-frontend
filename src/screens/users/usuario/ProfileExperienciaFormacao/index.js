@@ -8,7 +8,7 @@ import { Linha, EntreEspacosGrande, Description, SubDescription, ObjectInfo, Obj
 import { BackgroundImageProfile } from '../../../styles/Image';
 
 import { Container, Scroller } from '../../../styles/Basic';
-    
+
 import { PageBodyProfile } from '../../../styles/View';
 
 import { Title, Text, SubTitle, CustomButtonText } from '../../../styles/Text';
@@ -28,39 +28,40 @@ export default () => {
     const route = useRoute();
 
     const [loading, setLoading] = useState(false);
-    
+
     const [userInfo, setUserInfo] = useState({
         nome: route.params.nome,
         email: route.params.email,
         experiencia: route.params.experiencia,
-        formacao: route.params.formacao
+        formacao: route.params.formacao,
+        perfil: route.params.perfil
     });
 
     const [itemObject, setItemObject] = useState([]);
     const [itemName, setItemName] = useState([]);
 
-        const handleBackButton = () => {
-            navigation.goBack();
+    const handleBackButton = () => {
+        navigation.goBack();
+    }
+
+    const experienciaOrFormacao = () => {
+        if (userInfo.experiencia !== '') {
+            setItemObject(userInfo.experiencia);
+            setItemName('experiência');
+        } else {
+            setItemObject(userInfo.formacao);
+            setItemName('formação')
         }
 
-        const experienciaOrFormacao = () =>{
-            if(userInfo.experiencia !== ''){
-                setItemObject(userInfo.experiencia);
-                setItemName('experiência');
-            } else {
-                setItemObject(userInfo.formacao);
-                setItemName('formação')
-            }
-            
-        }
+    }
 
-        useEffect(()=>{
-            experienciaOrFormacao();
-        },[]);
+    useEffect(() => {
+        experienciaOrFormacao();
+    }, []);
 
-        
+
     const handleChoose = key => {
-        navigation.navigate('ProfileUsuarioUpdateExperienciaFormacao',{
+        navigation.navigate('ProfileUsuarioUpdateExperienciaFormacao', {
             nome: userInfo.nome,
             email: userInfo.email,
             object: itemObject[key],
@@ -68,7 +69,7 @@ export default () => {
         })
     }
 
-    const handleAdd = () =>{
+    const handleAdd = () => {
         navigation.navigate('ProfileUsuarioUpdateExperienciaFormacao', {
             nome: userInfo.nome,
             email: userInfo.email,
@@ -82,44 +83,48 @@ export default () => {
     return (
         <Container>
             <Scroller>
-                <BackgroundImageProfile /> 
+                <BackgroundImageProfile />
                 <PageBodyProfile>
 
-                <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
+                    <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
 
 
-                    {userInfo.experiencia !== '' ? 
+                    {userInfo.experiencia !== '' ?
                         <Title>Experiências</Title>
                         :
                         <Title>Formações</Title>
                     }
-                    
-                    <PerfilButton onPress={()=>handleAdd()}>
-                        <Text>Adicionar {itemName}</Text>
-                    </PerfilButton>
 
-                    <EntreEspacosGrande/>
+                    {userInfo.perfil === "USUARIO" &&
+                        <>
+                            <PerfilButton onPress={() => handleAdd()}>
+                                <Text>Adicionar {itemName}</Text>
+                            </PerfilButton>
+                            <EntreEspacosGrande />
+                            <Linha />
+                        </>
+                    }
 
-                    <Linha/>
-            
-                    {userInfo.experiencia !== '' ? 
+
+                    {userInfo.experiencia !== '' ?
                         <SubTitle>Lista de experiências</SubTitle>
                         :
                         <SubTitle>Lista de formações</SubTitle>
                     }
-                    {itemObject  &&
-                        itemObject.map((item, key)=>(
+                    {itemObject &&
+                        itemObject.map((item, key) => (
                             <ObjectItem key={key}>
                                 <ObjectInfo>
                                     <Description>{item.descricao}</Description>
                                     <SubDescription>Início: {item.inicioFormatado}</SubDescription>
                                     <SubDescription>Termino: {item.terminoFormatado}</SubDescription>
-                                    
+
                                 </ObjectInfo>
-        
-                                <CustomListButton onPress={()=>handleChoose(key)}>
-                                    <CustomButtonText>Atualizar</CustomButtonText>
-                                </CustomListButton>
+                                {userInfo.perfil === "USUARIO" &&
+                                    <CustomListButton onPress={() => handleChoose(key)}>
+                                        <CustomButtonText>Atualizar</CustomButtonText>
+                                    </CustomListButton>
+                                }
                             </ObjectItem>
                         ))
                     }

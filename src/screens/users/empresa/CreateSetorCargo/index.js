@@ -23,7 +23,8 @@ import Api from '../../../../Api';
 import SignInput from '../../../../components/SignInput';
 
 import BackIcon from '../../../../assets/back.svg';
-import PersonIcon from '../../../../assets/person.svg'
+import MenuBarIcon from '../../../../assets/menu-bar.svg';
+
 import InfoTopProfile from '../../../../components/InfoTopProfile';
 
 export default () => {
@@ -150,7 +151,7 @@ export default () => {
 
                             <Text>Digite o cargo</Text>
                             <SignInput
-                                IconSvg={PersonIcon}
+                                IconSvg={MenuBarIcon}
                                 placeholder="Cargo"
                                 value={cargoField}
                                 onChangeText={t => setCargoField(t)}
@@ -158,7 +159,7 @@ export default () => {
 
                             <Text>Digite o setor</Text>
                             <SignInput
-                                IconSvg={PersonIcon}
+                                IconSvg={MenuBarIcon}
                                 placeholder="Setor"
                                 value={setorField}
                                 onChangeText={t => setSetorField(t)}

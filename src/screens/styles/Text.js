@@ -77,6 +77,13 @@ export const ButtonWhiteText = styled.Text`
     color: #FFFFFF;
 `;
 
+export const ButtonBlackText = styled.Text`
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+`;
+
+
 
 export const CustomButtonText = styled.Text`
     font-size: 18px;

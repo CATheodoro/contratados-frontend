@@ -24,8 +24,9 @@ import SignInput from '../../../../components/SignInput';
 
 import TodayIcon from '../../../../assets/today.svg';
 import BackIcon from '../../../../assets/back.svg';
-import EmailIcon from '../../../../assets/email.svg'
 import InfoTopProfile from '../../../../components/InfoTopProfile';
+import CertificateIcon from '../../../../assets/certificate.svg';
+import SuitcaseIcon from '../../../../assets/suitcase.svg';
 
 
 import DatePicker from '@react-native-community/datetimepicker';
@@ -169,12 +170,11 @@ export default () => {
                             <Text>Digite sua {userInfo.itemType}</Text>
                         }
                         <SignInput
-                            IconSvg={EmailIcon}
+                            IconSvg={userInfo.itemType === "formação" ? CertificateIcon: SuitcaseIcon }
                             placeholder={userInfo.object !== '' ? "Alterar " + userInfo.itemType : "Informe a " + userInfo.itemType}
                             value={itemDescricao}
                             onChangeText={t => setItemDescricao(t)}
                         />
-
 
 
                         {userInfo.object !== '' ?

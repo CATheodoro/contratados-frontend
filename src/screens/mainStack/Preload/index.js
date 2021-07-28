@@ -4,9 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import { UserContext } from '../../../contexts/UserContext';
-import Api from '../../../Api';
-
-import BarberLogo from '../../../assets/barber.svg'
+import Logo from '../../../assets/logoContratados.svg'
 
 export default ()=>{
 
@@ -16,21 +14,13 @@ export default ()=>{
     useEffect(()  => {
         const checkToken = async () => {
             const token = await AsyncStorage.getItem('token');
-            const perfil = await AsyncStorage.getItem('perfil');
-            
+            const perfil = await AsyncStorage.getItem('perfil'); 
             
             if(token) {
 
-                if(perfil==='USUARIO'){
-                    navigation.reset({
-                        routes: [{name: 'MainTab'}]
-                    });
-                } else {
-                    navigation.reset({
-                        routes: [{name: 'MainTab'}]
-                    });
-                }
-
+                navigation.reset({
+                    routes: [{name: 'MainTab'}]
+                });
     
             } else {
                 navigation.navigate('SignIn');
@@ -41,7 +31,7 @@ export default ()=>{
 
     return (
         <Container>
-            <BarberLogo width="100%" height="160"/>
+            <Logo width="100%" height="160"/>
             <LoadingIcon size="large" color="#FFFFFF" />
         </Container>
     )

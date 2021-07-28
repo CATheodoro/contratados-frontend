@@ -10,6 +10,7 @@ import AnuncioVaga from '../screens/users/empresa/AnuncioVaga';
 import ProfileUsuario from '../screens/users/usuario/ProfileUsuario';
 import ProfileEmpresa from '../screens/users/empresa/ProfileEmpresa';
 import ProfileUpdateEmailPassword from '../screens/users/ProfileUpdateEmailPassword';
+import ProfileUsuarioUpdateCurriculo from '../screens/users/usuario/ProfileUsuarioUpdateCurriculo'
 
 import ProfileUsuarioUpdate from '../screens/users/usuario/ProfileUsuarioUpdate';
 
@@ -44,6 +45,8 @@ export default () =>(
         <Stack.Screen name="ProfileEmpresa" component={ProfileEmpresa} />
         <Stack.Screen name="ProfileUpdateEmailPassword" component={ProfileUpdateEmailPassword} />
         <Stack.Screen name="ProfileUsuarioUpdate" component={ProfileUsuarioUpdate} />
+        <Stack.Screen name="ProfileUsuarioUpdateCurriculo" component={ProfileUsuarioUpdateCurriculo} />
+        
 
         <Stack.Screen name="ProfileExperienciaFormacao" component={ProfileExperienciaFormacao} />
         <Stack.Screen name="ProfileUsuarioUpdateExperienciaFormacao" component={ProfileUsuarioUpdateExperienciaFormacao} />

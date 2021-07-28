@@ -22,6 +22,8 @@ import {
 import VagaItem from '../../../components/VagaItem';
 
 import SearchIcon from '../../../assets/search.svg';
+import PlusRoundIcon from '../../../assets/plus-round.svg';
+
 import { EntreEspacosGrande, Linha } from '../../styles/View';
 import { PerfilButton } from '../../styles/Button';
 import { Text } from '../../styles/Text';
@@ -96,6 +98,7 @@ export default () => {
                     <>
                         <EntreEspacosGrande/>
                         <PerfilButton onPress={() => handleClick()}>
+                        <PlusRoundIcon width="26" height="26" fill="#63C2D1"/>
                             <Text>Criar um novo anúncio</Text>
                         </PerfilButton>
                         <EntreEspacosGrande/>

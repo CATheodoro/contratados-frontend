@@ -23,12 +23,19 @@ import Api from '../../../../Api';
 import SignInput from '../../../../components/SignInput';
 
 import BackIcon from '../../../../assets/back.svg';
-import EmailIcon from '../../../../assets/email.svg'
+import EmailIcon from '../../../../assets/email.svg';
+import FileIcon from '../../../../assets/file.svg';
+import CnpjIcon from '../../../../assets/name-id.svg';
+import MobilePhone from '../../../../assets/mobile-phone.svg';
+import Telephone from '../../../../assets/telephone.svg';
+import Certificate from '../../../../assets/certificate.svg';
+import GpsIcon from '../../../../assets/gps.svg';
+
 import TodayIcon from '../../../../assets/today.svg';
-import PersonIcon from '../../../../assets/person.svg'
+import PersonIcon from '../../../../assets/person.svg';
+
+
 import InfoTopProfile from '../../../../components/InfoTopProfile';
-
-
 
 import DatePicker from '@react-native-community/datetimepicker';
 
@@ -64,6 +71,7 @@ export default () => {
         descricao: route.params.descricao,
         cnpj: route.params.cnpj,
         dataFundacao: route.params.dataFundacao,
+        perfil: route.params.perfil
 
     });
 
@@ -214,7 +222,8 @@ export default () => {
             nome: userInfo.nome,
             email: userInfo.email,
             experiencia: userInfo.experiencia,
-            formacao: ''
+            formacao: '',
+            perfil: userInfo.perfil,
         });
     }
 
@@ -224,6 +233,7 @@ export default () => {
             email: userInfo.email,
             experiencia: '',
             formacao: userInfo.formacao,
+            perfil: userInfo.perfil,
         });
     }
 
@@ -238,9 +248,15 @@ export default () => {
             setShow(Platform.OS === 'ios');
             setDataFundacaoField(currentDate);
         }
-        
- 
     };
+
+    const handleChangeCurriculo = () => {
+        navigation.navigate('ProfileUsuarioUpdateCurriculo', {
+            nome: userInfo.nome,
+            email: userInfo.email,
+            linkCurriculo: userInfo.linkCurriculo,
+        });
+    }
 
     const [show, setShow] = useState(false);
 
@@ -266,11 +282,11 @@ export default () => {
                             </PerfilButton>
 
                             <PerfilButton onPress={() => handlFormacao()}>
-                                <EmailIcon width="24" height="24" fill="#268596" />
+                                <Certificate width="24" height="24" fill="#268596" />
                                 <Text>Alterar formações</Text>
                             </PerfilButton>
 
-                            <PdfButton>
+                            <PdfButton onPress={() => handleChangeCurriculo()}>
                                 <ButtonWhiteText>Enviar um currículo em PDF</ButtonWhiteText>
                             </PdfButton>
 
@@ -280,11 +296,8 @@ export default () => {
                         </>
                     }
 
-
-
                     <Title>Atualizar perfil</Title>
                     <DescriptionArea>
-
 
                         <EntreEspacos />
 
@@ -303,7 +316,7 @@ export default () => {
                                 <>
                                     <Text>Alterar descrição</Text>
                                     <SignInput
-                                        IconSvg={PersonIcon}
+                                        IconSvg={FileIcon}
                                         placeholder="Descrição"
                                         value={descricaoField}
                                         onChangeText={t => setDescricaoField(t)}
@@ -312,7 +325,7 @@ export default () => {
 
                                     <Text>Alterar CNPJ</Text>
                                     <SignInput
-                                        IconSvg={PersonIcon}
+                                        IconSvg={CnpjIcon}
                                         placeholder="CNPJ"
                                         value={cnpjField}
                                         onChangeText={t => setCnpjField(t)}
@@ -353,7 +366,7 @@ export default () => {
                         <InvisibleDescriptionArea>
                             <Text>Alterar número de celular</Text>
                             <SignInput
-                                IconSvg={EmailIcon}
+                                IconSvg={MobilePhone}
                                 placeholder="Número do celular"
                                 value={celularField}
                                 onChangeText={t => setCelularField(t)}
@@ -363,7 +376,7 @@ export default () => {
 
                             <Text>Alterar número de telefone</Text>
                             <SignInput
-                                IconSvg={EmailIcon}
+                                IconSvg={Telephone}
                                 placeholder="Número do telefone"
                                 value={telefoneField}
                                 onChangeText={t => setTelefoneField(t)}
@@ -381,7 +394,7 @@ export default () => {
 
                                     <Text>Alterar CEP</Text>
                                     <SignInput
-                                        IconSvg={EmailIcon}
+                                        IconSvg={GpsIcon}
                                         placeholder="CEP"
                                         value={enderecoCepField}
                                         onChangeText={t => setEnderecoCepField(t)}
@@ -406,7 +419,7 @@ export default () => {
 
                                             <Text>Alterar complemento</Text>
                                             <SignInput
-                                                IconSvg={EmailIcon}
+                                                IconSvg={GpsIcon}
                                                 placeholder="Complemento"
                                                 value={complementoField}
                                                 onChangeText={t => setComplementoField(t)}
@@ -416,7 +429,7 @@ export default () => {
 
                                             <Text>Alterar número</Text>
                                             <SignInput
-                                                IconSvg={EmailIcon}
+                                                IconSvg={GpsIcon}
                                                 placeholder="Número"
                                                 value={numeroField}
                                                 onChangeText={t => setNumeroField(t)}

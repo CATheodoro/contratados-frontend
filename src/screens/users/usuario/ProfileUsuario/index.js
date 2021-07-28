@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import BackIcon from '../../../../assets/back.svg';
-
-
 //Styles    ###########################################################
 
 import { } from './styles';
@@ -16,12 +13,20 @@ import { PageBodyProfile, Linha, DescriptionProfileArea, DescriptionArea } from 
 
 import { Title, Text, TextBold, SubTitle, ButtonWhiteText } from '../../../styles/Text';
 
-import { BackButtom, PdfButton } from '../../../styles/Button';
+import { BackButtom, PdfButton, PerfilButton } from '../../../styles/Button';
 
 //Styles END ###########################################################
 
+import BackIcon from '../../../../assets/back.svg';
+import CertificateIcon from '../../../../assets/certificate.svg';
+import SuitcaseIcon from '../../../../assets/suitcase.svg';
+
+
+
 import Api from '../../../../Api';
 import InfoTopProfile from '../../../../components/InfoTopProfile';
+
+import * as OpenAnyThing from 'react-native-openanything';
 
 export default () => {
 
@@ -55,6 +60,25 @@ export default () => {
         navigation.goBack();
     }
 
+    const handleExperiencia = () => {
+        navigation.navigate('ProfileExperienciaFormacao', {
+            nome: usuarioInfo.nome,
+            email: usuarioInfo.email,
+            experiencia: usuarioInfo.experiencia,
+            formacao: '',
+        });
+    }
+
+    const handlFormacao = () => {
+        navigation.navigate('ProfileExperienciaFormacao', {
+            nome: usuarioInfo.nome,
+            email: usuarioInfo.email,
+            experiencia: '',
+            formacao: usuarioInfo.formacao,
+        });
+    }
+
+
     return (
         <Container>
             <Scroller>
@@ -68,9 +92,22 @@ export default () => {
                         <LoadingIcon size="large" color="#63C2D1" />
                     }
 
-                    <PdfButton onPress={() => OpenAnyThing.Pdf('https://cepein.femanet.com.br/BDigital/arqTccs/0911270036.pdf')}>
-                        <ButtonWhiteText>Visualizar o currículo</ButtonWhiteText>
-                    </PdfButton>
+                    <PerfilButton onPress={() => handleExperiencia()}>
+                        <SuitcaseIcon width="24" height="24" fill="#268596" />
+                        <Text>Experiências</Text>
+                    </PerfilButton>
+
+                    <PerfilButton onPress={() => handlFormacao()}>
+                        <CertificateIcon width="24" height="24" fill="#268596" />
+                        <Text>Formações</Text>
+                    </PerfilButton>
+
+                    {usuarioInfo.linkCurriculo != null &&
+                        <PdfButton onPress={() => OpenAnyThing.Pdf(usuarioInfo.linkCurriculo)}>
+                            <ButtonWhiteText>Visualizar o currículo</ButtonWhiteText>
+                        </PdfButton>
+                    }
+
 
                     <Linha />
 

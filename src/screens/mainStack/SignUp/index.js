@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { AsyncStorage } from '@react-native-community/async-storage';
 import { UserContext } from '../../../contexts/UserContext';
 
-import { 
+import {
     Container,
     InputArea,
     CustomButton,
@@ -11,7 +10,8 @@ import {
     SignMessageButton,
     SignMessageButtonText,
     SignMessageButtonTextBold,
-    LoadingIcon
+    LoadingIcon,
+    TextWhite
 
 } from './styles';
 
@@ -19,13 +19,13 @@ import Api from '../../../Api';
 
 import SignInput from '../../../components/SignInput';
 
-import BarberLogo from '../../../assets/barber.svg'
+import Logo from '../../../assets/logoContratados.svg'
 import PersonIcon from '../../../assets/person.svg'
 import EmailIcon from '../../../assets/email.svg'
 import LockIcon from '../../../assets/lock.svg'
 import SignUpModal from '../../../components/SignUpModal';
 
-export default ()=>{
+export default () => {
     const { dispatch: userDispatch } = useContext(UserContext);
     const navigation = useNavigation();
 
@@ -38,24 +38,24 @@ export default ()=>{
     const [showModal, setShowModal] = useState(false);
 
     const handleSignClick = async () => {
-    setLoading(true);
-        if(nameField != '' && emailField != '' && passwordField != ''){
-            if(passwordField === confirmPasswordField){
+        setLoading(true);
+        if (nameField != '' && emailField != '' && passwordField != '') {
+            if (passwordField === confirmPasswordField) {
 
-            setShowModal(true);
-            
+                setShowModal(true);
+
             } else {
-                alert ("Senhas diferentes, confirme sua senha novamente");
+                alert("Senhas diferentes, confirme sua senha novamente");
             }
         } else {
-            alert ("Preencha os campos");
+            alert("Preencha os campos");
         }
         setLoading(false);
     }
 
     const handleMessageButtonClick = () => {
         navigation.reset({
-            routes: [{name: 'SignIn'}]
+            routes: [{ name: 'SignIn' }]
         });
     }
 
@@ -63,40 +63,40 @@ export default ()=>{
 
     return (
         <Container>
-            <BarberLogo width="100%" height="160" />
+            <Logo width="100%" height="160" />
 
             <InputArea>
-
-                <SignInput 
+                <TextWhite>Nome: </TextWhite>
+                <SignInput
                     IconSvg={PersonIcon}
                     placeholder="Digite seu nome"
                     value={nameField}
-                    onChangeText={t=>setNameField(t)}
-                
-                />
+                    onChangeText={t => setNameField(t)}
 
-                <SignInput 
+                />
+                <TextWhite>E-mail:</TextWhite>
+                <SignInput
                     IconSvg={EmailIcon}
                     placeholder="Digite seu E-mail"
                     value={emailField}
-                    onChangeText={t=>setEmailField(t)}
-                    keyboardType = 'email-address'
+                    onChangeText={t => setEmailField(t)}
+                    keyboardType='email-address'
                 />
-
-                <SignInput 
+                <TextWhite>Senha:</TextWhite>
+                <SignInput
                     IconSvg={LockIcon}
                     placeholder="Digite sua senha"
                     value={passwordField}
-                    onChangeText={t=>setPasswordField(t)}
-                    password = {true}
+                    onChangeText={t => setPasswordField(t)}
+                    password={true}
                 />
-                
-                <SignInput 
+                <TextWhite>Confirme a senha:</TextWhite>
+                <SignInput
                     IconSvg={LockIcon}
                     placeholder="Confirme sua senha"
                     value={confirmPasswordField}
-                    onChangeText={t=>setConfirmPasswordField(t)}
-                    password = {true}
+                    onChangeText={t => setConfirmPasswordField(t)}
+                    password={true}
                 />
 
                 <CustomButton onPress={handleSignClick}>
@@ -109,11 +109,11 @@ export default ()=>{
             </InputArea>
 
             <SignUpModal
-                    show={showModal}
-                    setShow={setShowModal}
-                    password={passwordField}
-                    email = {emailField}
-                    name = {nameField}
+                show={showModal}
+                setShow={setShowModal}
+                password={passwordField}
+                email={emailField}
+                name={nameField}
             />
 
             <SignMessageButton onPress={handleMessageButtonClick}>

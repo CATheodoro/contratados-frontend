@@ -30,6 +30,9 @@ import VagaItem from '../../../components/VagaItem';
 
 import SearchIcon from '../../../assets/search.svg';
 import MyLocationIcon from '../../../assets/my_location.svg';
+import OfficeAddressIcon from '../../../assets/office-address.svg';
+
+
 import { Linha } from '../../styles/View';
 
 export default () => {
@@ -118,7 +121,7 @@ export default () => {
                             onEndEditing={handleLocationSearch}
                         />
                         <LocationFinder onPress={handleLocationFinder}>
-                            <MyLocationIcon width="24" height="24" fill="#FFF" />
+                            <OfficeAddressIcon width="24" height="24" fill="#FFF" />
                         </LocationFinder>
                     </LocationArea>
 

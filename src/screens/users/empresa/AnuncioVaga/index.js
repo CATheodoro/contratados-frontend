@@ -14,7 +14,7 @@ import { Container, Scroller, LoadingIcon } from '../../../styles/Basic';
 
 import { BackgroundImageOpen, BackgroundImageClosed, EmpresaAnuncioAvatarDefault, EmpresaAnuncioAvatar } from '../../../styles/Image';
 
-import { ButtonWhiteText, CustomButtonText, SubTitle, Text, TextBold, TextWhite, Title } from '../../../styles/Text';
+import { ButtonBlackText, ButtonWhiteText, CustomButtonText, SubTitle, Text, TextBold, TextWhite, Title } from '../../../styles/Text';
 
 import { DescriptionArea, EntreEspacos, EntreEspacosGrande, Linha, TitleArea } from '../../../styles/View';
 
@@ -170,7 +170,7 @@ export default () => {
                         <UserInfo>
                             <UserInfoName>{userInfo.nomeEmpresa}</UserInfoName>
                             <SimpleButtonInfoArea onPress={handleEmpresaClick}>
-                                <ButtonWhiteText>Ver empresa</ButtonWhiteText>
+                                <ButtonBlackText>Ver perfil da empresa</ButtonBlackText>
                             </SimpleButtonInfoArea>
                         </UserInfo>
 

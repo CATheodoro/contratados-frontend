@@ -23,11 +23,13 @@ import Api from '../../../../Api';
 import SignInput from '../../../../components/SignInput';
 
 import BackIcon from '../../../../assets/back.svg';
-import EmailIcon from '../../../../assets/email.svg'
-import TodayIcon from '../../../../assets/today.svg';
-import PersonIcon from '../../../../assets/person.svg'
+import Dollar from '../../../../assets/dollar.svg';
 import InfoTopProfile from '../../../../components/InfoTopProfile';
-
+import RelogioIcon from '../../../../assets/relogio.svg';
+import FileIcon from '../../../../assets/file.svg';
+import TagIcon from '../../../../assets/tag.svg';
+import MenuBarIcon from '../../../../assets/menu-bar.svg';
+import GpsIcon from '../../../../assets/gps.svg';
 
 
 import TimePiker from '@react-native-community/datetimepicker';
@@ -234,7 +236,7 @@ export default () => {
                         <InvisibleDescriptionArea>
                             <Text>Título do anúncio</Text>
                             <SignInput
-                                IconSvg={PersonIcon}
+                                IconSvg={TagIcon}
                                 placeholder="Título"
                                 value={tituloField}
                                 onChangeText={t => setTituloField(t)}
@@ -243,7 +245,7 @@ export default () => {
 
                             <Text>Requisitos para a vaga</Text>
                             <SignInput
-                                IconSvg={PersonIcon}
+                                IconSvg={MenuBarIcon}
                                 placeholder="Requisitos"
                                 value={requisitoField}
                                 onChangeText={t => setRequisitoField(t)}
@@ -252,7 +254,7 @@ export default () => {
 
                             <Text>Descrição da vaga</Text>
                             <SignInput
-                                IconSvg={PersonIcon}
+                                IconSvg={FileIcon}
                                 placeholder="Descrição"
                                 value={descricaoField}
                                 onChangeText={t => setDescricaoField(t)}
@@ -264,7 +266,7 @@ export default () => {
 
                             <Text>Alterar CEP</Text>
                             <SignInput
-                                IconSvg={EmailIcon}
+                                IconSvg={GpsIcon}
                                 placeholder="CEP"
                                 value={enderecoCepField}
                                 onChangeText={t => setEnderecoCepField(t)}
@@ -288,7 +290,7 @@ export default () => {
 
                                     <Text>Alterar complemento</Text>
                                     <SignInput
-                                        IconSvg={EmailIcon}
+                                        IconSvg={GpsIcon}
                                         placeholder="Complemento"
                                         value={complementoField}
                                         onChangeText={t => setComplementoField(t)}
@@ -297,7 +299,7 @@ export default () => {
 
                                     <Text>Alterar número</Text>
                                     <SignInput
-                                        IconSvg={EmailIcon}
+                                        IconSvg={GpsIcon}
                                         placeholder="Número"
                                         value={numeroField}
                                         onChangeText={t => setNumeroField(t)}
@@ -315,10 +317,10 @@ export default () => {
                         <InvisibleDescriptionArea>
                             <Text>Carga horária</Text>
                             <InputButtonArea onPress={showMode}>
-                                <TodayIcon width="24" height="24" fill="#268596" />
+                                <RelogioIcon width="24" height="24" fill="#268596" />
                                 <InputButtonText>{cargaHoraria.toLocaleTimeString()}</InputButtonText>
                             </InputButtonArea>
-
+                            
                             {show && (
                                 <TimePiker
                                     value={cargaHoraria}
@@ -329,7 +331,7 @@ export default () => {
 
                             <Text>Salário</Text>
                             <SignInput
-                                IconSvg={EmailIcon}
+                                IconSvg={Dollar}
                                 placeholder="Salário"
                                 value={salarioField}
                                 onChangeText={t => setSalarioField(t)}

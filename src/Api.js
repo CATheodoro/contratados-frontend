@@ -524,6 +524,22 @@ export default {
         const json = await req.json();
         return json;
     },
+
+    updateCurriculo: async (linkCurriculo) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/usuario/curriculo`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({linkCurriculo})
+        });
+        const json = await req.json();
+        return json;
+    },
     
 }
 
