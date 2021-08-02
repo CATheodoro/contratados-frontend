@@ -134,7 +134,6 @@ export default () => {
 
                     <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
 
-                    <EntreEspacosGrande />
                     <TitleArea>
                         <SubTitle>{userInfo.titulo}</SubTitle>
                     </TitleArea>

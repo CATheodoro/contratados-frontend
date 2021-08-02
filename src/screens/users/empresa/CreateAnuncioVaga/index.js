@@ -9,11 +9,11 @@ import { BackgroundImageProfile } from '../../../styles/Image';
 
 import { Container, Scroller, LoadingIconBasic } from '../../../styles/Basic';
 
-import { PageBodyProfile, DescriptionArea, InvisibleDescriptionArea } from '../../../styles/View';
+import { PageBodyProfile, DescriptionArea, InvisibleDescriptionArea, InvisibleSmallDescriptionArea } from '../../../styles/View';
 
 import { TextBold, Title, Text } from '../../../styles/Text';
 
-import { BackButtom } from '../../../styles/Button';
+import { BackButtom, DangerButton } from '../../../styles/Button';
 
 //Styles END ###########################################################
 
@@ -40,13 +40,16 @@ export default () => {
     const route = useRoute();
 
     const [userInfo, setUserInfo] = useState({
-        id: route.params.empresaId,
+        id: route.params.id,
         nome: route.params.nome,
 
-        anuncioId: route.params.anuncioId,
+        empresaId: route.params.empresaId,
+
         titulo: route.params.titulo,
         requisitos: route.params.requisitos,
         descricao: route.params.descricao,
+
+        statusAnuncio: route.params.statusAnuncio,
 
         cargaHoraria: route.params.cargaHoraria,
         salario: route.params.salario,
@@ -61,8 +64,10 @@ export default () => {
 
     });
 
+    const [empresaInfo, setEmpresa] = useState([]);
+
     const [type, setType] = useState({
-        atualizar: route.params.atualizar
+        atualizar: route.params.atualizar,
     });
 
 
@@ -103,8 +108,8 @@ export default () => {
                     navigation.navigate('CreateSetorCargo', {
                         id: res.id,
                         titulo: res.titulo,
-                        nome: userInfo.nome,
-                        email: userInfo.email,
+                        nome: empresaInfo.nome,
+                        email: empresaInfo.email,
                         object: ''
                     });
 
@@ -117,7 +122,7 @@ export default () => {
                 }
             } else {
                 let res = await Api.putVaga(
-                    userInfo.anuncioId,
+                    userInfo.id,
                     tituloField,
                     requisitoField,
                     descricaoField,
@@ -142,6 +147,28 @@ export default () => {
             }
         } else {
             alert("Preencha os campos obrigatórios")
+        }
+
+        setLoading(false);
+    }
+    
+    const handleChangeStatusButton = async () => {
+        setLoading(true);
+
+        let res = await Api.changeStatusAnuncio(
+            userInfo.id,
+            false
+        );
+
+        if (res.id) {
+            alert("Anúncio encerrado");
+            navigation.navigate('Home');
+
+        } else {
+            if (res.error) {
+                alert("Erro: " + res.error);
+            } else
+                alert("Erro: " + res[0].error);
         }
 
         setLoading(false);
@@ -172,9 +199,9 @@ export default () => {
     const getPerfilEmpresa = async () => {
         setLoading(true);
         getCep();
-        let json = await Api.getPerfilEmpresa(userInfo.id);
+        let json = await Api.getPerfilEmpresa(userInfo.empresaId);
         if (json) {
-            setUserInfo(json);
+            setEmpresa(json);
         } else {
             alert("Erro: " + json.error);
         }
@@ -220,14 +247,18 @@ export default () => {
 
                 <PageBodyProfile>
 
-                    <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
+                    <InfoTopProfile nome={empresaInfo.nome} email={empresaInfo.email} image={''} />
                     {loading &&
                         <LoadingIconBasic size="large" color="#000000" />
                     }
 
                     <EntreEspacosGrande />
 
+                    {type.atualizar === '' ?
                     <Title>Deseja criar um novo anúncio ?</Title>
+                    :
+                    <Title>Deseja atualizar o anúncio ?</Title>
+                    }
                     <DescriptionArea>
 
                         <EntreEspacos />
@@ -240,7 +271,6 @@ export default () => {
                                 placeholder="Título"
                                 value={tituloField}
                                 onChangeText={t => setTituloField(t)}
-                                password={false}
                             />
 
                             <Text>Requisitos para a vaga</Text>
@@ -249,7 +279,7 @@ export default () => {
                                 placeholder="Requisitos"
                                 value={requisitoField}
                                 onChangeText={t => setRequisitoField(t)}
-                                password={false}
+                                multiline={true}
                             />
 
                             <Text>Descrição da vaga</Text>
@@ -258,7 +288,7 @@ export default () => {
                                 placeholder="Descrição"
                                 value={descricaoField}
                                 onChangeText={t => setDescricaoField(t)}
-                                password={false}
+                                multiline={true}
                             />
 
 
@@ -270,7 +300,6 @@ export default () => {
                                 placeholder="CEP"
                                 value={enderecoCepField}
                                 onChangeText={t => setEnderecoCepField(t)}
-                                password={false}
                                 keyboardType='number-pad'
                                 onEndEditing={handleCepClick}
                             />
@@ -294,7 +323,6 @@ export default () => {
                                         placeholder="Complemento"
                                         value={complementoField}
                                         onChangeText={t => setComplementoField(t)}
-                                        password={false}
                                     />
 
                                     <Text>Alterar número</Text>
@@ -303,7 +331,6 @@ export default () => {
                                         placeholder="Número"
                                         value={numeroField}
                                         onChangeText={t => setNumeroField(t)}
-                                        password={false}
                                         keyboardType='number-pad'
                                     />
                                 </>
@@ -335,7 +362,6 @@ export default () => {
                                 placeholder="Salário"
                                 value={salarioField}
                                 onChangeText={t => setSalarioField(t)}
-                                password={false}
                                 keyboardType='number-pad'
                             />
                         </InvisibleDescriptionArea>
@@ -357,6 +383,18 @@ export default () => {
                         </CustomButton>
 
                     </DescriptionArea>
+
+                    {userInfo.id !== '' && userInfo.statusAnuncio &&
+                        <InvisibleSmallDescriptionArea>
+                            <DangerButton onPress={handleChangeStatusButton}>
+                                {loading ?
+                                    <LoadingIconBasic size="large" color="#FFF" />
+                                    :
+                                    <CustomButtonText>Encerrar anúncio</CustomButtonText>
+                                }
+                            </DangerButton>
+                        </InvisibleSmallDescriptionArea>
+                    }
 
                 </PageBodyProfile>
 

@@ -287,7 +287,7 @@ export default () => {
                             </PerfilButton>
 
                             <PdfButton onPress={() => handleChangeCurriculo()}>
-                                <ButtonWhiteText>Enviar um currículo em PDF</ButtonWhiteText>
+                                <ButtonWhiteText>Enviar link de currículo em PDF</ButtonWhiteText>
                             </PdfButton>
 
                             <EntreEspacosGrande />
@@ -309,7 +309,6 @@ export default () => {
                                 placeholder="Nome"
                                 value={nomeField}
                                 onChangeText={t => setNomeField(t)}
-                                password={false}
                             />
 
                             {typeProfile.perfil !== 'USUARIO' &&
@@ -320,7 +319,7 @@ export default () => {
                                         placeholder="Descrição"
                                         value={descricaoField}
                                         onChangeText={t => setDescricaoField(t)}
-                                        password={false}
+                                        multiline={true}
                                     />
 
                                     <Text>Alterar CNPJ</Text>
@@ -329,7 +328,6 @@ export default () => {
                                         placeholder="CNPJ"
                                         value={cnpjField}
                                         onChangeText={t => setCnpjField(t)}
-                                        password={false}
                                     />
                                 </>
                             }
@@ -370,7 +368,6 @@ export default () => {
                                 placeholder="Número do celular"
                                 value={celularField}
                                 onChangeText={t => setCelularField(t)}
-                                password={false}
                                 keyboardType='number-pad'
                             />
 
@@ -380,7 +377,6 @@ export default () => {
                                 placeholder="Número do telefone"
                                 value={telefoneField}
                                 onChangeText={t => setTelefoneField(t)}
-                                password={false}
                                 keyboardType='number-pad'
                             />
                         </InvisibleDescriptionArea>
@@ -398,7 +394,6 @@ export default () => {
                                         placeholder="CEP"
                                         value={enderecoCepField}
                                         onChangeText={t => setEnderecoCepField(t)}
-                                        password={false}
                                         keyboardType='number-pad'
                                         onEndEditing={handleCepClick}
                                     />
@@ -423,7 +418,6 @@ export default () => {
                                                 placeholder="Complemento"
                                                 value={complementoField}
                                                 onChangeText={t => setComplementoField(t)}
-                                                password={false}
 
                                             />
 
@@ -433,7 +427,6 @@ export default () => {
                                                 placeholder="Número"
                                                 value={numeroField}
                                                 onChangeText={t => setNumeroField(t)}
-                                                password={false}
                                                 keyboardType='number-pad'
                                             />
                                         </>

@@ -71,8 +71,6 @@ export default () => {
     const [horaEntrevistaField, setHoraEntrevistaField] = useState(solicitacaoInfo.horaEntrevista !== '' ? new Date("2020-01-01T" + solicitacaoInfo.horaEntrevista) : new Date());
     const [dataEntrevistaField, setDataEntrevistaFieldField] = useState(solicitacaoInfo.dataEntrevista !== '' ? new Date(solicitacaoInfo.dataEntrevista) : new Date());
 
-
-
     const handleChangeClick = async () => {
         setLoading(true);
         if (descricaoField != '' && horaEntrevistaField != '' && dataEntrevistaField != '') {
@@ -87,7 +85,7 @@ export default () => {
                 numeroField,
             );
             if (res.id) {
-                alert("Anúncio cadastrado com sucesso !!!");
+                alert("Solicitação atualizada com sucesso !!!");
                 navigation.navigate('Solicitacoes');
 
             } else {
@@ -194,8 +192,11 @@ export default () => {
                     }
 
                     <EntreEspacosGrande />
-
-                    <Title>Deseja criar um novo anúncio ?</Title>
+                    {type.atualizar === '' ?
+                        <Title>Informações da entrevista ?</Title>
+                        :
+                        <Title>Atualizar dados da entrevista ?</Title>
+                    }
                     <DescriptionArea>
 
                         <EntreEspacos />
@@ -208,7 +209,7 @@ export default () => {
                                 placeholder="Descrição"
                                 value={descricaoField}
                                 onChangeText={t => setDescricaoField(t)}
-                                password={false}
+                                multiline={true}
                             />
 
                             <Title>Localização opcional</Title>
@@ -219,7 +220,6 @@ export default () => {
                                 placeholder="CEP"
                                 value={enderecoCepField}
                                 onChangeText={t => setEnderecoCepField(t)}
-                                password={false}
                                 keyboardType='number-pad'
                                 onEndEditing={handleCepClick}
                             />
@@ -243,7 +243,6 @@ export default () => {
                                         placeholder="Complemento"
                                         value={complementoField}
                                         onChangeText={t => setComplementoField(t)}
-                                        password={false}
                                     />
 
                                     <Text>Alterar número</Text>
@@ -252,7 +251,6 @@ export default () => {
                                         placeholder="Número"
                                         value={numeroField}
                                         onChangeText={t => setNumeroField(t)}
-                                        password={false}
                                         keyboardType='number-pad'
                                     />
                                 </>
@@ -305,9 +303,9 @@ export default () => {
                                 <LoadingIconBasic size="large" color="#FFF" />
                                 :
                                 type.atualizar === '' ?
-                                    <CustomButtonText>CRIAR NOVO ANÚNCIO</CustomButtonText>
+                                    <CustomButtonText>FINALIZAR DADOS DA ENTREVISTA</CustomButtonText>
                                     :
-                                    <CustomButtonText>Atualizar anúncio</CustomButtonText>
+                                    <CustomButtonText>Atualizar dados da entrevista</CustomButtonText>
                             }
                         </CustomButton>
 
@@ -316,10 +314,11 @@ export default () => {
                 </PageBodyProfile>
 
             </Scroller>
-
-            <BackButtom onPress={handleBackButton}>
-                <BackIcon width="44" height="44" fill="#FFFFFF" />
-            </BackButtom>
+            {type.atualizar !== '' &&
+                <BackButtom onPress={handleBackButton}>
+                    <BackIcon width="44" height="44" fill="#FFFFFF" />
+                </BackButtom>
+            }
 
         </Container>
     );

@@ -121,6 +121,22 @@ export default {
         return json;
     },
 
+    changeStatusAnuncio: async (id, statusAnuncio) => {
+        const token = await AsyncStorage.getItem('token');
+        
+        const req = await fetch(`${BASE_API}/status/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({statusAnuncio})
+        });
+        const json = await req.json();
+        return json;
+    },
+
     postSetorCargo: async (anuncioVagaId, setor, cargo) => {
         const token = await AsyncStorage.getItem('token');
         

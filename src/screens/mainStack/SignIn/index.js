@@ -45,18 +45,9 @@ export default () => {
                 await AsyncStorage.setItem('perfil', json.perfil);
                 await AsyncStorage.setItem('id', json.id);
 
-                if (json.perfil === 'USUARIO') {
-
-                    navigation.reset({
-                        routes: [{ name: 'MainTab' }]
-                    });
-                }
-
-                if (json.perfil === 'EMPRESA') {
-                    navigation.reset({
-                        routes: [{ name: 'MainTab' }]
-                    });
-                }
+                navigation.reset({
+                    routes: [{ name: 'MainTab' }]
+                });
 
             } else {
                 alert('E-mail e/ou senha incorreto! ');

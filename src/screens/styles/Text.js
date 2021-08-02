@@ -30,6 +30,12 @@ export const Text = styled.Text`
     margin-left: 20px;
 `;
 
+export const TextSmall = styled.Text`
+    font-size: 10px;
+    font-weight: bold;
+    color: #000000;
+    margin-left: 20px;
+`;
 export const TextWhite = styled.Text`
     font-size: 14px;
     font-weight: bold;

@@ -4,7 +4,6 @@ import styled from 'styled-components/native';
 const InputArea = styled.View`
     margin-left: 20px;
     margin-right: 20px;
-    height: 60px;
     background-color: #FFFFFF;
     flex-direction: row;
     border-radius: 15px;
@@ -21,7 +20,7 @@ const Input = styled.TextInput`
     margin-left: 10px;
 `;
 
-export default ({IconSvg, placeholder, value, onChangeText, password, keyboardType, onEndEditing}) => {
+export default ({IconSvg, placeholder, value, onChangeText, password, keyboardType, onEndEditing, multiline}) => {
     return (
         <InputArea>
             <IconSvg width="24" height="24" fill="#268596" />
@@ -33,6 +32,7 @@ export default ({IconSvg, placeholder, value, onChangeText, password, keyboardTy
                 secureTextEntry = {password}
                 keyboardType = {keyboardType}
                 onEndEditing = {onEndEditing}
+                multiline={multiline}
             />
         </InputArea>
     );

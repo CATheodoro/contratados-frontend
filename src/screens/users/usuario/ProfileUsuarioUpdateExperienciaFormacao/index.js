@@ -174,6 +174,7 @@ export default () => {
                             placeholder={userInfo.object !== '' ? "Alterar " + userInfo.itemType : "Informe a " + userInfo.itemType}
                             value={itemDescricao}
                             onChangeText={t => setItemDescricao(t)}
+                            multiline={true}
                         />
 
 

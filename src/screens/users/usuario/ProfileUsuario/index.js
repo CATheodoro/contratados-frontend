@@ -118,7 +118,7 @@ export default () => {
 
                         {usuarioInfo.dataNascimento &&
                             <><Linha />
-                                <TextBold>Data de nascimento: <Text>{usuarioInfo.dataNascimento}</Text></TextBold>
+                                <TextBold>Data de nascimento: <Text>{usuarioInfo.dataNascimentoFormatado}</Text></TextBold>
                             </>
                         }
                     </DescriptionProfileArea>

@@ -64,96 +64,98 @@ export default ({ show, setShow, user, description, choose }) => {
 
             if (res.id === user.id) {
               alert("Solicitação Aceita");
-              navigation.navigate('SolicitacaoEmpresaUpdate',{
+
+              navigation.navigate('SolicitacaoEmpresaUpdate', {
                 id: res.id,
                 empresaId: res.empresaId,
                 descricao: '',
                 horaEntrevista: '',
                 dataEntrevista: '',
-                
+
                 enderecoCep: '',
                 complemento: '',
-                numero: ''
+                numero: '',
+                atualizar: '',
               });
-            } else {
-              alert("Erro: " + res.error);
-              navigation.navigate('Home');
-            }
           } else {
-            let res = await Api.empresaSolicitacao('RECUSADO', user.id);
-            if (res.id === user.id) {
-              alert("Solicitação Recusada");
-              navigation.navigate('Home');
-            } else {
-              alert("Erro: " + res.error);
-              navigation.navigate('Home');
-            }
-
+            alert("Erro: " + res.error);
+            navigation.navigate('Home');
           }
+        } else {
+          let res = await Api.empresaSolicitacao('RECUSADO', user.id);
+          if (res.id === user.id) {
+            alert("Solicitação Recusada");
+            navigation.navigate('Home');
+          } else {
+            alert("Erro: " + res.error);
+            navigation.navigate('Home');
+          }
+
         }
-
       }
+
     }
-    setLoading(false);
-  };
-
-  const handleFinishClick = () => {
-    setShow(false);
   }
+  setLoading(false);
+};
 
-  return (
-    <Modal
-      transparent={true}
-      visible={show}
-      animationType="slide">
-      <ModalArea>
-        <ModalBody>
-          <CloseButton onPress={handleCloseButton}>
-            <ExpandIcon width="40" height="40" fill="#000000" />
-          </CloseButton>
+const handleFinishClick = () => {
+  setShow(false);
+}
 
+return (
+  <Modal
+    transparent={true}
+    visible={show}
+    animationType="slide">
+    <ModalArea>
+      <ModalBody>
+        <CloseButton onPress={handleCloseButton}>
+          <ExpandIcon width="40" height="40" fill="#000000" />
+        </CloseButton>
+
+        <ModalItem>
+          <UserInfo>
+            <UserAvatar />
+            <UserName>{description}</UserName>
+          </UserInfo>
+        </ModalItem>
+
+        {choose === "cancelar" ?
           <ModalItem>
             <UserInfo>
-              <UserAvatar />
-              <UserName>{description}</UserName>
+              <Text>Lembre-se não há como reverter esta operação</Text>
             </UserInfo>
           </ModalItem>
 
-          {choose === "cancelar" ?
-            <ModalItem>
-              <UserInfo>
-                <Text>Lembre-se não há como reverter esta operação</Text>
-              </UserInfo>
-            </ModalItem>
+          :
+          choose === "aceitar" &&
 
-            :
-            choose === "aceitar" &&
+          <ModalItem>
+            <UserInfo>
+              <Text>Caso esteje insatisfeito como o horario ou local da entrevista ligue para empresa para alterar a data ou local da entrevista.</Text>
+            </UserInfo>
+          </ModalItem>
+        }
 
-            <ModalItem>
-              <UserInfo>
-                <Text>Caso esteje insatisfeito como o horario ou local da entrevista ligue para empresa para alterar a data ou local da entrevista.</Text>
-              </UserInfo>
-            </ModalItem>
-          }
+        {loading ?
+          <LoadingIcon size="large" color="#FFF" />
+          :
+          <ButtonArea>
+            <FinishButton onPress={handleSendClick}>
+              <FinishButtonText>SIM</FinishButtonText>
+            </FinishButton>
 
-          {loading ?
-            <LoadingIcon size="large" color="#FFF" />
-            :
-            <ButtonArea>
-              <FinishButton onPress={handleSendClick}>
-                <FinishButtonText>SIM</FinishButtonText>
-              </FinishButton>
-
-              <FinishButton onPress={handleFinishClick}>
-                <FinishButtonText>NÃO</FinishButtonText>
-              </FinishButton>
-            </ButtonArea>
-          }
+            <FinishButton onPress={handleFinishClick}>
+              <FinishButtonText>NÃO</FinishButtonText>
+            </FinishButton>
+          </ButtonArea>
+        }
 
 
 
-        </ModalBody>
-      </ModalArea>
-    </Modal>
-  );
+      </ModalBody>
+    </ModalArea>
+  </Modal>
+);
 };

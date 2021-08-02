@@ -117,10 +117,12 @@ export default () => {
         navigation.navigate('CreateAnuncioVaga', {
             empresaId: userInfo.empresaId,
 
-            anuncioId: userInfo.anuncioId,
+            id: userInfo.id,
             titulo: userInfo.titulo,
             requisitos: userInfo.requisitos,
             descricao: userInfo.descricao,
+
+            statusAnuncio: userInfo.statusAnuncio,
 
             cargaHoraria: userInfo.cargaHoraria,
             salario: userInfo.salario,

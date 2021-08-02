@@ -11,7 +11,7 @@ import { Container, Scroller, LoadingIconBasic } from '../../../styles/Basic';
 
 import { PageBodyProfile, DescriptionArea } from '../../../styles/View';
 
-import { Title, Text } from '../../../styles/Text';
+import { Title, Text, TextSmall } from '../../../styles/Text';
 
 import { BackButtom, PerfilButton } from '../../../styles/Button';
 
@@ -80,14 +80,14 @@ export default () => {
                     <DescriptionArea>
                         <EntreEspacosGrande />
 
-
-                        <Text>Colar o link do currículo</Text>
-
+                        <Text>Colar o link do currículo <TextSmall>(deve estar no formato PDF)</TextSmall></Text>
+                        
                         <SignInput
                             IconSvg={EmailIcon}
                             placeholder={"Link do currículo "}
                             value={linkCurriculoField}
                             onChangeText={t => setLinkCurriculoField(t)}
+                            multiline={true}
                         />
 
                         <PerfilButton onPress={() => setLinkCurriculoField('')}>

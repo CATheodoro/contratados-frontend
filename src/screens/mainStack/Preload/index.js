@@ -14,7 +14,6 @@ export default ()=>{
     useEffect(()  => {
         const checkToken = async () => {
             const token = await AsyncStorage.getItem('token');
-            const perfil = await AsyncStorage.getItem('perfil'); 
             
             if(token) {
 
@@ -23,7 +22,9 @@ export default ()=>{
                 });
     
             } else {
-                navigation.navigate('SignIn');
+                navigation.reset({
+                    routes: [{name: 'SignIn'}]
+                });
             }
         }
         checkToken();

@@ -74,7 +74,7 @@ export default () => {
                         <TextBold>Sobre nós</TextBold>
                         <Text>{empresaInfo.descricao}</Text>
                         <Linha/>
-                        <TextBold>Data de fundação: <Text>{empresaInfo.dataFundacao}</Text></TextBold>
+                        <TextBold>Data de fundação: <Text>{empresaInfo.dataFundacaoFormatado}</Text></TextBold>
                     </DescriptionProfileArea>
 
                     <SubTitle>Contatos</SubTitle>
