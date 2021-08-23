@@ -3,109 +3,11 @@ import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { EntreEspacos } from '../../screens/styles/View';
 
-const AreaOpen = styled.TouchableOpacity`
-    background-color: #63C2D1;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    padding: 15px;
-    flex-direction: row;
-`;
 
-const AreaClosed = styled.TouchableOpacity`
-    background-color: #E27D60;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    padding: 15px;
-    flex-direction: row;
-`;
-
-const Avatar = styled.Image`
-    width: 88px;
-    height: 88px;
-    border-radius: 20px;
-`;
-
-const AvatarDefaut = styled.Text`
-    width: 88px;
-    height: 88px;
-    border-radius: 20px;
-    background-color: #DDDDDD
-`;
-
-
-const InfoArea = styled.View`
-    margin-left: 20px;
-    justify-content: space-between;
-`;
-
-const Title = styled.Text`
-    width: 225px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #FFF;
-`;
-
-const SubTitle = styled.Text`
-    width: 225px;
-    font-size: 16px;
-    color: #FFF;
-`;
-
-const Linha = styled.View`
-    border: 1px solid #FFF;
-`;
-
-const CargoArea = styled.View`
-    width: 225px;
-    border: 1px solid #FFF;
-    background-color: #FFF;
-    border-radius: 10px;
-
-    margin-bottom: 5px;
-    margin-top: 15px;
-`;
-
-const LocationArea = styled.View`
-    margin-left: 10px;
-    margin-right: 10px;
-    flex-direction: row;
-    justify-content: space-between;
-`;
-
-const SpacedArea = styled.View`
-    margin-left: 10px;
-    margin-right: 10px;
-`;
-
-
-const OpenButton = styled.View`
-    width: 225px;
-    height: 26px;
-    border: 1px solid #FFF;
-    background-color: #FFF;
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-`;
-
-
-const TextWhite = styled.Text`
-    font-size: 14px;
-    color: #FFF;
-`;
-
-const Text = styled.Text`
-    font-size: 14px;
-    color: #268596;
-`;
-
-const DataPost = styled.Text`
-    font-size: 10px;
-    color: #FFF;
-    text-align: right;
-`;
-
-
+import {AreaOpen, AreaClosed, Avatar, AvatarDefaut, InfoArea, Title,
+    SubTitle, Linha, CargoArea, LocationArea, SpacedArea, OpenButton,
+    Text, DataPost
+    } from './styles';
 
 export default ({data, perfil}) => {
     const navigation = useNavigation();
@@ -126,7 +28,6 @@ export default ({data, perfil}) => {
     }
 
     return(
-        
         <>
             {data.statusAnuncio ?
                 <AreaOpen onPress={handleClick}>

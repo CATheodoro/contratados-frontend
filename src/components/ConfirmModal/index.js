@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
-
-
 
 import ExpandIcon from '../../assets/expand';
 
@@ -116,7 +113,7 @@ return (
 
         <ModalItem>
           <UserInfo>
-            <UserAvatar />
+            <UserAvatar/>
             <UserName>{description}</UserName>
           </UserInfo>
         </ModalItem>

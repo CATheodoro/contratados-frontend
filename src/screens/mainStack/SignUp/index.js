@@ -15,8 +15,6 @@ import {
 
 } from './styles';
 
-import Api from '../../../Api';
-
 import SignInput from '../../../components/SignInput';
 
 import Logo from '../../../assets/logoContratados.svg'
@@ -58,8 +56,6 @@ export default () => {
             routes: [{ name: 'SignIn' }]
         });
     }
-
-
 
     return (
         <Container>

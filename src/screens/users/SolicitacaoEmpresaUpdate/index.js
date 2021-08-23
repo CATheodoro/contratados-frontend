@@ -102,7 +102,6 @@ export default () => {
         setLoading(false);
     }
 
-
     const handleCepClick = async () => {
         if (enderecoCepField != '' && enderecoCepField != null) {
             if (enderecoCepField.length == 8) {
@@ -123,10 +122,8 @@ export default () => {
         }
     }
 
-
     const getPerfilEmpresa = async () => {
         setLoading(true);
-        getCep();
         let json = await Api.getPerfilEmpresa(solicitacaoInfo.empresaId);
         if (json) {
             setEmpresaInfo(json);
@@ -148,6 +145,7 @@ export default () => {
 
     useEffect(() => {
         getPerfilEmpresa();
+        getCep();
     }, []);
 
     const handleBackButton = () => {
@@ -176,8 +174,6 @@ export default () => {
     const showDateMode = () => {
         setShowDate(true);
     };
-
-
 
     return (
         <Container>

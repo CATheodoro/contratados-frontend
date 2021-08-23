@@ -1,12 +1,9 @@
 import React from 'react';
+
+//Styles    ###########################################################
 import { EmailProfileArea, InfoProfileArea, Linha } from '../../screens/styles/View';
 import { ProfileAvatar, ProfileAvatarDefault } from '../../screens/styles/Image';
 import { TextBold, TitleNameProfile } from '../../screens/styles/Text';
-
-//Styles    ###########################################################
-
-
-
 //Styles END ###########################################################
 
 

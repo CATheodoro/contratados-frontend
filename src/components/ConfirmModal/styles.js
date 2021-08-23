@@ -28,7 +28,6 @@ export const ModalItem = styled.View`
 `;
 
 export const UserInfo = styled.View`
-  flex-direction: row;
   align-items: center;
   padding: 10px;
 `;
@@ -37,9 +36,7 @@ export const SimpleButtonInfoArea = styled.TouchableOpacity`
     background-color: #4EADBE;
     border-radius: 10px;
     padding: 10px 10px;
-
     margin-right: 30px;
-
     align-items: center;
 `;
 

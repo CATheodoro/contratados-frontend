@@ -96,7 +96,7 @@ export default () => {
             horaEntrevista: solicitacaoInfo.horaEntrevista,
             dataEntrevista: solicitacaoInfo.dataEntrevista,
             
-            enderecoCep: solicitacaoInfo.enderecoCep,
+            enderecoCep: solicitacaoInfo.cep,
             complemento: solicitacaoInfo.complemento,
             numero: solicitacaoInfo.numero
         
@@ -242,7 +242,6 @@ export default () => {
                                 <SimpleButton onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja cancelar a solicitação enviada para " + solicitacaoInfo.nomeEmpresa + " ?", "cancelar")}>
                                     <ButtonWhiteText>Cancelar a solicitação</ButtonWhiteText>
                                 </SimpleButton>
-
 
                     }
 

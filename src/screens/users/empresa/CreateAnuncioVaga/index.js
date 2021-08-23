@@ -84,9 +84,8 @@ export default () => {
     const [complementoField, setComplementoField] = useState(userInfo.complemento);
     const [numeroField, setNumeroField] = useState(userInfo.numero);
 
-    const [cargaHoraria, setCargaHoraria] = useState(userInfo.cargaHoraria !== '' ? new Date("2020-01-01T" + userInfo.cargaHoraria) : new Date());
+    const [cargaHoraria, setCargaHoraria] = useState(userInfo.cargaHoraria !== '' ? new Date("2020-01-01T" + userInfo.cargaHoraria) : new Date("2020-01-01T10:00:00"));
     const [salarioField, setSalarioField] = useState(userInfo.salario);
-
 
     const handleChangeClick = async () => {
         setLoading(true);

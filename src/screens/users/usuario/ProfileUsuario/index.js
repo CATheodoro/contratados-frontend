@@ -108,7 +108,6 @@ export default () => {
                         </PdfButton>
                     }
 
-
                     <Linha />
 
                     <SubTitle>Detalhes</SubTitle>

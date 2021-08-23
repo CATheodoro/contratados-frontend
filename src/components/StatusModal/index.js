@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-
-
 import ExpandIcon from '../../assets/expand';
 
 import Api from '../../Api';
 
 import { Modal, ModalArea, ModalBody, CloseButton, ModalItem, 
   UserInfo, UserAvatar, UserName, ButtonArea,
-  FinishButton, FinishButtonText, LoadingIcon } from './styles';
-import { TextGreen, TextOrange } from '../../screens/styles/Text';
+  FinishButton, LoadingIcon } from './styles';
 
+import { TextGreen, TextOrange } from '../../screens/styles/Text';
 
 
 export default ({ show, setShow, status }) => {
