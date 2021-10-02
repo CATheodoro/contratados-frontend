@@ -155,8 +155,7 @@ export default () => {
         setLoading(true);
 
         let res = await Api.changeStatusAnuncio(
-            userInfo.id,
-            false
+            userInfo.id
         );
 
         if (res.id) {

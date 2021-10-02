@@ -8,8 +8,8 @@ import { CustomButton, CustomButtonText, Linha, EntreEspacos } from './styles';
 import { BackgroundImageProfile } from '../../styles/Image';
 
 import { Container, Scroller, LoadingIconBasic } from '../../styles/Basic';
-    
-import { PageBodyProfile,  DescriptionArea } from '../../styles/View';
+
+import { PageBodyProfile, DescriptionArea } from '../../styles/View';
 
 import { Title, Text } from '../../styles/Text';
 
@@ -48,192 +48,204 @@ export default () => {
 
     const handleChangeClick = async () => {
         setLoading(true);
-            if(oldPasswordFiel !='' && itemField != ''){
+        if (oldPasswordFiel != '' && itemField != '') {
+            if (oldPasswordFiel.length > 5) {
 
-                if(userInfo.perfil === 'USUARIO'){
+                if (userInfo.perfil === 'USUARIO') {
 
-                    if(userInfo.type==='e-mail'){
-                        if(itemField === confirmItemField){
-                            if(itemField !== userInfo.email){
-    
+                    if (userInfo.type === 'e-mail') {
+                        if (itemField === confirmItemField) {
+                            if (itemField !== userInfo.email) {
+
                                 let res = await Api.updateEmailUsuario(oldPasswordFiel, itemField);
-                
-                                if(res.id) {
-                    
+
+                                if (res.id) {
+
                                     alert("E-mail alterada com sucesso !!!");
                                     navigation.navigate('Profile');
-                    
+
                                 } else {
-                                    if(res.error){
+                                    if (res.error) {
                                         alert("Erro: " + res.error);
                                     } else
                                         alert("Erro: " + res[0].error);
-                                    
+
                                 }
                             } else {
                                 alert("O novo e-mail não pode ser o mesmo que o atual")
                             }
                         } else {
-                            alert ("E-mail diferente, confirme seu e-mail novamente");
+                            alert("E-mail diferente, confirme seu e-mail novamente");
                         }
                     } else {
-                        if(itemField === confirmItemField){
-                            if(itemField !== oldPasswordFiel){
-                                let res = await Api.updateSenhaUsuario(oldPasswordFiel, itemField);
-            
-                                if(res.id) {
-                    
-                                    alert("Senha alterada com sucesso !!!");
-                                    navigation.navigate('Profile');
-                    
+                        if (itemField.length > 5) {
+                            if (itemField === confirmItemField) {
+                                if (itemField !== oldPasswordFiel) {
+                                    let res = await Api.updateSenhaUsuario(oldPasswordFiel, itemField);
+
+                                    if (res.id) {
+
+                                        alert("Senha alterada com sucesso !!!");
+                                        navigation.navigate('Profile');
+
+                                    } else {
+                                        if (res.error) {
+                                            alert("Erro: " + res.error);
+                                        } else
+                                            alert("Erro: " + res[0].error);
+
+                                    }
                                 } else {
-                                    if(res.error){
-                                        alert("Erro: " + res.error);
-                                    } else
-                                        alert("Erro: " + res[0].error);
-                                    
+                                    alert("A nova senha não pode ser a mesma que a atual");
                                 }
+
                             } else {
-                                alert("A nova senha não pode ser a mesma que a atual");
+                                alert("Senhas diferentes, confirme sua senha novamente");
                             }
-        
                         } else {
-                            alert ("Senhas diferentes, confirme sua senha novamente");
+                            alert("O tamanho mínimo da senha atual deve ser de 6 caracteres");
                         }
                     }
                 } else {
-        
-                    if(userInfo.type==='e-mail'){
-                        if(itemField === confirmItemField){
-                            if(itemField !== userInfo.email){
-    
+
+                    if (userInfo.type === 'e-mail') {
+                        if (itemField === confirmItemField) {
+                            if (itemField !== userInfo.email) {
+
                                 let res = await Api.updateEmailEmpresa(oldPasswordFiel, itemField);
-                
-                                if(res.id) {
-                    
+
+                                if (res.id) {
+
                                     alert("E-mail alterada com sucesso !!!");
                                     navigation.navigate('Profile');
-                    
+
                                 } else {
-                                    if(res.error){
+                                    if (res.error) {
                                         alert("Erro: " + res.error);
                                     } else
                                         alert("Erro: " + res[0].error);
-                                    
+
                                 }
                             } else {
                                 alert("O novo e-mail não pode ser o mesmo que o atual")
                             }
                         } else {
-                            alert ("E-mail diferente, confirme seu e-mail novamente");
+                            alert("E-mail diferente, confirme seu e-mail novamente");
                         }
                     } else {
-                        if(itemField === confirmItemField){
-                            if(itemField !== oldPasswordFiel){
-                                let res = await Api.updatePasswordEmpresa(oldPasswordFiel, itemField);
-            
-                                if(res.id) {
-                    
-                                    alert("Senha alterada com sucesso !!!");
-                                    navigation.navigate('Profile');
-                    
+                        if (itemField.length > 5) {
+                            if (itemField === confirmItemField) {
+                                if (itemField !== oldPasswordFiel) {
+                                    let res = await Api.updatePasswordEmpresa(oldPasswordFiel, itemField);
+
+                                    if (res.id) {
+
+                                        alert("Senha alterada com sucesso !!!");
+                                        navigation.navigate('Profile');
+
+                                    } else {
+                                        if (res.error) {
+                                            alert("Erro: " + res.error);
+                                        } else
+                                            alert("Erro: " + res[0].error);
+
+                                    }
                                 } else {
-                                    if(res.error){
-                                        alert("Erro: " + res.error);
-                                    } else
-                                        alert("Erro: " + res[0].error);
-                                    
+                                    alert("A nova senha não pode ser a mesma que a atual");
                                 }
+
                             } else {
-                                alert("A nova senha não pode ser a mesma que a atual");
+                                alert("Senhas diferentes, confirme sua senha novamente");
                             }
-        
                         } else {
-                            alert ("Senhas diferentes, confirme sua senha novamente");
+                            alert("O tamanho mínimo da senha atual deve ser de 6 caracteres");
                         }
                     }
                 }
-     
-    
-            } else {
-                alert ("Preencha os campos");
-            }
-            setLoading(false);
-        }
 
-        const handleBackButton = () => {
-            navigation.goBack();
+            } else {
+                alert("O tamanho mínimo da senha deve ser de 6 caracteres");
+            }
+
+        } else {
+            alert("Preencha os campos");
         }
+        setLoading(false);
+    }
+
+    const handleBackButton = () => {
+        navigation.goBack();
+    }
 
     return (
         <Container>
             <Scroller>
-                <BackgroundImageProfile />      
+                <BackgroundImageProfile />
 
                 <PageBodyProfile>
 
-                <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
+                    <InfoTopProfile nome={userInfo.nome} email={userInfo.email} image={''} />
 
-                    {userInfo.type ==='e-mail' ?
-                            <Title>Deseja atualizar seu e-mail ?</Title>
-                            :
-                            <Title>Deseja atualizar sua senha ?</Title>
+                    {userInfo.type === 'e-mail' ?
+                        <Title>Deseja atualizar seu e-mail ?</Title>
+                        :
+                        <Title>Deseja atualizar sua senha ?</Title>
                     }
-                    
+
                     <DescriptionArea>
-                        <EntreEspacos/> 
+                        <EntreEspacos />
 
                         <Text>Digite sua senha atual</Text>
-                        <SignInput 
+                        <SignInput
                             IconSvg={LockIcon}
                             placeholder="Senha atual"
                             value={oldPasswordFiel}
-                            onChangeText={t=>setOldPasswordField(t)}
-                            password = {true}
+                            onChangeText={t => setOldPasswordField(t)}
+                            password={true}
                         />
-                        <EntreEspacos/>
-                        <Linha/>
+                        <EntreEspacos />
+                        <Linha />
 
-                        {userInfo.type ==='e-mail' ?
+                        {userInfo.type === 'e-mail' ?
                             <Text>Digite seu novo e-mail</Text>
                             :
                             <Text>Digite sua nova senha</Text>
                         }
-                        
-                        <SignInput 
-                            IconSvg={userInfo.type ==='e-mail' ? EmailIcon : LockIcon}
-                            placeholder={userInfo.type ==='e-mail' ? "Novo e-mail" : "Nova senha"}
+
+                        <SignInput
+                            IconSvg={userInfo.type === 'e-mail' ? EmailIcon : LockIcon}
+                            placeholder={userInfo.type === 'e-mail' ? "Novo e-mail" : "Nova senha"}
                             value={itemField}
-                            onChangeText={t=>setItemField(t)}
-                            password = {userInfo.type ==='e-mail' ? false : true}
-                            keyboardType = {userInfo.type ==='e-mail' ? 'email-address' : 'default'}
+                            onChangeText={t => setItemField(t)}
+                            password={userInfo.type === 'e-mail' ? false : true}
+                            keyboardType={userInfo.type === 'e-mail' ? 'email-address' : 'default'}
                         />
 
-                        
-                        {userInfo.type ==='e-mail' ?
+
+                        {userInfo.type === 'e-mail' ?
                             <Text>Confirme seu novo e-mail</Text>
                             :
                             <Text>Confirme Sua nova senha</Text>
                         }
-                        
-                        <SignInput 
-                            IconSvg={userInfo.type ==='e-mail' ? EmailIcon : LockIcon}
-                            placeholder={userInfo.type ==='e-mail' ? "Confirmar novo e-mail" : 'Confirmar nova senha'}
+
+                        <SignInput
+                            IconSvg={userInfo.type === 'e-mail' ? EmailIcon : LockIcon}
+                            placeholder={userInfo.type === 'e-mail' ? "Confirmar novo e-mail" : 'Confirmar nova senha'}
                             value={confirmItemField}
-                            onChangeText={t=>setConfirmItemField(t)}
-                            password = {userInfo.type ==='e-mail' ? false : true}
-                            keyboardType = {userInfo.type ==='e-mail' ? 'email-address' : 'default'}
+                            onChangeText={t => setConfirmItemField(t)}
+                            password={userInfo.type === 'e-mail' ? false : true}
+                            keyboardType={userInfo.type === 'e-mail' ? 'email-address' : 'default'}
                         />
 
-                        <EntreEspacos/>
-                    
-                    <CustomButton onPress={handleChangeClick}>
-                        {loading ?
-                            <LoadingIconBasic size="large" color="#FFF" />
-                            :
-                            <CustomButtonText>Atualizar {userInfo.type}</CustomButtonText>
-                        }
-                    </CustomButton>
+                        <EntreEspacos />
+
+                        <CustomButton onPress={handleChangeClick}>
+                            {loading ?
+                                <LoadingIconBasic size="large" color="#FFF" />
+                                :
+                                <CustomButtonText>Atualizar {userInfo.type}</CustomButtonText>
+                            }
+                        </CustomButton>
 
                     </DescriptionArea>
 

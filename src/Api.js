@@ -121,10 +121,10 @@ export default {
         return json;
     },
 
-    changeStatusAnuncio: async (id, statusAnuncio) => {
+    changeStatusAnuncio: async (id) => {
         const token = await AsyncStorage.getItem('token');
-        
-        const req = await fetch(`${BASE_API}/status/${id}`, {
+        const statusAnuncio = false;
+        const req = await fetch(`${BASE_API}/anunciovaga/status/${id}`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',

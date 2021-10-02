@@ -212,7 +212,7 @@ export default () => {
 
                     {solicitacaoInfo.solicitacaoUsuarioStatus != 'CANCELADO' && typeProfile.perfil === 'EMPRESA' && solicitacaoInfo.solicitacaoEmpresaStatus === 'PENDENTE' ?
                         <>
-                            <SimpleButton onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja aceitar a solicitação de " + solicitacaoInfo.nomeEmpresa + " ?", "aceitarSolicitacao")}>
+                            <SimpleButton onPress={() => handleSolicitacaoChoose(solicitacaoInfo, "Deseja aceitar a solicitação de " + solicitacaoInfo.nomeUsuario + " ?", "aceitarSolicitacao")}>
                                 <ButtonWhiteText>Marcar uma entrevista</ButtonWhiteText>
                             </SimpleButton>
 

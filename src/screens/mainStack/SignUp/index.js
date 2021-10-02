@@ -37,17 +37,34 @@ export default () => {
 
     const handleSignClick = async () => {
         setLoading(true);
-        if (nameField != '' && emailField != '' && passwordField != '') {
-            if (passwordField === confirmPasswordField) {
 
-                setShowModal(true);
+        if (nameField != '' && emailField != '' && passwordField != '') {
+
+
+            if (nameField.length > 5) {
+
+                if (passwordField.length > 5) {
+
+                    if (passwordField === confirmPasswordField) {
+
+                        setShowModal(true);
+
+                    } else {
+                        alert("Senhas diferentes, confirme sua senha novamente");
+                    }
+
+                } else {
+                    alert("O tamanho mínimo da senha deve ser de 6 caracteres");
+                }
 
             } else {
-                alert("Senhas diferentes, confirme sua senha novamente");
+                alert("O tamanho mínimo do nome deve ser de 6 caracteres");
             }
+
         } else {
             alert("Preencha os campos");
         }
+
         setLoading(false);
     }
 

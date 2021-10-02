@@ -140,7 +140,7 @@ export default () => {
         });
     }
 
-    
+
     const handleSolicitacoesClick = () => {
 
         navigation.navigate('FilterAnuncioVagaSolicitacoes', {
@@ -187,12 +187,21 @@ export default () => {
 
                     <EntreEspacosGrande />
 
-                    {perfil.perfil === 'EMPRESA' &&
+                    {perfil.perfil === 'EMPRESA' && userInfo.statusAnuncio ?
                         <>
                             <PerfilBlueButton onPress={() => handleClick()}>
                                 <TextWhite>Atualizar anúncio</TextWhite>
                             </PerfilBlueButton>
 
+                            <PerfilBlueButton onPress={() => handleSolicitacoesClick()}>
+                                <TextWhite>Ver solicitações</TextWhite>
+                            </PerfilBlueButton>
+
+                            <EntreEspacosGrande />
+                            <Linha />
+                        </>
+                        : perfil.perfil === 'EMPRESA' &&
+                        <>
                             <PerfilBlueButton onPress={() => handleSolicitacoesClick()}>
                                 <TextWhite>Ver solicitações</TextWhite>
                             </PerfilBlueButton>
@@ -259,7 +268,7 @@ export default () => {
                                             <CargoSetor>Setor: {item.setor}</CargoSetor>
                                         }
                                     </CargoInfo>
-                                    {perfil.perfil === 'EMPRESA' &&
+                                    {perfil.perfil === 'EMPRESA' && userInfo.statusAnuncio &&
                                         <CustomListButton onPress={() => handlePutSetorCargoClick(id)}>
                                             <CustomButtonText>Atualizar</CustomButtonText>
                                         </CustomListButton>
@@ -267,7 +276,7 @@ export default () => {
 
                                 </CargoItem>
                             ))}
-                            {perfil.perfil === 'EMPRESA' &&
+                            {perfil.perfil === 'EMPRESA' && userInfo.statusAnuncio &&
                                 <SimpleButton onPress={() => handleAddSetorCargoClick()}>
                                     <ButtonWhiteText>Adicionar novo setor e cargo</ButtonWhiteText>
                                 </SimpleButton>
